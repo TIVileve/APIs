@@ -5,6 +5,6 @@ namespace VilevePay.Application.Interfaces
     public interface IAutorizacaoAppService : IDisposable
     {
         void ValidarCodigoConvite(string codigoConvite);
-        void ValidarCodigoToken(string codigoToken);
+        void ValidarCodigoToken(string codigoConvite, string codigoToken);
     }
 }
