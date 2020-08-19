@@ -9,7 +9,7 @@ namespace VilevePay.Domain.CommandHandlers
     public class CommandHandler
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMediatorHandler _bus;
+        protected readonly IMediatorHandler _bus;
         private readonly DomainNotificationHandler _notifications;
 
         public CommandHandler(

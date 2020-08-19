@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using VilevePay.Application.Interfaces;
 using VilevePay.Application.Services;
 using VilevePay.Domain.CommandHandlers;
+using VilevePay.Domain.Commands.Autorizacao;
 using VilevePay.Domain.Commands.Property;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Events;
@@ -34,6 +35,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
 
             // Application
             services.AddScoped<IPropertyAppService, PropertyAppService>();
+            services.AddScoped<IAutorizacaoAppService, AutorizacaoAppService>();
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
@@ -49,6 +51,9 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<RegisterNewPropertyCommand, object>, PropertyCommandHandler>();
             services.AddScoped<IRequestHandler<UpdatePropertyCommand, bool>, PropertyCommandHandler>();
             services.AddScoped<IRequestHandler<RemovePropertyCommand, bool>, PropertyCommandHandler>();
+
+            // Autorizacao
+            services.AddScoped<IRequestHandler<ValidarCodigoConviteCommand, bool>, AutorizacaoCommandHandler>();
 
             // Infra - Data
             services.AddScoped<IPropertyRepository, PropertyRepository>();
