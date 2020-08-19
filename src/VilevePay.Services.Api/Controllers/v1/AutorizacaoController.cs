@@ -46,9 +46,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpGet("convites/{codigoConvite}/tokens/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult ValidarCodigoToken(string codigoConvite, [FromHeader] string codigoToken)
+        public IActionResult ValidarCodigoToken(string codigoConvite, [FromHeader] string numeroCelular, [FromHeader] string codigoToken)
         {
-            _autorizacaoAppService.ValidarCodigoToken(codigoConvite, codigoToken);
+            _autorizacaoAppService.ValidarCodigoToken(codigoConvite, numeroCelular, codigoToken);
 
             if (IsValidOperation())
             {

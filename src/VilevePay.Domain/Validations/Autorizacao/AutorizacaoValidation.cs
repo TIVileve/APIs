@@ -12,6 +12,13 @@ namespace VilevePay.Domain.Validations.Autorizacao
                 .Length(4).WithMessage("O campo código do convite deve ter 4 caracteres.");
         }
 
+        protected void ValidateNumeroCelular()
+        {
+            RuleFor(a => a.NumeroCelular)
+                .NotEmpty().WithMessage("O campo número de celular é obrigatório.")
+                .Length(13, 14).WithMessage("O campo número de celular deve ter entre 13 e 14 caracteres.");
+        }
+
         protected void ValidateCodigoToken()
         {
             RuleFor(a => a.CodigoToken)

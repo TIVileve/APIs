@@ -30,9 +30,9 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(validarCodigoConviteCommand);
         }
 
-        public void ValidarCodigoToken(string codigoConvite, string codigoToken)
+        public void ValidarCodigoToken(string codigoConvite, string numeroCelular, string codigoToken)
         {
-            var validarCodigoTokenCommand = new ValidarCodigoTokenCommand(codigoConvite, codigoToken);
+            var validarCodigoTokenCommand = new ValidarCodigoTokenCommand(codigoConvite, numeroCelular, codigoToken);
             _bus.SendCommand(validarCodigoTokenCommand);
         }
 

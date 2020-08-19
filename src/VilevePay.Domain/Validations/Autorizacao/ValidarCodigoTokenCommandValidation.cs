@@ -7,6 +7,7 @@ namespace VilevePay.Domain.Validations.Autorizacao
         public ValidarCodigoTokenCommandValidation()
         {
             ValidateCodigoConvite();
+            ValidateNumeroCelular();
             ValidateCodigoToken();
         }
     }
