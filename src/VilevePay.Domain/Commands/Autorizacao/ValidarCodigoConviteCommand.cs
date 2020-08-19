@@ -3,16 +3,16 @@ using VilevePay.Domain.Validations.Autorizacao;
 
 namespace VilevePay.Domain.Commands.Autorizacao
 {
-    public class ValidarConviteCommand : AutorizacaoCommand, IRequest<bool>
+    public class ValidarCodigoConviteCommand : AutorizacaoCommand, IRequest<bool>
     {
-        public ValidarConviteCommand(string codigoConvite)
+        public ValidarCodigoConviteCommand(string codigoConvite)
         {
             CodigoConvite = codigoConvite;
         }
 
         public override bool IsValid()
         {
-            ValidationResult = new ValidarConviteCommandValidation().Validate(this);
+            ValidationResult = new ValidarCodigoConviteCommandValidation().Validate(this);
             return ValidationResult.IsValid;
         }
     }

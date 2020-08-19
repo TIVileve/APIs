@@ -1,0 +1,9 @@
+﻿using System;
+
+namespace VilevePay.Application.Interfaces
+{
+    public interface IAutorizacaoAppService : IDisposable
+    {
+        void ValidarCodigoConvite(string codigoConvite);
+    }
+}

@@ -2,9 +2,9 @@
 
 namespace VilevePay.Domain.Validations.Autorizacao
 {
-    public class ValidarConviteCommandValidation : AutorizacaoValidation<ValidarConviteCommand>
+    public class ValidarCodigoConviteCommandValidation : AutorizacaoValidation<ValidarCodigoConviteCommand>
     {
-        public ValidarConviteCommandValidation()
+        public ValidarCodigoConviteCommandValidation()
         {
             ValidateCodigoConvite();
         }
