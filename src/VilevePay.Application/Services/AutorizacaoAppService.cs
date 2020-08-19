@@ -36,6 +36,12 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(validarCodigoTokenCommand);
         }
 
+        public void ValidarEmail(string codigoConvite, string email)
+        {
+            var validarEmailCommand = new ValidarEmailCommand(codigoConvite, email);
+            _bus.SendCommand(validarEmailCommand);
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

@@ -6,5 +6,6 @@ namespace VilevePay.Application.Interfaces
     {
         void ValidarCodigoConvite(string codigoConvite);
         void ValidarCodigoToken(string codigoConvite, string codigoToken);
+        void ValidarEmail(string codigoConvite, string email);
     }
 }

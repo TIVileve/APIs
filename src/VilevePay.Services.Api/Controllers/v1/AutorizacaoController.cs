@@ -43,12 +43,27 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
-        [HttpGet("convites/{codigoConvite}/tokens/{codigoToken}/validar")]
+        [HttpGet("convites/{codigoConvite}/tokens/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult ValidarCodigoToken(string codigoConvite, string codigoToken)
+        public IActionResult ValidarCodigoToken(string codigoConvite, [FromHeader] string codigoToken)
         {
             _autorizacaoAppService.ValidarCodigoToken(codigoConvite, codigoToken);
+
+            if (IsValidOperation())
+            {
+                return NoContent();
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
+        [HttpGet("convites/{codigoConvite}/e-mails/validar")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult ValidarEmail(string codigoConvite, [FromHeader] string email)
+        {
+            _autorizacaoAppService.ValidarEmail(codigoConvite, email);
 
             if (IsValidOperation())
             {

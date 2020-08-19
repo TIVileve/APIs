@@ -18,5 +18,12 @@ namespace VilevePay.Domain.Validations.Autorizacao
                 .NotEmpty().WithMessage("O campo código do token é obrigatório.")
                 .Length(4).WithMessage("O campo código do token deve ter 4 caracteres.");
         }
+
+        protected void ValidateEmail()
+        {
+            RuleFor(a => a.Email)
+                .NotEmpty().WithMessage("O campo e-mail é obrigatório.")
+                .EmailAddress().WithMessage("O campo e-mail está inválido.");
+        }
     }
 }
