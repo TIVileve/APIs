@@ -17,10 +17,10 @@ namespace VilevePay.Services.Api.Configurations
             {
                 s.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Version = "v1",
-                    Title = "VilevePay Project",
-                    Description = "VilevePay API Swagger surface",
-                    Contact = new OpenApiContact { Name = "Marcelo Camargos da Silva Júnior", Email = "marcelocamargosjr@gmail.com", Url = new Uri("http://www.marcelocamargos.com.br") }
+                    Version = $"v1 - {DateTime.Now}",
+                    Title = "Vileve Pay",
+                    Description = "Vileve Pay API Swagger surface",
+                    Contact = new OpenApiContact { Name = "Vileve Pay", Email = "suporte@vilevepay.com.br", Url = new Uri("https://vilevepay.com.br") }
                 });
 
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
