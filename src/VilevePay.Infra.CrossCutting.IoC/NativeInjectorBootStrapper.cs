@@ -54,6 +54,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
 
             // Autorizacao
             services.AddScoped<IRequestHandler<ValidarCodigoConviteCommand, bool>, AutorizacaoCommandHandler>();
+            services.AddScoped<IRequestHandler<ValidarCodigoTokenCommand, bool>, AutorizacaoCommandHandler>();
 
             // Infra - Data
             services.AddScoped<IPropertyRepository, PropertyRepository>();

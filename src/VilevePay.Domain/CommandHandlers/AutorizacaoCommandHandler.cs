@@ -9,7 +9,8 @@ using VilevePay.Domain.Interfaces;
 namespace VilevePay.Domain.CommandHandlers
 {
     public class AutorizacaoCommandHandler : CommandHandler,
-        IRequestHandler<ValidarCodigoConviteCommand, bool>
+        IRequestHandler<ValidarCodigoConviteCommand, bool>,
+        IRequestHandler<ValidarCodigoTokenCommand, bool>
     {
         public AutorizacaoCommandHandler(
             IUnitOfWork uow,
@@ -20,6 +21,17 @@ namespace VilevePay.Domain.CommandHandlers
         }
 
         public Task<bool> Handle(ValidarCodigoConviteCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> Handle(ValidarCodigoTokenCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
