@@ -58,7 +58,7 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
-        [HttpPost("convites/{codigoConvite}/tokens/sms-token")]
+        [HttpPost("convites/{codigoConvite}/tokens/sms")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public IActionResult EnviarSmsToken(string codigoConvite, [FromHeader] string numeroCelular)
