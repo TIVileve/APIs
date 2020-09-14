@@ -37,6 +37,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
             // Application
             services.AddScoped<IPropertyAppService, PropertyAppService>();
             services.AddScoped<IAutorizacaoAppService, AutorizacaoAppService>();
+            services.AddScoped<IClienteAppService, ClienteAppService>();
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
