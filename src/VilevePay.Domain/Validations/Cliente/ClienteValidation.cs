@@ -80,5 +80,11 @@ namespace VilevePay.Domain.Validations.Cliente
                 .NotEmpty().WithMessage("O campo estado é obrigatório.")
                 .Length(2, 100).WithMessage("O campo estado deve ter entre 2 e 100 caracteres.");
         }
+
+        protected void ValidateComprovanteEnderecoBase64()
+        {
+            RuleFor(c => c.ComprovanteEnderecoBase64)
+                .NotEmpty().WithMessage("O campo comprovante de endereço base64 é obrigatório.");
+        }
     }
 }
