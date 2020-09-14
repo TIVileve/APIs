@@ -7,5 +7,6 @@ namespace VilevePay.Domain.Commands.Cliente
         public string CodigoConvite { get; protected set; }
         public string Cpf { get; protected set; }
         public string Cnpj { get; protected set; }
+        public string ComprovanteBase64 { get; protected set; }
     }
 }

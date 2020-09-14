@@ -25,5 +25,11 @@ namespace VilevePay.Domain.Validations.Cliente
                 .NotEmpty().WithMessage("O campo CNPJ é obrigatório.")
                 .IsValidCNPJ().WithMessage("O campo CNPJ está inválido.");
         }
+
+        protected void ValidateComprovanteBase64()
+        {
+            RuleFor(c => c.ComprovanteBase64)
+                .NotEmpty().WithMessage("O campo comprovante base64 é obrigatório.");
+        }
     }
 }
