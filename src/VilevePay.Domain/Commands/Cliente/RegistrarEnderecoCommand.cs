@@ -5,8 +5,7 @@ namespace VilevePay.Domain.Commands.Cliente
 {
     public class RegistrarEnderecoCommand : ClienteCommand, IRequest<bool>
     {
-        public RegistrarEnderecoCommand(string codigoConvite, string cep, string logradouro, int numero, string complemento,
-            string bairro, string cidade, string estado)
+        public RegistrarEnderecoCommand(string codigoConvite, string cep, string logradouro, int numero, string complemento, string bairro, string cidade, string estado)
         {
             CodigoConvite = codigoConvite;
             Cep = cep;
