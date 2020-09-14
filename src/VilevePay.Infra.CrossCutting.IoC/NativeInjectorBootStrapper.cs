@@ -5,6 +5,7 @@ using VilevePay.Application.Interfaces;
 using VilevePay.Application.Services;
 using VilevePay.Domain.CommandHandlers;
 using VilevePay.Domain.Commands.Autorizacao;
+using VilevePay.Domain.Commands.Cliente;
 using VilevePay.Domain.Commands.Property;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Events;
@@ -58,6 +59,14 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<ValidarEmailCommand, bool>, AutorizacaoCommandHandler>();
             services.AddScoped<IRequestHandler<EnviarSmsTokenCommand, bool>, AutorizacaoCommandHandler>();
             services.AddScoped<IRequestHandler<EnviarVerificadorEmailCommand, bool>, AutorizacaoCommandHandler>();
+
+            // Cliente
+            services.AddScoped<IRequestHandler<ValidarPessoaFisicaCommand, bool>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarComprovantePessoaFisicaCommand, bool>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<ValidarPessoaJuridicaCommand, bool>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarComprovantePessoaJuridicaCommand, bool>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarEnderecoCommand, bool>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarComprovanteEnderecoCommand, bool>, ClienteCommandHandler>();
 
             // Infra - Data
             services.AddScoped<IPropertyRepository, PropertyRepository>();
