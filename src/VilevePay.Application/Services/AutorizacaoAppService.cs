@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using VilevePay.Application.Interfaces;
@@ -22,6 +23,14 @@ namespace VilevePay.Application.Services
             _mapper = mapper;
             _bus = bus;
             _notifications = (DomainNotificationHandler)notifications;
+        }
+
+        public async Task<object> Login(string usuario, string senha)
+        {
+            var loginCommand = new LoginCommand(usuario, senha);
+            var loginResponse = await _bus.SendCommand(loginCommand);
+
+            return _notifications.HasNotifications() ? loginResponse : new { };
         }
 
         public void ValidarCodigoConvite(string codigoConvite)

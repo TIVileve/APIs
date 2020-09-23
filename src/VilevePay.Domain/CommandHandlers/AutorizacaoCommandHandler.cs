@@ -9,6 +9,7 @@ using VilevePay.Domain.Interfaces;
 namespace VilevePay.Domain.CommandHandlers
 {
     public class AutorizacaoCommandHandler : CommandHandler,
+        IRequestHandler<LoginCommand, object>,
         IRequestHandler<ValidarCodigoConviteCommand, bool>,
         IRequestHandler<ValidarSmsCommand, bool>,
         IRequestHandler<ValidarEmailCommand, bool>,
@@ -21,6 +22,17 @@ namespace VilevePay.Domain.CommandHandlers
             INotificationHandler<DomainNotification> notifications)
             : base(uow, bus, notifications)
         {
+        }
+
+        public async Task<object> Handle(LoginCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
 
         public Task<bool> Handle(ValidarCodigoConviteCommand message, CancellationToken cancellationToken)

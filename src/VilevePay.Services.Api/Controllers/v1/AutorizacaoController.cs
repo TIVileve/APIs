@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VilevePay.Application.Interfaces;
@@ -26,6 +27,21 @@ namespace VilevePay.Services.Api.Controllers.v1
         {
             _autorizacaoAppService = autorizacaoAppService;
             _notifications = (DomainNotificationHandler)notifications;
+        }
+
+        [HttpGet("login")]
+        [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Login([FromHeader] string usuario, [FromHeader] string senha)
+        {
+            var response = await _autorizacaoAppService.Login(usuario, senha);
+
+            if (IsValidOperation())
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
         [HttpGet("convites/{codigoConvite}/validar")]
