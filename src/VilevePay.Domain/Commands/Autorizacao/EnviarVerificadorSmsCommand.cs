@@ -3,18 +3,17 @@ using VilevePay.Domain.Validations.Autorizacao;
 
 namespace VilevePay.Domain.Commands.Autorizacao
 {
-    public class ValidarCodigoTokenCommand : AutorizacaoCommand, IRequest<bool>
+    public class EnviarVerificadorSmsCommand : AutorizacaoCommand, IRequest<bool>
     {
-        public ValidarCodigoTokenCommand(string codigoConvite, string numeroCelular, string codigoToken)
+        public EnviarVerificadorSmsCommand(string codigoConvite, string numeroCelular)
         {
             CodigoConvite = codigoConvite;
             NumeroCelular = numeroCelular;
-            CodigoToken = codigoToken;
         }
 
         public override bool IsValid()
         {
-            ValidationResult = new ValidarCodigoTokenCommandValidation().Validate(this);
+            ValidationResult = new EnviarVerificadorSmsCommandValidation().Validate(this);
             return ValidationResult.IsValid;
         }
     }

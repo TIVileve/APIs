@@ -30,10 +30,10 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(validarCodigoConviteCommand);
         }
 
-        public void ValidarCodigoToken(string codigoConvite, string numeroCelular, string codigoToken)
+        public void ValidarSms(string codigoConvite, string numeroCelular, string codigoToken)
         {
-            var validarCodigoTokenCommand = new ValidarCodigoTokenCommand(codigoConvite, numeroCelular, codigoToken);
-            _bus.SendCommand(validarCodigoTokenCommand);
+            var validarSmsCommand = new ValidarSmsCommand(codigoConvite, numeroCelular, codigoToken);
+            _bus.SendCommand(validarSmsCommand);
         }
 
         public void ValidarEmail(string codigoConvite, string email, string codigoToken)
@@ -42,10 +42,10 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(validarEmailCommand);
         }
 
-        public void EnviarSmsToken(string codigoConvite, string numeroCelular)
+        public void EnviarVerificadorSms(string codigoConvite, string numeroCelular)
         {
-            var enviarSmsTokenCommand = new EnviarSmsTokenCommand(codigoConvite, numeroCelular);
-            _bus.SendCommand(enviarSmsTokenCommand);
+            var enviarVerificadorSmsCommand = new EnviarVerificadorSmsCommand(codigoConvite, numeroCelular);
+            _bus.SendCommand(enviarVerificadorSmsCommand);
         }
 
         public void EnviarVerificadorEmail(string codigoConvite, string email)
