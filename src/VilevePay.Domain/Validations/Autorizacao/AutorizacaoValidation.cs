@@ -21,7 +21,7 @@ namespace VilevePay.Domain.Validations.Autorizacao
         {
             RuleFor(a => a.CodigoConvite)
                 .NotEmpty().WithMessage("O campo código do convite é obrigatório.")
-                .Length(4).WithMessage("O campo código do convite deve ter 4 caracteres.");
+                .Length(6).WithMessage("O campo código do convite deve ter 6 caracteres.");
         }
 
         protected void ValidateNumeroCelular()

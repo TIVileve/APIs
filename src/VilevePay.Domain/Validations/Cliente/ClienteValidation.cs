@@ -9,7 +9,7 @@ namespace VilevePay.Domain.Validations.Cliente
         {
             RuleFor(c => c.CodigoConvite)
                 .NotEmpty().WithMessage("O campo código do convite é obrigatório.")
-                .Length(4).WithMessage("O campo código do convite deve ter 4 caracteres.");
+                .Length(6).WithMessage("O campo código do convite deve ter 6 caracteres.");
         }
 
         protected void ValidateCpf()
