@@ -76,9 +76,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpGet("convites/{codigoConvite}/e-mails/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult ValidarEmail(string codigoConvite, [FromHeader] string email)
+        public IActionResult ValidarEmail(string codigoConvite, [FromHeader] string email, [FromHeader] string codigoToken)
         {
-            _autorizacaoAppService.ValidarEmail(codigoConvite, email);
+            _autorizacaoAppService.ValidarEmail(codigoConvite, email, codigoToken);
 
             if (IsValidOperation())
             {

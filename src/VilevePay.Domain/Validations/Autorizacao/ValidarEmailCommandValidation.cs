@@ -8,6 +8,7 @@ namespace VilevePay.Domain.Validations.Autorizacao
         {
             ValidateCodigoConvite();
             ValidateEmail();
+            ValidateCodigoToken();
         }
     }
 }
