@@ -6,7 +6,7 @@ namespace VilevePay.Domain.Validations.Autorizacao
     {
         public LoginCommandValidation()
         {
-            ValidateUsuario();
+            ValidateEmail();
             ValidateSenha();
         }
     }

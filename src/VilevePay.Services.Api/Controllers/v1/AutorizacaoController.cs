@@ -32,9 +32,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpGet("login")]
         [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Login([FromHeader] string usuario, [FromHeader] string senha)
+        public async Task<IActionResult> Login([FromHeader] string email, [FromHeader] string senha)
         {
-            var response = await _autorizacaoAppService.Login(usuario, senha);
+            var response = await _autorizacaoAppService.Login(email, senha);
 
             if (IsValidOperation())
             {

@@ -5,18 +5,6 @@ namespace VilevePay.Domain.Validations.Autorizacao
 {
     public abstract class AutorizacaoValidation<T> : AbstractValidator<T> where T : AutorizacaoCommand
     {
-        protected void ValidateUsuario()
-        {
-            RuleFor(a => a.Usuario)
-                .NotEmpty().WithMessage("O campo usuário é obrigatório.");
-        }
-
-        protected void ValidateSenha()
-        {
-            RuleFor(a => a.Senha)
-                .NotEmpty().WithMessage("O campo senha é obrigatório.");
-        }
-
         protected void ValidateCodigoConvite()
         {
             RuleFor(a => a.CodigoConvite)
@@ -43,6 +31,12 @@ namespace VilevePay.Domain.Validations.Autorizacao
             RuleFor(a => a.Email)
                 .NotEmpty().WithMessage("O campo e-mail é obrigatório.")
                 .EmailAddress().WithMessage("O campo e-mail está inválido.");
+        }
+
+        protected void ValidateSenha()
+        {
+            RuleFor(a => a.Senha)
+                .NotEmpty().WithMessage("O campo senha é obrigatório.");
         }
     }
 }

@@ -5,9 +5,9 @@ namespace VilevePay.Domain.Commands.Autorizacao
 {
     public class LoginCommand : AutorizacaoCommand, IRequest<object>
     {
-        public LoginCommand(string usuario, string senha)
+        public LoginCommand(string email, string senha)
         {
-            Usuario = usuario;
+            Email = email;
             Senha = senha;
         }
 

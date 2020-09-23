@@ -25,9 +25,9 @@ namespace VilevePay.Application.Services
             _notifications = (DomainNotificationHandler)notifications;
         }
 
-        public async Task<object> Login(string usuario, string senha)
+        public async Task<object> Login(string email, string senha)
         {
-            var loginCommand = new LoginCommand(usuario, senha);
+            var loginCommand = new LoginCommand(email, senha);
             var loginResponse = await _bus.SendCommand(loginCommand);
 
             return _notifications.HasNotifications() ? loginResponse : new { };
