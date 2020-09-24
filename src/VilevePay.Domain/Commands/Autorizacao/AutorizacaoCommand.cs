@@ -9,5 +9,6 @@ namespace VilevePay.Domain.Commands.Autorizacao
         public string CodigoToken { get; protected set; }
         public string Email { get; protected set; }
         public string Senha { get; protected set; }
+        public string ConfirmarSenha { get; protected set; }
     }
 }

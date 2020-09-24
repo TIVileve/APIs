@@ -56,6 +56,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
 
             // Autorizacao
             services.AddScoped<IRequestHandler<LoginCommand, object>, AutorizacaoCommandHandler>();
+            services.AddScoped<IRequestHandler<CadastrarSenhaCommand, bool>, AutorizacaoCommandHandler>();
             services.AddScoped<IRequestHandler<ValidarCodigoConviteCommand, bool>, AutorizacaoCommandHandler>();
             services.AddScoped<IRequestHandler<ValidarSmsCommand, bool>, AutorizacaoCommandHandler>();
             services.AddScoped<IRequestHandler<ValidarEmailCommand, bool>, AutorizacaoCommandHandler>();

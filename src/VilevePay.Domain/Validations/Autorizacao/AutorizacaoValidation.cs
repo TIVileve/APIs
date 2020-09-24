@@ -38,5 +38,11 @@ namespace VilevePay.Domain.Validations.Autorizacao
             RuleFor(a => a.Senha)
                 .NotEmpty().WithMessage("O campo senha é obrigatório.");
         }
+
+        protected void ValidateConfirmarSenha()
+        {
+            RuleFor(a => a.ConfirmarSenha)
+                .Equal(a => a.Senha).WithMessage("As senhas devem corresponder.");
+        }
     }
 }

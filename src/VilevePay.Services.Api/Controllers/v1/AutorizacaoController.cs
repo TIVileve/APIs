@@ -44,6 +44,21 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
+        [HttpPost("convites/{codigoConvite}/senhas")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult CadastrarSenha(string codigoConvite, string email, string senha, string confirmarSenha)
+        {
+            _autorizacaoAppService.CadastrarSenha(codigoConvite, email, senha, confirmarSenha);
+
+            if (IsValidOperation())
+            {
+                return NoContent();
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
         [HttpGet("convites/{codigoConvite}/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]

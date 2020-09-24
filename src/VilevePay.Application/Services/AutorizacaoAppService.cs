@@ -33,6 +33,12 @@ namespace VilevePay.Application.Services
             return _notifications.HasNotifications() ? loginResponse : new { };
         }
 
+        public void CadastrarSenha(string codigoConvite, string email, string senha, string confirmarSenha)
+        {
+            var cadastrarSenhaCommand = new CadastrarSenhaCommand(codigoConvite, email, senha, confirmarSenha);
+            _bus.SendCommand(cadastrarSenhaCommand);
+        }
+
         public void ValidarCodigoConvite(string codigoConvite)
         {
             var validarCodigoConviteCommand = new ValidarCodigoConviteCommand(codigoConvite);
