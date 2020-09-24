@@ -33,7 +33,7 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpGet("{cep}")]
         [ProducesResponseType(typeof(EnderecoViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Login(string cep)
+        public async Task<IActionResult> ObterEndereco(string cep)
         {
             var response = await _enderecoAppService.ObterEndereco(cep);
 
