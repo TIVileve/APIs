@@ -74,12 +74,12 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
-        [HttpGet("convites/{codigoConvite}/sms/validar")]
+        [HttpGet("convites/{codigoConvite}/sms/token/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult ValidarSms(string codigoConvite, [FromHeader] string numeroCelular, [FromHeader] string codigoToken)
+        public IActionResult ValidarTokenSms(string codigoConvite, [FromHeader] string numeroCelular, [FromHeader] string codigoToken)
         {
-            _autorizacaoAppService.ValidarSms(codigoConvite, numeroCelular, codigoToken);
+            _autorizacaoAppService.ValidarTokenSms(codigoConvite, numeroCelular, codigoToken);
 
             if (IsValidOperation())
             {
@@ -104,12 +104,12 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
-        [HttpGet("convites/{codigoConvite}/e-mails/validar")]
+        [HttpGet("convites/{codigoConvite}/e-mails/token/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult ValidarEmail(string codigoConvite, [FromHeader] string email, [FromHeader] string codigoToken)
+        public IActionResult ValidarTokenEmail(string codigoConvite, [FromHeader] string email, [FromHeader] string codigoToken)
         {
-            _autorizacaoAppService.ValidarEmail(codigoConvite, email, codigoToken);
+            _autorizacaoAppService.ValidarTokenEmail(codigoConvite, email, codigoToken);
 
             if (IsValidOperation())
             {

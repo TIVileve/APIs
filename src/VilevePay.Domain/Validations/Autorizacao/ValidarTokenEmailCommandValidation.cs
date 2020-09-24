@@ -2,12 +2,12 @@
 
 namespace VilevePay.Domain.Validations.Autorizacao
 {
-    public class ValidarSmsCommandValidation : AutorizacaoValidation<ValidarSmsCommand>
+    public class ValidarTokenEmailCommandValidation : AutorizacaoValidation<ValidarTokenEmailCommand>
     {
-        public ValidarSmsCommandValidation()
+        public ValidarTokenEmailCommandValidation()
         {
             ValidateCodigoConvite();
-            ValidateNumeroCelular();
+            ValidateEmail();
             ValidateCodigoToken();
         }
     }

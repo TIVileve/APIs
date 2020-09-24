@@ -45,16 +45,16 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(validarCodigoConviteCommand);
         }
 
-        public void ValidarSms(string codigoConvite, string numeroCelular, string codigoToken)
+        public void ValidarTokenSms(string codigoConvite, string numeroCelular, string codigoToken)
         {
-            var validarSmsCommand = new ValidarSmsCommand(codigoConvite, numeroCelular, codigoToken);
-            _bus.SendCommand(validarSmsCommand);
+            var validarTokenSmsCommand = new ValidarTokenSmsCommand(codigoConvite, numeroCelular, codigoToken);
+            _bus.SendCommand(validarTokenSmsCommand);
         }
 
-        public void ValidarEmail(string codigoConvite, string email, string codigoToken)
+        public void ValidarTokenEmail(string codigoConvite, string email, string codigoToken)
         {
-            var validarEmailCommand = new ValidarEmailCommand(codigoConvite, email, codigoToken);
-            _bus.SendCommand(validarEmailCommand);
+            var validarTokenEmailCommand = new ValidarTokenEmailCommand(codigoConvite, email, codigoToken);
+            _bus.SendCommand(validarTokenEmailCommand);
         }
 
         public void EnviarTokenSms(string codigoConvite, string numeroCelular)
