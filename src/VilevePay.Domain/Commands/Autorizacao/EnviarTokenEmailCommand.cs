@@ -3,9 +3,9 @@ using VilevePay.Domain.Validations.Autorizacao;
 
 namespace VilevePay.Domain.Commands.Autorizacao
 {
-    public class EnviarVerificadorEmailCommand : AutorizacaoCommand, IRequest<bool>
+    public class EnviarTokenEmailCommand : AutorizacaoCommand, IRequest<bool>
     {
-        public EnviarVerificadorEmailCommand(string codigoConvite, string email)
+        public EnviarTokenEmailCommand(string codigoConvite, string email)
         {
             CodigoConvite = codigoConvite;
             Email = email;
@@ -13,7 +13,7 @@ namespace VilevePay.Domain.Commands.Autorizacao
 
         public override bool IsValid()
         {
-            ValidationResult = new EnviarVerificadorEmailCommandValidation().Validate(this);
+            ValidationResult = new EnviarTokenEmailCommandValidation().Validate(this);
             return ValidationResult.IsValid;
         }
     }

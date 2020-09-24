@@ -2,9 +2,9 @@
 
 namespace VilevePay.Domain.Validations.Autorizacao
 {
-    public class EnviarVerificadorEmailCommandValidation : AutorizacaoValidation<EnviarVerificadorEmailCommand>
+    public class EnviarTokenEmailCommandValidation : AutorizacaoValidation<EnviarTokenEmailCommand>
     {
-        public EnviarVerificadorEmailCommandValidation()
+        public EnviarTokenEmailCommandValidation()
         {
             ValidateCodigoConvite();
             ValidateEmail();

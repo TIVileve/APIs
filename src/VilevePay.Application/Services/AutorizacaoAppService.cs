@@ -57,16 +57,16 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(validarEmailCommand);
         }
 
-        public void EnviarVerificadorSms(string codigoConvite, string numeroCelular)
+        public void EnviarTokenSms(string codigoConvite, string numeroCelular)
         {
-            var enviarVerificadorSmsCommand = new EnviarVerificadorSmsCommand(codigoConvite, numeroCelular);
-            _bus.SendCommand(enviarVerificadorSmsCommand);
+            var enviarTokenSmsCommand = new EnviarTokenSmsCommand(codigoConvite, numeroCelular);
+            _bus.SendCommand(enviarTokenSmsCommand);
         }
 
-        public void EnviarVerificadorEmail(string codigoConvite, string email)
+        public void EnviarTokenEmail(string codigoConvite, string email)
         {
-            var enviarVerificadorEmailCommand = new EnviarVerificadorEmailCommand(codigoConvite, email);
-            _bus.SendCommand(enviarVerificadorEmailCommand);
+            var enviarTokenEmailCommand = new EnviarTokenEmailCommand(codigoConvite, email);
+            _bus.SendCommand(enviarTokenEmailCommand);
         }
 
         public void Dispose()

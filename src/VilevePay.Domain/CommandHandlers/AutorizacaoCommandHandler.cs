@@ -14,8 +14,8 @@ namespace VilevePay.Domain.CommandHandlers
         IRequestHandler<ValidarCodigoConviteCommand, bool>,
         IRequestHandler<ValidarSmsCommand, bool>,
         IRequestHandler<ValidarEmailCommand, bool>,
-        IRequestHandler<EnviarVerificadorSmsCommand, bool>,
-        IRequestHandler<EnviarVerificadorEmailCommand, bool>
+        IRequestHandler<EnviarTokenSmsCommand, bool>,
+        IRequestHandler<EnviarTokenEmailCommand, bool>
     {
         public AutorizacaoCommandHandler(
             IUnitOfWork uow,
@@ -80,7 +80,7 @@ namespace VilevePay.Domain.CommandHandlers
             return Task.FromResult(true);
         }
 
-        public Task<bool> Handle(EnviarVerificadorSmsCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(EnviarTokenSmsCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
@@ -91,7 +91,7 @@ namespace VilevePay.Domain.CommandHandlers
             return Task.FromResult(true);
         }
 
-        public Task<bool> Handle(EnviarVerificadorEmailCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(EnviarTokenEmailCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
