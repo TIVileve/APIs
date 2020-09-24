@@ -50,6 +50,8 @@ namespace VilevePay.Services.Api.Configurations
                     }
                 });
             });
+
+            services.AddSwaggerGenNewtonsoftSupport();
         }
 
         public static void UseSwaggerSetup(this IApplicationBuilder app)
