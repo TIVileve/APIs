@@ -5,6 +5,7 @@ using VilevePay.Application.Interfaces;
 using VilevePay.Application.Services;
 using VilevePay.Domain.CommandHandlers;
 using VilevePay.Domain.Commands.Autorizacao;
+using VilevePay.Domain.Commands.Endereco;
 using VilevePay.Domain.Commands.Property;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Events;
@@ -36,6 +37,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
             // Application
             services.AddScoped<IPropertyAppService, PropertyAppService>();
             services.AddScoped<IAutorizacaoAppService, AutorizacaoAppService>();
+            services.AddScoped<IEnderecoAppService, EnderecoAppService>();
             services.AddScoped<IConsultorAppService, ConsultorAppService>();
 
             // Domain - Events
@@ -61,6 +63,9 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<ValidarTokenEmailCommand, bool>, AutorizacaoCommandHandler>();
             services.AddScoped<IRequestHandler<EnviarTokenSmsCommand, bool>, AutorizacaoCommandHandler>();
             services.AddScoped<IRequestHandler<EnviarTokenEmailCommand, bool>, AutorizacaoCommandHandler>();
+
+            // Endereco
+            services.AddScoped<IRequestHandler<ObterEnderecoCommand, object>, EnderecoCommandHandler>();
 
             // Consultor
 

@@ -1,6 +1,6 @@
-﻿namespace VilevePay.Application.ViewModels.v1.Consultor
+﻿namespace VilevePay.Application.ViewModels.v1.Endereco
 {
-    public class RegistrarEnderecoViewModel
+    public class EnderecoViewModel
     {
         public string Cep { get; set; }
         public string Logradouro { get; set; }
