@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VilevePay.Application.Interfaces;
+using VilevePay.Application.ViewModels.v1.Autorizacao;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
 
@@ -30,7 +31,7 @@ namespace VilevePay.Services.Api.Controllers.v1
         }
 
         [HttpGet("login")]
-        [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(TokenViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Login([FromHeader] string email, [FromHeader] string senha)
         {

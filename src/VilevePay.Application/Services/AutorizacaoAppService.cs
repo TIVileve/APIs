@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using VilevePay.Application.Interfaces;
+using VilevePay.Application.ViewModels.v1.Autorizacao;
 using VilevePay.Domain.Commands.Autorizacao;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
@@ -30,7 +31,14 @@ namespace VilevePay.Application.Services
             var loginCommand = new LoginCommand(email, senha);
             var loginResponse = await _bus.SendCommand(loginCommand);
 
-            return _notifications.HasNotifications() ? loginResponse : new { };
+            return _notifications.HasNotifications()
+                ? loginResponse
+                : new TokenViewModel
+                {
+                    AccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+                    TokenType = "bearer",
+                    ExpiresIn = DateTime.UtcNow.AddHours(1)
+                };
         }
 
         public void CadastrarSenha(string codigoConvite, string email, string senha, string confirmarSenha)
