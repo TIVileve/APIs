@@ -5,7 +5,6 @@ using VilevePay.Application.Interfaces;
 using VilevePay.Application.Services;
 using VilevePay.Domain.CommandHandlers;
 using VilevePay.Domain.Commands.Autorizacao;
-using VilevePay.Domain.Commands.Cliente;
 using VilevePay.Domain.Commands.Property;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Events;
@@ -37,7 +36,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
             // Application
             services.AddScoped<IPropertyAppService, PropertyAppService>();
             services.AddScoped<IAutorizacaoAppService, AutorizacaoAppService>();
-            services.AddScoped<IClienteAppService, ClienteAppService>();
+            services.AddScoped<IConsultorAppService, ConsultorAppService>();
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
@@ -63,13 +62,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<EnviarTokenSmsCommand, bool>, AutorizacaoCommandHandler>();
             services.AddScoped<IRequestHandler<EnviarTokenEmailCommand, bool>, AutorizacaoCommandHandler>();
 
-            // Cliente
-            services.AddScoped<IRequestHandler<ValidarPessoaFisicaCommand, bool>, ClienteCommandHandler>();
-            services.AddScoped<IRequestHandler<RegistrarComprovantePessoaFisicaCommand, bool>, ClienteCommandHandler>();
-            services.AddScoped<IRequestHandler<ValidarPessoaJuridicaCommand, bool>, ClienteCommandHandler>();
-            services.AddScoped<IRequestHandler<RegistrarComprovantePessoaJuridicaCommand, bool>, ClienteCommandHandler>();
-            services.AddScoped<IRequestHandler<RegistrarEnderecoCommand, bool>, ClienteCommandHandler>();
-            services.AddScoped<IRequestHandler<RegistrarComprovanteEnderecoCommand, bool>, ClienteCommandHandler>();
+            // Consultor
 
             // Infra - Data
             services.AddScoped<IPropertyRepository, PropertyRepository>();

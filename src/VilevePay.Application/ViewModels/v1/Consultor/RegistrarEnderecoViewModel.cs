@@ -1,4 +1,4 @@
-﻿namespace VilevePay.Application.ViewModels.v1.Cliente
+﻿namespace VilevePay.Application.ViewModels.v1.Consultor
 {
     public class RegistrarEnderecoViewModel
     {
