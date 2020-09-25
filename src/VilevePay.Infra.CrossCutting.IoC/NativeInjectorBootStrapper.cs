@@ -6,6 +6,7 @@ using VilevePay.Application.Services;
 using VilevePay.Domain.CommandHandlers;
 using VilevePay.Domain.Commands.Autorizacao;
 using VilevePay.Domain.Commands.Endereco;
+using VilevePay.Domain.Commands.Parametrizacao;
 using VilevePay.Domain.Commands.Property;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Events;
@@ -38,6 +39,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IPropertyAppService, PropertyAppService>();
             services.AddScoped<IAutorizacaoAppService, AutorizacaoAppService>();
             services.AddScoped<IEnderecoAppService, EnderecoAppService>();
+            services.AddScoped<IParametrizacaoAppService, ParametrizacaoAppService>();
             services.AddScoped<IConsultorAppService, ConsultorAppService>();
 
             // Domain - Events
@@ -66,6 +68,16 @@ namespace VilevePay.Infra.CrossCutting.IoC
 
             // Endereco
             services.AddScoped<IRequestHandler<ObterEnderecoCommand, object>, EnderecoCommandHandler>();
+
+            // Parametrizacao
+            services.AddScoped<IRequestHandler<ObterEstadoCivilCommand, object>, ParametrizacaoCommandHandler>();
+            services.AddScoped<IRequestHandler<ObterNacionalidadeCommand, object>, ParametrizacaoCommandHandler>();
+            services.AddScoped<IRequestHandler<ObterPerfilUsuarioCommand, object>, ParametrizacaoCommandHandler>();
+            services.AddScoped<IRequestHandler<ObterTipoTelefoneCommand, object>, ParametrizacaoCommandHandler>();
+            services.AddScoped<IRequestHandler<ObterTipoEmailCommand, object>, ParametrizacaoCommandHandler>();
+            services.AddScoped<IRequestHandler<ObterTipoEnderecoCommand, object>, ParametrizacaoCommandHandler>();
+            services.AddScoped<IRequestHandler<ObterBancoCommand, object>, ParametrizacaoCommandHandler>();
+            services.AddScoped<IRequestHandler<ObterOperacaoBancariaCommand, object>, ParametrizacaoCommandHandler>();
 
             // Consultor
 
