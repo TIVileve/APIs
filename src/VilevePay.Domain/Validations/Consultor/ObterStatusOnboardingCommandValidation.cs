@@ -2,9 +2,9 @@
 
 namespace VilevePay.Domain.Validations.Consultor
 {
-    public class ObterOnboardingStatusCommandValidation : ConsultorValidation<ObterOnboardingStatusCommand>
+    public class ObterStatusOnboardingCommandValidation : ConsultorValidation<ObterStatusOnboardingCommand>
     {
-        public ObterOnboardingStatusCommandValidation()
+        public ObterStatusOnboardingCommandValidation()
         {
             ValidateCodigoConvite();
         }
