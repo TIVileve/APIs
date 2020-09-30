@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using VilevePay.Application.Interfaces;
+using VilevePay.Application.ViewModels.v1.Consultor;
 using VilevePay.Domain.Commands.Consultor;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
@@ -32,9 +33,7 @@ namespace VilevePay.Application.Services
 
             return _notifications.HasNotifications()
                 ? obterStatusOnboardingResponse
-                : new
-                {
-                };
+                : StatusOnboardingViewModel.ComprovanteEndereco;
         }
 
         public void Dispose()
