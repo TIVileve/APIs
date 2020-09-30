@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using VilevePay.Application.Interfaces;
+using VilevePay.Domain.Commands.Consultor;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
 
@@ -21,6 +23,18 @@ namespace VilevePay.Application.Services
             _mapper = mapper;
             _bus = bus;
             _notifications = (DomainNotificationHandler)notifications;
+        }
+
+        public async Task<object> ObterStatusOnboarding(string codigoConvite)
+        {
+            var obterStatusOnboardingCommand = new ObterStatusOnboardingCommand(codigoConvite);
+            var obterStatusOnboardingResponse = await _bus.SendCommand(obterStatusOnboardingCommand);
+
+            return _notifications.HasNotifications()
+                ? obterStatusOnboardingResponse
+                : new
+                {
+                };
         }
 
         public void Dispose()
