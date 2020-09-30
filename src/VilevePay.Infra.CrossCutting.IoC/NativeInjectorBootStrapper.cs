@@ -5,6 +5,7 @@ using VilevePay.Application.Interfaces;
 using VilevePay.Application.Services;
 using VilevePay.Domain.CommandHandlers;
 using VilevePay.Domain.Commands.Autorizacao;
+using VilevePay.Domain.Commands.Consultor;
 using VilevePay.Domain.Commands.Endereco;
 using VilevePay.Domain.Commands.Parametrizacao;
 using VilevePay.Domain.Commands.Property;
@@ -80,6 +81,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<ObterOperacaoBancariaCommand, object>, ParametrizacaoCommandHandler>();
 
             // Consultor
+            services.AddScoped<IRequestHandler<ObterStatusOnboardingCommand, object>, ConsultorCommandHandler>();
 
             // Infra - Data
             services.AddScoped<IPropertyRepository, PropertyRepository>();
