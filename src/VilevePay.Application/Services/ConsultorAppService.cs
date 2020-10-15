@@ -26,6 +26,36 @@ namespace VilevePay.Application.Services
             _notifications = (DomainNotificationHandler)notifications;
         }
 
+        public void CadastrarDadosBancarios(string codigoConvite)
+        {
+            var cadastrarDadosBancariosCommand = new CadastrarDadosBancariosCommand(codigoConvite);
+            _bus.SendCommand(cadastrarDadosBancariosCommand);
+        }
+
+        public void CadastrarEmail(string codigoConvite)
+        {
+            var cadastrarEmailCommand = new CadastrarEmailCommand(codigoConvite);
+            _bus.SendCommand(cadastrarEmailCommand);
+        }
+
+        public void CadastrarEndereco(string codigoConvite)
+        {
+            var cadastrarEnderecoCommand = new CadastrarEnderecoCommand(codigoConvite);
+            _bus.SendCommand(cadastrarEnderecoCommand);
+        }
+
+        public void CadastrarPessoaJuridica(string codigoConvite)
+        {
+            var cadastrarPessoaJuridicaCommand = new CadastrarPessoaJuridicaCommand(codigoConvite);
+            _bus.SendCommand(cadastrarPessoaJuridicaCommand);
+        }
+
+        public void CadastrarTelefone(string codigoConvite)
+        {
+            var cadastrarTelefoneCommand = new CadastrarTelefoneCommand(codigoConvite);
+            _bus.SendCommand(cadastrarTelefoneCommand);
+        }
+
         public async Task<object> ObterStatusOnboarding(string codigoConvite)
         {
             var obterStatusOnboardingCommand = new ObterStatusOnboardingCommand(codigoConvite);

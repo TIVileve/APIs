@@ -81,6 +81,11 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<ObterOperacaoBancariaCommand, object>, ParametrizacaoCommandHandler>();
 
             // Consultor
+            services.AddScoped<IRequestHandler<CadastrarDadosBancariosCommand, bool>, ConsultorCommandHandler>();
+            services.AddScoped<IRequestHandler<CadastrarEmailCommand, bool>, ConsultorCommandHandler>();
+            services.AddScoped<IRequestHandler<CadastrarEnderecoCommand, bool>, ConsultorCommandHandler>();
+            services.AddScoped<IRequestHandler<CadastrarPessoaJuridicaCommand, bool>, ConsultorCommandHandler>();
+            services.AddScoped<IRequestHandler<CadastrarTelefoneCommand, bool>, ConsultorCommandHandler>();
             services.AddScoped<IRequestHandler<ObterStatusOnboardingCommand, object>, ConsultorCommandHandler>();
 
             // Infra - Data
