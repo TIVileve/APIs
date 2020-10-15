@@ -9,7 +9,9 @@ using VilevePay.Domain.Interfaces;
 namespace VilevePay.Domain.CommandHandlers
 {
     public class ConsultorCommandHandler : CommandHandler,
+        IRequestHandler<CadastrarArquivoCommand, bool>,
         IRequestHandler<CadastrarDadosBancariosCommand, bool>,
+        IRequestHandler<CadastrarDocumentoCommand, bool>,
         IRequestHandler<CadastrarEmailCommand, bool>,
         IRequestHandler<CadastrarEnderecoCommand, bool>,
         IRequestHandler<CadastrarPessoaJuridicaCommand, bool>,
@@ -24,7 +26,29 @@ namespace VilevePay.Domain.CommandHandlers
         {
         }
 
+        public Task<bool> Handle(CadastrarArquivoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
+        }
+
         public Task<bool> Handle(CadastrarDadosBancariosCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> Handle(CadastrarDocumentoCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {

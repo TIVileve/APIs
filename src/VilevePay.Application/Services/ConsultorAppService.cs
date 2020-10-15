@@ -26,10 +26,22 @@ namespace VilevePay.Application.Services
             _notifications = (DomainNotificationHandler)notifications;
         }
 
+        public void CadastrarArquivo(string codigoConvite)
+        {
+            var cadastrarArquivoCommand = new CadastrarArquivoCommand(codigoConvite);
+            _bus.SendCommand(cadastrarArquivoCommand);
+        }
+
         public void CadastrarDadosBancarios(string codigoConvite)
         {
             var cadastrarDadosBancariosCommand = new CadastrarDadosBancariosCommand(codigoConvite);
             _bus.SendCommand(cadastrarDadosBancariosCommand);
+        }
+
+        public void CadastrarDocumento(string codigoConvite)
+        {
+            var cadastrarDocumentoCommand = new CadastrarDocumentoCommand(codigoConvite);
+            _bus.SendCommand(cadastrarDocumentoCommand);
         }
 
         public void CadastrarEmail(string codigoConvite)

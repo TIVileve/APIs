@@ -30,12 +30,42 @@ namespace VilevePay.Services.Api.Controllers.v1
             _notifications = (DomainNotificationHandler)notifications;
         }
 
+        [HttpPost("convites/{codigoConvite}/arquivos")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult CadastrarArquivo(string codigoConvite, [FromBody] object arquivo)
+        {
+            _consultorAppService.CadastrarArquivo(codigoConvite);
+
+            if (IsValidOperation())
+            {
+                return NoContent();
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
         [HttpPost("convites/{codigoConvite}/dados-bancarios")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public IActionResult CadastrarDadosBancarios(string codigoConvite, [FromBody] object dadosBancarios)
         {
             _consultorAppService.CadastrarDadosBancarios(codigoConvite);
+
+            if (IsValidOperation())
+            {
+                return NoContent();
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
+        [HttpPost("convites/{codigoConvite}/documentos")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult CadastrarDocumento(string codigoConvite, [FromBody] object documento)
+        {
+            _consultorAppService.CadastrarDocumento(codigoConvite);
 
             if (IsValidOperation())
             {
