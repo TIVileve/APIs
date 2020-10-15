@@ -24,59 +24,59 @@ namespace VilevePay.Domain.CommandHandlers
         {
         }
 
-        public async Task<bool> Handle(CadastrarDadosBancariosCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(CadastrarDadosBancariosCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return await Task.FromResult(false);
+                return Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            return Task.FromResult(true);
         }
 
-        public async Task<bool> Handle(CadastrarEmailCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(CadastrarEmailCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return await Task.FromResult(false);
+                return Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            return Task.FromResult(true);
         }
 
-        public async Task<bool> Handle(CadastrarEnderecoCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(CadastrarEnderecoCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return await Task.FromResult(false);
+                return Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            return Task.FromResult(true);
         }
 
-        public async Task<bool> Handle(CadastrarPessoaJuridicaCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(CadastrarPessoaJuridicaCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return await Task.FromResult(false);
+                return Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            return Task.FromResult(true);
         }
 
-        public async Task<bool> Handle(CadastrarTelefoneCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(CadastrarTelefoneCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return await Task.FromResult(false);
+                return Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            return Task.FromResult(true);
         }
 
         public async Task<object> Handle(ObterStatusOnboardingCommand message, CancellationToken cancellationToken)
