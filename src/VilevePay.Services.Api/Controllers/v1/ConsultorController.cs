@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VilevePay.Application.Interfaces;
 using VilevePay.Application.ViewModels.v1.Consultor;
+using VilevePay.Application.ViewModels.v1.Endereco;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
 
