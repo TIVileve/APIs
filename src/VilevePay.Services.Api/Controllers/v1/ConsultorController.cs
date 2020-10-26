@@ -90,6 +90,21 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
+        [HttpGet("convites/{codigoConvite}/enderecos")]
+        [ProducesResponseType(typeof(IEnumerable<EnderecoViewModel>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ObterEndereco(string codigoConvite)
+        {
+            var response = await _consultorAppService.ObterEndereco(codigoConvite);
+
+            if (IsValidOperation())
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
         [HttpPost("convites/{codigoConvite}/enderecos")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]

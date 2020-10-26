@@ -13,6 +13,7 @@ namespace VilevePay.Domain.CommandHandlers
         IRequestHandler<CadastrarDadosBancariosCommand, bool>,
         IRequestHandler<CadastrarDocumentoCommand, bool>,
         IRequestHandler<CadastrarEmailCommand, bool>,
+        IRequestHandler<ObterEnderecoCommand, object>,
         IRequestHandler<CadastrarEnderecoCommand, bool>,
         IRequestHandler<CadastrarPessoaJuridicaCommand, bool>,
         IRequestHandler<CadastrarTelefoneCommand, bool>,
@@ -68,6 +69,17 @@ namespace VilevePay.Domain.CommandHandlers
             }
 
             return Task.FromResult(true);
+        }
+
+        public async Task<object> Handle(ObterEnderecoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
 
         public Task<bool> Handle(CadastrarEnderecoCommand message, CancellationToken cancellationToken)

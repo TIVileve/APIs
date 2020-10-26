@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -48,6 +49,38 @@ namespace VilevePay.Application.Services
         {
             var cadastrarEmailCommand = new CadastrarEmailCommand(codigoConvite);
             _bus.SendCommand(cadastrarEmailCommand);
+        }
+
+        public async Task<object> ObterEndereco(string codigoConvite)
+        {
+            var obterEnderecoCommand = new ObterEnderecoCommand(codigoConvite);
+            var obterEnderecoResponse = await _bus.SendCommand(obterEnderecoCommand);
+
+            return _notifications.HasNotifications()
+                ? obterEnderecoResponse
+                : new List<EnderecoViewModel>
+                {
+                    new EnderecoViewModel
+                    {
+                        Cep = "34006-086",
+                        Logradouro = "Rua da Mata",
+                        Numero = 185,
+                        Complemento = "APT 1502 T2",
+                        Bairro = "Vila da Serra",
+                        Cidade = "Nova Lima",
+                        Estado = "MG"
+                    },
+                    new EnderecoViewModel
+                    {
+                        Cep = "31540-600",
+                        Logradouro = "Rua França",
+                        Numero = 155,
+                        Complemento = "",
+                        Bairro = "Jardim Leblon",
+                        Cidade = "Belo Horizonte",
+                        Estado = "MG"
+                    }
+                };
         }
 
         public void CadastrarEndereco(string codigoConvite)

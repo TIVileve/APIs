@@ -6,7 +6,6 @@ using VilevePay.Application.Services;
 using VilevePay.Domain.CommandHandlers;
 using VilevePay.Domain.Commands.Autorizacao;
 using VilevePay.Domain.Commands.Consultor;
-using VilevePay.Domain.Commands.Endereco;
 using VilevePay.Domain.Commands.Parametrizacao;
 using VilevePay.Domain.Commands.Property;
 using VilevePay.Domain.Core.Bus;
@@ -23,6 +22,7 @@ using VilevePay.Infra.Data.EventSourcing;
 using VilevePay.Infra.Data.Repository;
 using VilevePay.Infra.Data.Repository.EventSourcing;
 using VilevePay.Infra.Data.UoW;
+using ObterEnderecoCommand = VilevePay.Domain.Commands.Endereco.ObterEnderecoCommand;
 
 namespace VilevePay.Infra.CrossCutting.IoC
 {
@@ -85,6 +85,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<CadastrarDadosBancariosCommand, bool>, ConsultorCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarDocumentoCommand, bool>, ConsultorCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarEmailCommand, bool>, ConsultorCommandHandler>();
+            services.AddScoped<IRequestHandler<Domain.Commands.Consultor.ObterEnderecoCommand, object>, ConsultorCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarEnderecoCommand, bool>, ConsultorCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarPessoaJuridicaCommand, bool>, ConsultorCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarTelefoneCommand, bool>, ConsultorCommandHandler>();
