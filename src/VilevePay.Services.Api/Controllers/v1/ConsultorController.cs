@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -111,6 +112,21 @@ namespace VilevePay.Services.Api.Controllers.v1
         public IActionResult CadastrarEndereco(string codigoConvite, [FromBody] object endereco)
         {
             _consultorAppService.CadastrarEndereco(codigoConvite);
+
+            if (IsValidOperation())
+            {
+                return NoContent();
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
+        [HttpDelete("convites/{codigoConvite}/enderecos/{enderecoId}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult DeletarEndereco(string codigoConvite, Guid enderecoId)
+        {
+            _consultorAppService.DeletarEndereco(codigoConvite, enderecoId);
 
             if (IsValidOperation())
             {

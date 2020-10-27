@@ -11,6 +11,7 @@ namespace VilevePay.Application.Interfaces
         void CadastrarEmail(string codigoConvite);
         Task<object> ObterEndereco(string codigoConvite);
         void CadastrarEndereco(string codigoConvite);
+        void DeletarEndereco(string codigoConvite, Guid enderecoId);
         void CadastrarPessoaJuridica(string codigoConvite);
         void CadastrarTelefone(string codigoConvite);
         Task<object> ObterStatusOnboarding(string codigoConvite);

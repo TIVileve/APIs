@@ -91,6 +91,12 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(cadastrarEnderecoCommand);
         }
 
+        public void DeletarEndereco(string codigoConvite, Guid enderecoId)
+        {
+            var deletarEnderecoCommand = new DeletarEnderecoCommand(codigoConvite, enderecoId);
+            _bus.SendCommand(deletarEnderecoCommand);
+        }
+
         public void CadastrarPessoaJuridica(string codigoConvite)
         {
             var cadastrarPessoaJuridicaCommand = new CadastrarPessoaJuridicaCommand(codigoConvite);

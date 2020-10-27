@@ -15,6 +15,7 @@ namespace VilevePay.Domain.CommandHandlers
         IRequestHandler<CadastrarEmailCommand, bool>,
         IRequestHandler<ObterEnderecoCommand, object>,
         IRequestHandler<CadastrarEnderecoCommand, bool>,
+        IRequestHandler<DeletarEnderecoCommand, bool>,
         IRequestHandler<CadastrarPessoaJuridicaCommand, bool>,
         IRequestHandler<CadastrarTelefoneCommand, bool>,
         IRequestHandler<ObterStatusOnboardingCommand, object>
@@ -83,6 +84,17 @@ namespace VilevePay.Domain.CommandHandlers
         }
 
         public Task<bool> Handle(CadastrarEnderecoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> Handle(DeletarEnderecoCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {

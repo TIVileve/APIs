@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 using VilevePay.Domain.Commands.Consultor;
 
 namespace VilevePay.Domain.Validations.Consultor
@@ -10,6 +11,12 @@ namespace VilevePay.Domain.Validations.Consultor
             RuleFor(c => c.CodigoConvite)
                 .NotEmpty().WithMessage("O campo código do convite é obrigatório.")
                 .Length(6).WithMessage("O campo código do convite deve ter 6 caracteres.");
+        }
+
+        protected void ValidateEnderecoId()
+        {
+            RuleFor(c => c.EnderecoId)
+                .NotEqual(Guid.Empty).WithMessage("O campo endereço id é obrigatório.");
         }
     }
 }
