@@ -149,5 +149,20 @@ namespace VilevePay.Services.Api.Controllers.v1
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
+
+        [HttpGet("sexos")]
+        [ProducesResponseType(typeof(IEnumerable<SexoViewModel>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ObterSexo()
+        {
+            var response = await _parametrizacaoAppService.ObterSexo();
+
+            if (IsValidOperation())
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
     }
 }

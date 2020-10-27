@@ -13,5 +13,6 @@ namespace VilevePay.Application.Interfaces
         Task<object> ObterTipoEndereco();
         Task<object> ObterBanco();
         Task<object> ObterOperacaoBancaria();
+        Task<object> ObterSexo();
     }
 }

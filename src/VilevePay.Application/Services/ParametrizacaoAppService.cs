@@ -269,6 +269,33 @@ namespace VilevePay.Application.Services
                 };
         }
 
+        public async Task<object> ObterSexo()
+        {
+            var obterSexoCommand = new ObterSexoCommand();
+            var obterSexoResponse = await _bus.SendCommand(obterSexoCommand);
+
+            return _notifications.HasNotifications()
+                ? obterSexoResponse
+                : new List<SexoViewModel>
+                {
+                    new SexoViewModel
+                    {
+                        CodigoSexo = 1,
+                        Nome = "Feminino"
+                    },
+                    new SexoViewModel
+                    {
+                        CodigoSexo = 2,
+                        Nome = "Masculino"
+                    },
+                    new SexoViewModel
+                    {
+                        CodigoSexo = 3,
+                        Nome = "Não declarado"
+                    }
+                };
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
