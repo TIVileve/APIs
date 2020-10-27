@@ -10,5 +10,6 @@ namespace VilevePay.Domain.Commands.Autorizacao
         public string Email { get; protected set; }
         public string Senha { get; protected set; }
         public string ConfirmarSenha { get; protected set; }
+        public string FotoBase64 { get; protected set; }
     }
 }

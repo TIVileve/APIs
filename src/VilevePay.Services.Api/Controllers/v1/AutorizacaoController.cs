@@ -134,5 +134,20 @@ namespace VilevePay.Services.Api.Controllers.v1
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
+
+        [HttpPost("convites/{codigoConvite}/selfie/validar")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult ValidarSelfie(string codigoConvite, [FromBody] SelfieViewModel selfie)
+        {
+            _autorizacaoAppService.ValidarSelfie(codigoConvite, selfie.FotoBase64);
+
+            if (IsValidOperation())
+            {
+                return NoContent();
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
     }
 }

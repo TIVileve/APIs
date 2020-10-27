@@ -44,5 +44,11 @@ namespace VilevePay.Domain.Validations.Autorizacao
             RuleFor(a => a.ConfirmarSenha)
                 .Equal(a => a.Senha).WithMessage("As senhas devem corresponder.");
         }
+
+        protected void ValidateFotoBase64()
+        {
+            RuleFor(a => a.FotoBase64)
+                .NotEmpty().WithMessage("O campo foto base64 é obrigatório.");
+        }
     }
 }

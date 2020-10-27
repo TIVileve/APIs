@@ -77,6 +77,12 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(enviarTokenEmailCommand);
         }
 
+        public void ValidarSelfie(string codigoConvite, string fotoBase64)
+        {
+            var validarSelfieCommand = new ValidarSelfieCommand(codigoConvite, fotoBase64);
+            _bus.SendCommand(validarSelfieCommand);
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
