@@ -5,7 +5,6 @@ using AutoMapper;
 using MediatR;
 using VilevePay.Application.Interfaces;
 using VilevePay.Application.ViewModels.v1.Consultor;
-using VilevePay.Application.ViewModels.v1.Endereco;
 using VilevePay.Domain.Commands.Consultor;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
@@ -59,10 +58,11 @@ namespace VilevePay.Application.Services
 
             return _notifications.HasNotifications()
                 ? obterEnderecoResponse
-                : new List<EnderecoViewModel>
+                : new List<ConsultorEnderecoViewModel>
                 {
-                    new EnderecoViewModel
+                    new ConsultorEnderecoViewModel
                     {
+                        Id = Guid.NewGuid(),
                         Cep = "34006-086",
                         Logradouro = "Rua da Mata",
                         Numero = 185,
@@ -71,8 +71,9 @@ namespace VilevePay.Application.Services
                         Cidade = "Nova Lima",
                         Estado = "MG"
                     },
-                    new EnderecoViewModel
+                    new ConsultorEnderecoViewModel
                     {
+                        Id = Guid.NewGuid(),
                         Cep = "31540-600",
                         Logradouro = "Rua França",
                         Numero = 155,

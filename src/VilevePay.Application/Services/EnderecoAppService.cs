@@ -35,13 +35,15 @@ namespace VilevePay.Application.Services
                 ? obterEnderecoResponse
                 : new EnderecoViewModel
                 {
-                    Cep = "34006-086",
-                    Logradouro = "Rua da Mata",
-                    Numero = 185,
-                    Complemento = "APT 1502 T2",
-                    Bairro = "Vila da Serra",
+                    CodigoCidade = 1,
+                    CodigoUf = 1,
+                    IbgeMunicipio = 1,
                     Cidade = "Nova Lima",
-                    Estado = "MG"
+                    Logradouro = "Rua da Mata",
+                    TipoLogradouro = "Rua",
+                    Bairro = "Vila da Serra",
+                    Uf = "MG",
+                    Resultado = 1
                 };
         }
 
