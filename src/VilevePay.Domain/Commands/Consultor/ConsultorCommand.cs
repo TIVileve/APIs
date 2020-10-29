@@ -7,5 +7,6 @@ namespace VilevePay.Domain.Commands.Consultor
     {
         public string CodigoConvite { get; protected set; }
         public Guid EnderecoId { get; protected set; }
+        public string Email { get; protected set; }
     }
 }

@@ -6,7 +6,7 @@ namespace VilevePay.Domain.Validations.Consultor
     {
         public ObterStatusOnboardingCommandValidation()
         {
-            ValidateCodigoConvite();
+            ValidateEmail();
         }
     }
 }

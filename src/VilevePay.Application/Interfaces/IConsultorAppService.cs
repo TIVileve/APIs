@@ -16,6 +16,6 @@ namespace VilevePay.Application.Interfaces
         void CadastrarPessoaJuridica(string codigoConvite);
         void CadastrarRepresentante(string codigoConvite);
         void CadastrarTelefone(string codigoConvite);
-        Task<object> ObterStatusOnboarding(string codigoConvite);
+        Task<object> ObterStatusOnboarding(string email);
     }
 }

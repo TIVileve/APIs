@@ -9,5 +9,6 @@
         public string InscricaoEstadual { get; set; }
         public CadastrarDadosBancariosViewModel DadosBancarios { get; set; }
         public string ContratoSocialBase64 { get; set; }
+        public string UltimaAlteracaoBase64 { get; set; }
     }
 }

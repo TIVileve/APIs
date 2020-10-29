@@ -18,5 +18,12 @@ namespace VilevePay.Domain.Validations.Consultor
             RuleFor(c => c.EnderecoId)
                 .NotEqual(Guid.Empty).WithMessage("O campo endereço id é obrigatório.");
         }
+
+        protected void ValidateEmail()
+        {
+            RuleFor(c => c.Email)
+                .NotEmpty().WithMessage("O campo e-mail é obrigatório.")
+                .EmailAddress().WithMessage("O campo e-mail está inválido.");
+        }
     }
 }

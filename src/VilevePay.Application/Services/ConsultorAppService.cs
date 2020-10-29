@@ -69,7 +69,8 @@ namespace VilevePay.Application.Services
                         Complemento = "APT 1502 T2",
                         Bairro = "Vila da Serra",
                         Cidade = "Nova Lima",
-                        Estado = "MG"
+                        Estado = "MG",
+                        Principal = true
                     },
                     new EnderecoViewModel
                     {
@@ -80,7 +81,8 @@ namespace VilevePay.Application.Services
                         Complemento = "",
                         Bairro = "Jardim Leblon",
                         Cidade = "Belo Horizonte",
-                        Estado = "MG"
+                        Estado = "MG",
+                        Principal = false
                     }
                 };
         }
@@ -135,14 +137,18 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(cadastrarTelefoneCommand);
         }
 
-        public async Task<object> ObterStatusOnboarding(string codigoConvite)
+        public async Task<object> ObterStatusOnboarding(string email)
         {
-            var obterStatusOnboardingCommand = new ObterStatusOnboardingCommand(codigoConvite);
+            var obterStatusOnboardingCommand = new ObterStatusOnboardingCommand(email);
             var obterStatusOnboardingResponse = await _bus.SendCommand(obterStatusOnboardingCommand);
 
             return _notifications.HasNotifications()
                 ? obterStatusOnboardingResponse
-                : StatusOnboardingViewModel.ComprovanteEndereco;
+                : new StatusOnboardingViewModel
+                {
+                    CodigoConvite = "123456",
+                    Status = StatusViewModel.ComprovanteEndereco
+                };
         }
 
         public void Dispose()

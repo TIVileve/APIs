@@ -6,7 +6,6 @@ namespace VilevePay.Application.ViewModels.v1.Consultor
     {
         public string Cpf { get; set; }
         public string NomeCompleto { get; set; }
-        public string Apelido { get; set; }
         public int Sexo { get; set; }
         public int EstadoCivil { get; set; }
         public string Nacionalidade { get; set; }

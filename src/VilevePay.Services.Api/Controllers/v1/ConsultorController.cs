@@ -199,9 +199,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpGet("convites/{codigoConvite}/onboarding/status")]
         [ProducesResponseType(typeof(StatusOnboardingViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> ObterStatusOnboarding(string codigoConvite)
+        public async Task<IActionResult> ObterStatusOnboarding(string email)
         {
-            var response = await _consultorAppService.ObterStatusOnboarding(codigoConvite);
+            var response = await _consultorAppService.ObterStatusOnboarding(email);
 
             if (IsValidOperation())
             {

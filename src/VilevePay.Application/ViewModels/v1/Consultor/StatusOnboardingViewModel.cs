@@ -1,11 +1,8 @@
 ﻿namespace VilevePay.Application.ViewModels.v1.Consultor
 {
-    public enum StatusOnboardingViewModel
+    public class StatusOnboardingViewModel
     {
-        ValidacaoToken = 0,
-        ValidacaoEmail = 1,
-        FotoIdentidade = 2,
-        ComprovanteEndereco = 3,
-        FotoPerfil = 4
+        public string CodigoConvite { get; set; }
+        public StatusViewModel Status { get; set; }
     }
 }
