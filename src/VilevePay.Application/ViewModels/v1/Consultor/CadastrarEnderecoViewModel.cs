@@ -2,6 +2,7 @@
 {
     public class CadastrarEnderecoViewModel
     {
+        public int TipoEndereco { get; set; }
         public string Cep { get; set; }
         public string Logradouro { get; set; }
         public int Numero { get; set; }
