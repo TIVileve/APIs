@@ -1,6 +1,6 @@
 ﻿namespace VilevePay.Application.ViewModels.v1.Autorizacao
 {
-    public class SelfieViewModel
+    public class ValidarSelfieViewModel
     {
         public string FotoBase64 { get; set; }
     }

@@ -58,9 +58,9 @@ namespace VilevePay.Application.Services
 
             return _notifications.HasNotifications()
                 ? obterEnderecoResponse
-                : new List<ConsultorEnderecoViewModel>
+                : new List<EnderecoViewModel>
                 {
-                    new ConsultorEnderecoViewModel
+                    new EnderecoViewModel
                     {
                         Id = Guid.NewGuid(),
                         Cep = "34006-086",
@@ -71,7 +71,7 @@ namespace VilevePay.Application.Services
                         Cidade = "Nova Lima",
                         Estado = "MG"
                     },
-                    new ConsultorEnderecoViewModel
+                    new EnderecoViewModel
                     {
                         Id = Guid.NewGuid(),
                         Cep = "31540-600",
@@ -82,6 +82,26 @@ namespace VilevePay.Application.Services
                         Cidade = "Belo Horizonte",
                         Estado = "MG"
                     }
+                };
+        }
+
+        public async Task<object> ObterEnderecoPorId(string codigoConvite, Guid enderecoId)
+        {
+            var obterEnderecoPorIdCommand = new ObterEnderecoPorIdCommand(codigoConvite, enderecoId);
+            var obterEnderecoPorIdResponse = await _bus.SendCommand(obterEnderecoPorIdCommand);
+
+            return _notifications.HasNotifications()
+                ? obterEnderecoPorIdResponse
+                : new EnderecoViewModel
+                {
+                    Id = Guid.NewGuid(),
+                    Cep = "34006-086",
+                    Logradouro = "Rua da Mata",
+                    Numero = 185,
+                    Complemento = "APT 1502 T2",
+                    Bairro = "Vila da Serra",
+                    Cidade = "Nova Lima",
+                    Estado = "MG"
                 };
         }
 
@@ -101,6 +121,12 @@ namespace VilevePay.Application.Services
         {
             var cadastrarPessoaJuridicaCommand = new CadastrarPessoaJuridicaCommand(codigoConvite);
             _bus.SendCommand(cadastrarPessoaJuridicaCommand);
+        }
+
+        public void CadastrarRepresentante(string codigoConvite)
+        {
+            var cadastrarRepresentanteCommand = new CadastrarRepresentanteCommand(codigoConvite);
+            _bus.SendCommand(cadastrarRepresentanteCommand);
         }
 
         public void CadastrarTelefone(string codigoConvite)

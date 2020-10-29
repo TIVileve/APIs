@@ -49,6 +49,8 @@ namespace VilevePay.Services.Api.Configurations
                         new List<string>()
                     }
                 });
+
+                s.CustomSchemaIds(x => x.FullName);
             });
 
             services.AddSwaggerGenNewtonsoftSupport();

@@ -31,68 +31,68 @@ namespace VilevePay.Services.Api.Controllers.v1
             _notifications = (DomainNotificationHandler)notifications;
         }
 
-        [HttpPost("convites/{codigoConvite}/arquivos")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult CadastrarArquivo(string codigoConvite, [FromBody] object arquivo)
-        {
-            _consultorAppService.CadastrarArquivo(codigoConvite);
+        // [HttpPost("convites/{codigoConvite}/arquivos")]
+        // [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        // [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        // public IActionResult CadastrarArquivo(string codigoConvite, [FromBody] object arquivo)
+        // {
+        //     _consultorAppService.CadastrarArquivo(codigoConvite);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
+        //     if (IsValidOperation())
+        //     {
+        //         return NoContent();
+        //     }
 
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
-        }
+        //     return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        // }
 
-        [HttpPost("convites/{codigoConvite}/dados-bancarios")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult CadastrarDadosBancarios(string codigoConvite, [FromBody] object dadosBancarios)
-        {
-            _consultorAppService.CadastrarDadosBancarios(codigoConvite);
+        // [HttpPost("convites/{codigoConvite}/dados-bancarios")]
+        // [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        // [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        // public IActionResult CadastrarDadosBancarios(string codigoConvite, [FromBody] object dadosBancarios)
+        // {
+        //     _consultorAppService.CadastrarDadosBancarios(codigoConvite);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
+        //     if (IsValidOperation())
+        //     {
+        //         return NoContent();
+        //     }
 
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
-        }
+        //     return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        // }
 
-        [HttpPost("convites/{codigoConvite}/documentos")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult CadastrarDocumento(string codigoConvite, [FromBody] object documento)
-        {
-            _consultorAppService.CadastrarDocumento(codigoConvite);
+        // [HttpPost("convites/{codigoConvite}/documentos")]
+        // [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        // [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        // public IActionResult CadastrarDocumento(string codigoConvite, [FromBody] object documento)
+        // {
+        //     _consultorAppService.CadastrarDocumento(codigoConvite);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
+        //     if (IsValidOperation())
+        //     {
+        //         return NoContent();
+        //     }
 
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
-        }
+        //     return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        // }
 
-        [HttpPost("convites/{codigoConvite}/emails")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult CadastrarEmail(string codigoConvite, [FromBody] object email)
-        {
-            _consultorAppService.CadastrarEmail(codigoConvite);
+        // [HttpPost("convites/{codigoConvite}/emails")]
+        // [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        // [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        // public IActionResult CadastrarEmail(string codigoConvite, [FromBody] object email)
+        // {
+        //     _consultorAppService.CadastrarEmail(codigoConvite);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
+        //     if (IsValidOperation())
+        //     {
+        //         return NoContent();
+        //     }
 
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
-        }
+        //     return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        // }
 
         [HttpGet("convites/{codigoConvite}/enderecos")]
-        [ProducesResponseType(typeof(IEnumerable<ConsultorEnderecoViewModel>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<EnderecoViewModel>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ObterEndereco(string codigoConvite)
         {
@@ -106,10 +106,25 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
+        [HttpGet("convites/{codigoConvite}/enderecos/{enderecoId}")]
+        [ProducesResponseType(typeof(EnderecoViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ObterEnderecoPorId(string codigoConvite, Guid enderecoId)
+        {
+            var response = await _consultorAppService.ObterEnderecoPorId(codigoConvite, enderecoId);
+
+            if (IsValidOperation())
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
         [HttpPost("convites/{codigoConvite}/enderecos")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult CadastrarEndereco(string codigoConvite, [FromBody] object endereco)
+        public IActionResult CadastrarEndereco(string codigoConvite, [FromBody] CadastrarEnderecoViewModel endereco)
         {
             _consultorAppService.CadastrarEndereco(codigoConvite);
 
@@ -139,7 +154,7 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpPost("convites/{codigoConvite}/pessoas-juridicas")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult CadastrarPessoaJuridica(string codigoConvite, [FromBody] object pessoaJuridica)
+        public IActionResult CadastrarPessoaJuridica(string codigoConvite, [FromBody] CadastrarPessoaJuridicaViewModel pessoaJuridica)
         {
             _consultorAppService.CadastrarPessoaJuridica(codigoConvite);
 
@@ -151,12 +166,12 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
-        [HttpPost("convites/{codigoConvite}/telefones")]
+        [HttpPost("convites/{codigoConvite}/representantes")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult CadastrarTelefone(string codigoConvite, [FromBody] object telefone)
+        public IActionResult CadastrarRepresentante(string codigoConvite, [FromBody] CadastrarRepresentanteViewModel representante)
         {
-            _consultorAppService.CadastrarTelefone(codigoConvite);
+            _consultorAppService.CadastrarRepresentante(codigoConvite);
 
             if (IsValidOperation())
             {
@@ -165,6 +180,21 @@ namespace VilevePay.Services.Api.Controllers.v1
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
+
+        // [HttpPost("convites/{codigoConvite}/telefones")]
+        // [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        // [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        // public IActionResult CadastrarTelefone(string codigoConvite, [FromBody] object telefone)
+        // {
+        //     _consultorAppService.CadastrarTelefone(codigoConvite);
+
+        //     if (IsValidOperation())
+        //     {
+        //         return NoContent();
+        //     }
+
+        //     return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        // }
 
         [HttpGet("convites/{codigoConvite}/onboarding/status")]
         [ProducesResponseType(typeof(StatusOnboardingViewModel), (int)HttpStatusCode.OK)]

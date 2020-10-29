@@ -14,9 +14,11 @@ namespace VilevePay.Domain.CommandHandlers
         IRequestHandler<CadastrarDocumentoCommand, bool>,
         IRequestHandler<CadastrarEmailCommand, bool>,
         IRequestHandler<ObterEnderecoCommand, object>,
+        IRequestHandler<ObterEnderecoPorIdCommand, object>,
         IRequestHandler<CadastrarEnderecoCommand, bool>,
         IRequestHandler<DeletarEnderecoCommand, bool>,
         IRequestHandler<CadastrarPessoaJuridicaCommand, bool>,
+        IRequestHandler<CadastrarRepresentanteCommand, bool>,
         IRequestHandler<CadastrarTelefoneCommand, bool>,
         IRequestHandler<ObterStatusOnboardingCommand, object>
     {
@@ -83,6 +85,17 @@ namespace VilevePay.Domain.CommandHandlers
             return await Task.FromResult(true);
         }
 
+        public async Task<object> Handle(ObterEnderecoPorIdCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+
         public Task<bool> Handle(CadastrarEnderecoCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
@@ -106,6 +119,17 @@ namespace VilevePay.Domain.CommandHandlers
         }
 
         public Task<bool> Handle(CadastrarPessoaJuridicaCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> Handle(CadastrarRepresentanteCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
