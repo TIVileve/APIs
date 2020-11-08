@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using VilevePay.Domain.Models;
 using VilevePay.Infra.Data.Mappings;
 
 namespace VilevePay.Infra.Data.Context
@@ -13,13 +12,17 @@ namespace VilevePay.Infra.Data.Context
         {
         }
 
-        public DbSet<Property> Properties { get; set; }
+        public DbSet<OnboardingMap> Onboarding { get; set; }
+        public DbSet<ConsultorMap> Consultores { get; set; }
+        public DbSet<DadosBancariosMap> DadosBancarios { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseLazyLoadingProxies();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new PropertyMap());
+            modelBuilder.ApplyConfiguration(new OnboardingMap());
+            modelBuilder.ApplyConfiguration(new ConsultorMap());
+            modelBuilder.ApplyConfiguration(new DadosBancariosMap());
 
             base.OnModelCreating(modelBuilder);
         }
