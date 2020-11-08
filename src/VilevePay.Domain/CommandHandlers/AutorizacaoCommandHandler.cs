@@ -61,6 +61,7 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
+            onboarding.Email = message.Email;
             onboarding.Senha = message.Senha;
 
             _onboardingRepository.Update(onboarding);
