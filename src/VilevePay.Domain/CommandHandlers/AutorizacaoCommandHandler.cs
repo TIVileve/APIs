@@ -61,7 +61,12 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            onboarding.Email = message.Email;
+            if (!onboarding.Email.Equals(message.Email))
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "E-mail não encontrado."));
+                return Task.FromResult(false);
+            }
+
             onboarding.Senha = message.Senha;
 
             _onboardingRepository.Update(onboarding);
