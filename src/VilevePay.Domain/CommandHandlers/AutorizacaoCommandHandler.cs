@@ -52,6 +52,23 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
+            // API Vileve
+
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+            if (onboarding == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                return Task.FromResult(false);
+            }
+
+            onboarding.Senha = message.Senha;
+
+            _onboardingRepository.Update(onboarding);
+
+            if (Commit())
+            {
+            }
+
             return Task.FromResult(true);
         }
 
@@ -91,6 +108,23 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
+            // API Vileve
+
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+            if (onboarding == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                return Task.FromResult(false);
+            }
+
+            onboarding.NumeroCelular = message.NumeroCelular;
+
+            _onboardingRepository.Update(onboarding);
+
+            if (Commit())
+            {
+            }
+
             return Task.FromResult(true);
         }
 
@@ -100,6 +134,23 @@ namespace VilevePay.Domain.CommandHandlers
             {
                 NotifyValidationErrors(message);
                 return Task.FromResult(false);
+            }
+
+            // API Vileve
+
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+            if (onboarding == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                return Task.FromResult(false);
+            }
+
+            onboarding.Email = message.Email;
+
+            _onboardingRepository.Update(onboarding);
+
+            if (Commit())
+            {
             }
 
             return Task.FromResult(true);
@@ -113,6 +164,8 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
+            // API Vileve
+
             return Task.FromResult(true);
         }
 
@@ -123,6 +176,8 @@ namespace VilevePay.Domain.CommandHandlers
                 NotifyValidationErrors(message);
                 return Task.FromResult(false);
             }
+
+            // API Vileve
 
             return Task.FromResult(true);
         }
