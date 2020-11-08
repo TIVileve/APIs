@@ -1,10 +1,13 @@
-﻿using System.Threading;
+﻿using System;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using VilevePay.Domain.Commands.Autorizacao;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
 using VilevePay.Domain.Interfaces;
+using VilevePay.Domain.Models;
 
 namespace VilevePay.Domain.CommandHandlers
 {
@@ -18,12 +21,16 @@ namespace VilevePay.Domain.CommandHandlers
         IRequestHandler<EnviarTokenEmailCommand, bool>,
         IRequestHandler<ValidarSelfieCommand, bool>
     {
+        private readonly IOnboardingRepository _onboardingRepository;
+
         public AutorizacaoCommandHandler(
+            IOnboardingRepository onboardingRepository,
             IUnitOfWork uow,
             IMediatorHandler bus,
             INotificationHandler<DomainNotification> notifications)
             : base(uow, bus, notifications)
         {
+            _onboardingRepository = onboardingRepository;
         }
 
         public async Task<object> Handle(LoginCommand message, CancellationToken cancellationToken)
@@ -54,6 +61,23 @@ namespace VilevePay.Domain.CommandHandlers
             {
                 NotifyValidationErrors(message);
                 return Task.FromResult(false);
+            }
+
+            // API Vileve
+
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+            if (onboarding != null)
+                return Task.FromResult(true);
+
+            onboarding = new Onboarding(Guid.NewGuid())
+            {
+                CodigoConvite = message.CodigoConvite
+            };
+
+            _onboardingRepository.Add(onboarding);
+
+            if (Commit())
+            {
             }
 
             return Task.FromResult(true);
