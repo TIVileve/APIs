@@ -57,8 +57,6 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            // API Vileve
-
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
             if (onboarding == null)
             {
