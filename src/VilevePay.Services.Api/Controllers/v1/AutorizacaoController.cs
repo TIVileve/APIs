@@ -78,9 +78,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpGet("convites/{codigoConvite}/sms/token/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult ValidarTokenSms(string codigoConvite, [FromHeader] string numeroCelular, [FromHeader] string codigoToken)
+        public async Task<IActionResult> ValidarTokenSms(string codigoConvite, [FromHeader] string numeroCelular, [FromHeader] string codigoToken)
         {
-            _autorizacaoAppService.ValidarTokenSms(codigoConvite, numeroCelular, codigoToken);
+            await _autorizacaoAppService.ValidarTokenSms(codigoConvite, numeroCelular, codigoToken);
 
             if (IsValidOperation())
             {

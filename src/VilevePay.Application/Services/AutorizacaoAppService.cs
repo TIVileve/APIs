@@ -53,10 +53,10 @@ namespace VilevePay.Application.Services
             await _bus.SendCommand(validarCodigoConviteCommand);
         }
 
-        public void ValidarTokenSms(string codigoConvite, string numeroCelular, string codigoToken)
+        public async Task ValidarTokenSms(string codigoConvite, string numeroCelular, string codigoToken)
         {
             var validarTokenSmsCommand = new ValidarTokenSmsCommand(codigoConvite, numeroCelular, codigoToken);
-            _bus.SendCommand(validarTokenSmsCommand);
+            await _bus.SendCommand(validarTokenSmsCommand);
         }
 
         public async Task ValidarTokenEmail(string codigoConvite, string email, string codigoToken)
