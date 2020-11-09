@@ -8,6 +8,8 @@ using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
 using VilevePay.Domain.Interfaces;
 using VilevePay.Domain.Models;
+using VilevePay.Domain.Responses;
+using VilevePay.Infra.CrossCutting.Io.Http;
 
 namespace VilevePay.Domain.CommandHandlers
 {
@@ -21,15 +23,18 @@ namespace VilevePay.Domain.CommandHandlers
         IRequestHandler<EnviarTokenEmailCommand, bool>,
         IRequestHandler<ValidarSelfieCommand, bool>
     {
+        private readonly IHttpAppService _httpAppService;
         private readonly IOnboardingRepository _onboardingRepository;
 
         public AutorizacaoCommandHandler(
+            IHttpAppService httpAppService,
             IOnboardingRepository onboardingRepository,
             IUnitOfWork uow,
             IMediatorHandler bus,
             INotificationHandler<DomainNotification> notifications)
             : base(uow, bus, notifications)
         {
+            _httpAppService = httpAppService;
             _onboardingRepository = onboardingRepository;
         }
 
@@ -78,19 +83,33 @@ namespace VilevePay.Domain.CommandHandlers
             return Task.FromResult(true);
         }
 
-        public Task<bool> Handle(ValidarCodigoConviteCommand message, CancellationToken cancellationToken)
+        public async Task<bool> Handle(ValidarCodigoConviteCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return Task.FromResult(false);
+                return await Task.FromResult(false);
             }
 
-            // API Vileve
+            try
+            {
+                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var consultorValidar = await HttpClientHelper.OnGet<ConsultorValidar>(client, $"v1/consultor/validar/${message.CodigoConvite}");
+                if (consultorValidar.Valido.Equals(false))
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                    return await Task.FromResult(false);
+                }
+            }
+            catch (Exception)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                return await Task.FromResult(false);
+            }
 
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
             if (onboarding != null)
-                return Task.FromResult(true);
+                return await Task.FromResult(true);
 
             onboarding = new Onboarding(Guid.NewGuid())
             {
@@ -103,7 +122,7 @@ namespace VilevePay.Domain.CommandHandlers
             {
             }
 
-            return Task.FromResult(true);
+            return await Task.FromResult(true);
         }
 
         public Task<bool> Handle(ValidarTokenSmsCommand message, CancellationToken cancellationToken)

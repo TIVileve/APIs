@@ -60,6 +60,9 @@ namespace VilevePay.Services.Api
             // ASP.NET HttpContext dependency
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            // HttpClient Config
+            services.AddHttpClient();
+
             // .NET Native DI Abstraction
             services.AddDependencyInjectionSetup();
         }

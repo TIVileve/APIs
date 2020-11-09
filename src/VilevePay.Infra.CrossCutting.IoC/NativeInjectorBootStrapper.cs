@@ -17,6 +17,7 @@ using VilevePay.Domain.Interfaces;
 using VilevePay.Infra.CrossCutting.Bus;
 using VilevePay.Infra.CrossCutting.Identity.Authorization;
 using VilevePay.Infra.CrossCutting.Identity.Models;
+using VilevePay.Infra.CrossCutting.Io.Http;
 using VilevePay.Infra.Data.Context;
 using VilevePay.Infra.Data.EventSourcing;
 using VilevePay.Infra.Data.Repository;
@@ -106,6 +107,9 @@ namespace VilevePay.Infra.CrossCutting.IoC
 
             // Infra - Identity
             services.AddScoped<IUser, AspNetUser>();
+
+            // Infra - IO
+            services.AddScoped<IHttpAppService, HttpAppService>();
         }
     }
 }

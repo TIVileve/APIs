@@ -10,6 +10,7 @@
     <ProjectReference Include="..\VilevePay.Domain\VilevePay.Domain.csproj" />
     <ProjectReference Include="..\VilevePay.Infra.CrossCutting.Bus\VilevePay.Infra.CrossCutting.Bus.csproj" />
     <ProjectReference Include="..\VilevePay.Infra.CrossCutting.Identity\VilevePay.Infra.CrossCutting.Identity.csproj" />
+    <ProjectReference Include="..\VilevePay.Infra.CrossCutting.Io\VilevePay.Infra.CrossCutting.Io.csproj" />
     <ProjectReference Include="..\VilevePay.Infra.Data\VilevePay.Infra.Data.csproj" />
   </ItemGroup>
 
