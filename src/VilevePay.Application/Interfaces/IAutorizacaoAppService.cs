@@ -7,7 +7,7 @@ namespace VilevePay.Application.Interfaces
     {
         Task<object> Login(string email, string senha);
         void CadastrarSenha(string codigoConvite, string email, string senha, string confirmarSenha);
-        void ValidarCodigoConvite(string codigoConvite);
+        Task ValidarCodigoConvite(string codigoConvite);
         void ValidarTokenSms(string codigoConvite, string numeroCelular, string codigoToken);
         void ValidarTokenEmail(string codigoConvite, string email, string codigoToken);
         void EnviarTokenSms(string codigoConvite, string numeroCelular);

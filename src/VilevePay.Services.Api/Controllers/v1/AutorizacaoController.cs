@@ -63,9 +63,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpGet("convites/{codigoConvite}/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult ValidarCodigoConvite(string codigoConvite)
+        public async Task<IActionResult> ValidarCodigoConvite(string codigoConvite)
         {
-            _autorizacaoAppService.ValidarCodigoConvite(codigoConvite);
+            await _autorizacaoAppService.ValidarCodigoConvite(codigoConvite);
 
             if (IsValidOperation())
             {
