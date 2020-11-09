@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VilevePay.Domain", "src\Vil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VilevePay.Application", "src\VilevePay.Application\VilevePay.Application.csproj", "{6E52CB98-16EA-4B75-A6CA-EDB5DBB20D1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VilevePay.Services.Api", "src\VilevePay.Services.Api\VilevePay.Services.Api.csproj", "{73C5069B-BAB3-402D-B646-2323DBD4605F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VilevePay.Services.Api", "src\VilevePay.Services.Api\VilevePay.Services.Api.csproj", "{73C5069B-BAB3-402D-B646-2323DBD4605F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VilevePay.Infra.CrossCutting.Io", "src\VilevePay.Infra.CrossCutting.Io\VilevePay.Infra.CrossCutting.Io.csproj", "{27CA27AD-CF09-468D-9AAB-955AD8D1A34B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{73C5069B-BAB3-402D-B646-2323DBD4605F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73C5069B-BAB3-402D-B646-2323DBD4605F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73C5069B-BAB3-402D-B646-2323DBD4605F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27CA27AD-CF09-468D-9AAB-955AD8D1A34B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27CA27AD-CF09-468D-9AAB-955AD8D1A34B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27CA27AD-CF09-468D-9AAB-955AD8D1A34B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27CA27AD-CF09-468D-9AAB-955AD8D1A34B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{6F85FEF7-1C15-49D6-8BCD-A76F7A0BB167} = {5CACD973-62B5-460D-90C8-8555E7C33A72}
 		{6E52CB98-16EA-4B75-A6CA-EDB5DBB20D1F} = {3376E0B1-F252-4072-BCF7-52B5694A9A1C}
 		{73C5069B-BAB3-402D-B646-2323DBD4605F} = {E7A6E864-B128-41F1-B055-F1951304ACCA}
+		{27CA27AD-CF09-468D-9AAB-955AD8D1A34B} = {30EFE8BE-CA27-4FAB-885F-FD768421892F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CDA705F-A1AC-4923-A35C-29030D1C0819}
