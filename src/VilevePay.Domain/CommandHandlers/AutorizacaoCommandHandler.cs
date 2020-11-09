@@ -92,7 +92,7 @@ namespace VilevePay.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var validarConsultor = await HttpClientHelper.OnGet<ValidarConsultor>(client, $"v1/consultor/validar/${message.CodigoConvite}");
+                var validarConsultor = await HttpClientHelper.OnGet<ValidarConsultor>(client, $"v1/consultor/validar/{message.CodigoConvite}");
                 if (validarConsultor.Valido.Equals(false))
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
@@ -141,7 +141,10 @@ namespace VilevePay.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var validarToken = await HttpClientHelper.OnGet<ValidarToken>(client, $"v1/validacao-contato/validar-token/{message.CodigoToken}");
+                var validarToken = await HttpClientHelper.OnPost<ValidarToken, object>(client, "v1/validacao-contato/validar-token", new
+                {
+                    token = message.CodigoToken
+                });
                 if (validarToken.Valido.Equals(false))
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Token inválido."));
@@ -183,7 +186,10 @@ namespace VilevePay.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var validarToken = await HttpClientHelper.OnGet<ValidarToken>(client, $"v1/validacao-contato/validar-token/{message.CodigoToken}");
+                var validarToken = await HttpClientHelper.OnPost<ValidarToken, object>(client, "v1/validacao-contato/validar-token", new
+                {
+                    token = message.CodigoToken
+                });
                 if (validarToken.Valido.Equals(false))
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Token inválido."));
@@ -225,7 +231,10 @@ namespace VilevePay.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var enviarTokenSms = await HttpClientHelper.OnGet<EnviarTokenSms>(client, $"v1/validacao-contato/enviar-token-sms/${message.NumeroCelular}");
+                var enviarTokenSms = await HttpClientHelper.OnPost<EnviarTokenSms, object>(client, "v1/validacao-contato/enviar-token-sms", new
+                {
+                    numero_telefone = message.NumeroCelular
+                });
                 if (enviarTokenSms.Sucesso.Equals(false))
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
@@ -259,9 +268,10 @@ namespace VilevePay.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                client.DefaultRequestHeaders.Add("email", message.Email);
-
-                var enviarTokenEmail = await HttpClientHelper.OnGet<EnviarTokenEmail>(client, $"v1/validacao-contato/enviar-token-email");
+                var enviarTokenEmail = await HttpClientHelper.OnPost<EnviarTokenEmail, object>(client, "v1/validacao-contato/enviar-token-email", new
+                {
+                    email = message.Email
+                });
                 if (enviarTokenEmail.Sucesso.Equals(false))
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
