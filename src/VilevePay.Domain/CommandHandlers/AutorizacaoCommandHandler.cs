@@ -259,7 +259,9 @@ namespace VilevePay.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var enviarTokenEmail = await HttpClientHelper.OnGet<EnviarTokenEmail>(client, $"v1/validacao-contato/enviar-token-email/${message.Email}");
+                client.DefaultRequestHeaders.Add("email", message.Email);
+
+                var enviarTokenEmail = await HttpClientHelper.OnGet<EnviarTokenEmail>(client, $"v1/validacao-contato/enviar-token-email");
                 if (enviarTokenEmail.Sucesso.Equals(false))
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
