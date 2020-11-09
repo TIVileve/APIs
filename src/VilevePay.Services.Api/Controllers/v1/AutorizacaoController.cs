@@ -93,9 +93,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpPost("convites/{codigoConvite}/sms/token")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult EnviarTokenSms(string codigoConvite, [FromHeader] string numeroCelular)
+        public async Task<IActionResult> EnviarTokenSms(string codigoConvite, [FromHeader] string numeroCelular)
         {
-            _autorizacaoAppService.EnviarTokenSms(codigoConvite, numeroCelular);
+            await _autorizacaoAppService.EnviarTokenSms(codigoConvite, numeroCelular);
 
             if (IsValidOperation())
             {

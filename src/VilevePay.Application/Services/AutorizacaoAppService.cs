@@ -65,10 +65,10 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(validarTokenEmailCommand);
         }
 
-        public void EnviarTokenSms(string codigoConvite, string numeroCelular)
+        public async Task EnviarTokenSms(string codigoConvite, string numeroCelular)
         {
             var enviarTokenSmsCommand = new EnviarTokenSmsCommand(codigoConvite, numeroCelular);
-            _bus.SendCommand(enviarTokenSmsCommand);
+            await _bus.SendCommand(enviarTokenSmsCommand);
         }
 
         public void EnviarTokenEmail(string codigoConvite, string email)

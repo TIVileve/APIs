@@ -181,17 +181,38 @@ namespace VilevePay.Domain.CommandHandlers
             return Task.FromResult(true);
         }
 
-        public Task<bool> Handle(EnviarTokenSmsCommand message, CancellationToken cancellationToken)
+        public async Task<bool> Handle(EnviarTokenSmsCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return Task.FromResult(false);
+                return await Task.FromResult(false);
             }
 
-            // API Vileve
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+            if (onboarding == null)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                return await Task.FromResult(false);
+            }
 
-            return Task.FromResult(true);
+            try
+            {
+                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var enviarTokenSms = await HttpClientHelper.OnGet<EnviarTokenSms>(client, $"v1/validacao-contato/enviar-token-sms/${message.NumeroCelular}");
+                if (enviarTokenSms.Sucesso.Equals(false))
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                    return await Task.FromResult(false);
+                }
+            }
+            catch (Exception)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
 
         public Task<bool> Handle(EnviarTokenEmailCommand message, CancellationToken cancellationToken)
