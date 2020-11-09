@@ -108,9 +108,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpGet("convites/{codigoConvite}/e-mails/token/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult ValidarTokenEmail(string codigoConvite, [FromHeader] string email, [FromHeader] string codigoToken)
+        public async Task<IActionResult> ValidarTokenEmail(string codigoConvite, [FromHeader] string email, [FromHeader] string codigoToken)
         {
-            _autorizacaoAppService.ValidarTokenEmail(codigoConvite, email, codigoToken);
+            await _autorizacaoAppService.ValidarTokenEmail(codigoConvite, email, codigoToken);
 
             if (IsValidOperation())
             {

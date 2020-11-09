@@ -1,6 +1,6 @@
 ﻿namespace VilevePay.Domain.Responses
 {
-    public class ConsultorValidar
+    public class ValidarConsultor
     {
         public bool Valido { get; set; }
     }
