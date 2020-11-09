@@ -123,9 +123,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpPost("convites/{codigoConvite}/e-mails/token")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult EnviarTokenEmail(string codigoConvite, [FromHeader] string email)
+        public async Task<IActionResult> EnviarTokenEmail(string codigoConvite, [FromHeader] string email)
         {
-            _autorizacaoAppService.EnviarTokenEmail(codigoConvite, email);
+            await _autorizacaoAppService.EnviarTokenEmail(codigoConvite, email);
 
             if (IsValidOperation())
             {
