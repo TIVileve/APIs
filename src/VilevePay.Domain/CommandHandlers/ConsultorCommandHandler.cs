@@ -22,10 +22,12 @@ namespace VilevePay.Domain.CommandHandlers
         IRequestHandler<ObterStatusOnboardingCommand, object>
     {
         private readonly IOnboardingRepository _onboardingRepository;
+        private readonly IConsultorRepository _consultorRepository;
         private readonly IEnderecoRepository _enderecoRepository;
 
         public ConsultorCommandHandler(
             IOnboardingRepository onboardingRepository,
+            IConsultorRepository consultorRepository,
             IEnderecoRepository enderecoRepository,
             IUnitOfWork uow,
             IMediatorHandler bus,
@@ -33,6 +35,7 @@ namespace VilevePay.Domain.CommandHandlers
             : base(uow, bus, notifications)
         {
             _onboardingRepository = onboardingRepository;
+            _consultorRepository = consultorRepository;
             _enderecoRepository = enderecoRepository;
         }
 
@@ -103,6 +106,24 @@ namespace VilevePay.Domain.CommandHandlers
             {
                 NotifyValidationErrors(message);
                 return Task.FromResult(false);
+            }
+
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+            if (onboarding == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                return Task.FromResult(false);
+            }
+
+            var consultor = new Consultor(Guid.NewGuid())
+            {
+                OnboardingId = onboarding.Id
+            };
+
+            _consultorRepository.Add(consultor);
+
+            if (Commit())
+            {
             }
 
             return Task.FromResult(true);
