@@ -2,7 +2,7 @@
 {
     public class TipoTelefoneViewModel
     {
-        public int TipoTelefone { get; set; }
+        public long TipoTelefone { get; set; }
         public string Nome { get; set; }
     }
 }

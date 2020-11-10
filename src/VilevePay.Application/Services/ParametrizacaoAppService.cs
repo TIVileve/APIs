@@ -59,31 +59,7 @@ namespace VilevePay.Application.Services
             var obterTipoTelefoneCommand = new ObterTipoTelefoneCommand();
             var obterTipoTelefoneResponse = await _bus.SendCommand(obterTipoTelefoneCommand);
 
-            return _notifications.HasNotifications()
-                ? obterTipoTelefoneResponse
-                : new List<TipoTelefoneViewModel>
-                {
-                    new TipoTelefoneViewModel
-                    {
-                        TipoTelefone = 1,
-                        Nome = "Residencial"
-                    },
-                    new TipoTelefoneViewModel
-                    {
-                        TipoTelefone = 2,
-                        Nome = "Celular"
-                    },
-                    new TipoTelefoneViewModel
-                    {
-                        TipoTelefone = 3,
-                        Nome = "Fax"
-                    },
-                    new TipoTelefoneViewModel
-                    {
-                        TipoTelefone = 4,
-                        Nome = "Corporativo"
-                    }
-                };
+            return _notifications.HasNotifications() ? obterTipoTelefoneResponse : _mapper.Map<IEnumerable<TipoTelefoneViewModel>>((IEnumerable<ParametrizacaoTipoTelefone>)obterTipoTelefoneResponse);
         }
 
         public async Task<object> ObterTipoEmail()
