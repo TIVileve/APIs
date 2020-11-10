@@ -75,21 +75,7 @@ namespace VilevePay.Application.Services
             var obterTipoEnderecoCommand = new ObterTipoEnderecoCommand();
             var obterTipoEnderecoResponse = await _bus.SendCommand(obterTipoEnderecoCommand);
 
-            return _notifications.HasNotifications()
-                ? obterTipoEnderecoResponse
-                : new List<TipoEnderecoViewModel>
-                {
-                    new TipoEnderecoViewModel
-                    {
-                        TipoEndereco = 0,
-                        Nome = "Residencial"
-                    },
-                    new TipoEnderecoViewModel
-                    {
-                        TipoEndereco = 1,
-                        Nome = "Comercial"
-                    }
-                };
+            return _notifications.HasNotifications() ? obterTipoEnderecoResponse : _mapper.Map<IEnumerable<TipoEnderecoViewModel>>((IEnumerable<ParametrizacaoTipoEndereco>)obterTipoEnderecoResponse);
         }
 
         public async Task<object> ObterBanco()

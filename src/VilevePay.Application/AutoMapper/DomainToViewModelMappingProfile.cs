@@ -45,6 +45,10 @@ namespace VilevePay.Application.AutoMapper
             CreateMap<ParametrizacaoTipoEmail, TipoEmailViewModel>()
                 .ForMember(dest => dest.TipoEmail, opt => opt.MapFrom(src => src.TipoEmail))
                 .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome));
+
+            CreateMap<ParametrizacaoTipoEndereco, TipoEnderecoViewModel>()
+                .ForMember(dest => dest.TipoEndereco, opt => opt.MapFrom(src => src.TipoEndereco))
+                .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome));
         }
     }
 }

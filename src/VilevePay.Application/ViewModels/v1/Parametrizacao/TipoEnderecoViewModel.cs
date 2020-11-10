@@ -2,7 +2,7 @@
 {
     public class TipoEnderecoViewModel
     {
-        public int TipoEndereco { get; set; }
+        public long TipoEndereco { get; set; }
         public string Nome { get; set; }
     }
 }
