@@ -24,6 +24,7 @@ namespace VilevePay.Domain.Models
         public virtual DadosBancarios DadosBancarios { get; set; }
         public string ContratoSocialBase64 { get; set; }
         public string UltimaAlteracaoBase64 { get; set; }
+        public virtual Representante Representante { get; set; }
 
         public virtual Onboarding Onboarding { get; set; }
         public Guid OnboardingId { get; set; }

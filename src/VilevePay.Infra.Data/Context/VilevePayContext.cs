@@ -17,6 +17,9 @@ namespace VilevePay.Infra.Data.Context
         public DbSet<Consultor> Consultores { get; set; }
         public DbSet<DadosBancarios> DadosBancarios { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
+        public DbSet<Representante> Representantes { get; set; }
+        public DbSet<RepresentanteEmail> RepresentantesEmails { get; set; }
+        public DbSet<RepresentanteTelefone> RepresentantesTelefones { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseLazyLoadingProxies();
 
@@ -26,6 +29,9 @@ namespace VilevePay.Infra.Data.Context
             modelBuilder.ApplyConfiguration(new ConsultorMap());
             modelBuilder.ApplyConfiguration(new DadosBancariosMap());
             modelBuilder.ApplyConfiguration(new EnderecoMap());
+            modelBuilder.ApplyConfiguration(new RepresentanteMap());
+            modelBuilder.ApplyConfiguration(new RepresentanteEmailMap());
+            modelBuilder.ApplyConfiguration(new RepresentanteTelefoneMap());
 
             base.OnModelCreating(modelBuilder);
         }
