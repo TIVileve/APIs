@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using VilevePay.Domain.Core.Models;
 
 namespace VilevePay.Domain.Models
@@ -26,6 +27,8 @@ namespace VilevePay.Domain.Models
 
         public virtual Onboarding Onboarding { get; set; }
         public Guid OnboardingId { get; set; }
+
+        public virtual ICollection<Endereco> Enderecos { get; set; }
 
         public Consultor Update()
         {

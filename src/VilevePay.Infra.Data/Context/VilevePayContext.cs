@@ -16,6 +16,7 @@ namespace VilevePay.Infra.Data.Context
         public DbSet<Onboarding> Onboarding { get; set; }
         public DbSet<Consultor> Consultores { get; set; }
         public DbSet<DadosBancarios> DadosBancarios { get; set; }
+        public DbSet<Endereco> Enderecos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseLazyLoadingProxies();
 
@@ -24,6 +25,7 @@ namespace VilevePay.Infra.Data.Context
             modelBuilder.ApplyConfiguration(new OnboardingMap());
             modelBuilder.ApplyConfiguration(new ConsultorMap());
             modelBuilder.ApplyConfiguration(new DadosBancariosMap());
+            modelBuilder.ApplyConfiguration(new EnderecoMap());
 
             base.OnModelCreating(modelBuilder);
         }

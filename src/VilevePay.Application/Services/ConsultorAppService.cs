@@ -83,9 +83,13 @@ namespace VilevePay.Application.Services
                 };
         }
 
-        public void CadastrarEndereco(string codigoConvite)
+        public void CadastrarEndereco(string codigoConvite, int tipoEndereco, string cep, string logradouro, int numero,
+            string complemento, string bairro, string cidade, string estado, bool principal,
+            string comprovanteBase64)
         {
-            var cadastrarEnderecoCommand = new CadastrarEnderecoCommand(codigoConvite);
+            var cadastrarEnderecoCommand = new CadastrarEnderecoCommand(codigoConvite, tipoEndereco, cep, logradouro, numero,
+                complemento, bairro, cidade, estado, principal,
+                comprovanteBase64);
             _bus.SendCommand(cadastrarEnderecoCommand);
         }
 
