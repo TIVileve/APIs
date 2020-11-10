@@ -51,16 +51,7 @@ namespace VilevePay.Application.Services
             var obterPerfilUsuarioCommand = new ObterPerfilUsuarioCommand();
             var obterPerfilUsuarioResponse = await _bus.SendCommand(obterPerfilUsuarioCommand);
 
-            return _notifications.HasNotifications()
-                ? obterPerfilUsuarioResponse
-                : new List<PerfilUsuarioViewModel>
-                {
-                    new PerfilUsuarioViewModel
-                    {
-                        CodigoPerfil = 17,
-                        Nome = "Parceiro"
-                    }
-                };
+            return _notifications.HasNotifications() ? obterPerfilUsuarioResponse : _mapper.Map<IEnumerable<PerfilUsuarioViewModel>>((IEnumerable<ParametrizacaoPerfilUsuario>)obterPerfilUsuarioResponse);
         }
 
         public async Task<object> ObterTipoTelefone()

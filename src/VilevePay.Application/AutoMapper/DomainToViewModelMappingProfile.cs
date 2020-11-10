@@ -33,6 +33,10 @@ namespace VilevePay.Application.AutoMapper
                 .ForMember(dest => dest.CodigoNacionalidade, opt => opt.MapFrom(src => src.CodigoNacionalidade))
                 .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome))
                 .ForMember(dest => dest.PrefixoPais, opt => opt.MapFrom(src => src.PrefixoPais));
+
+            CreateMap<ParametrizacaoPerfilUsuario, PerfilUsuarioViewModel>()
+                .ForMember(dest => dest.CodigoPerfil, opt => opt.MapFrom(src => src.CodigoPerfil))
+                .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome));
         }
     }
 }
