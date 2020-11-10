@@ -2,7 +2,7 @@
 {
     public enum TipoEndereco
     {
-        PessoaJuridica = 0,
-        PessoaFisica = 1
+        Consultor = 0,
+        Representante = 1
     }
 }
