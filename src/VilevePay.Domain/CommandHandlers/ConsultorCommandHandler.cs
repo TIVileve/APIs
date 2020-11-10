@@ -103,6 +103,19 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+            if (onboarding == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                return Task.FromResult(false);
+            }
+
+            _enderecoRepository.Remove(message.EnderecoId);
+
+            if (Commit())
+            {
+            }
+
             return Task.FromResult(true);
         }
 
