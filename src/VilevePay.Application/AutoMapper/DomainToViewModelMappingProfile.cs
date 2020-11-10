@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using VilevePay.Application.ViewModels.v1.Endereco;
+using VilevePay.Application.ViewModels.v1.Consultor;
 using VilevePay.Application.ViewModels.v1.Parametrizacao;
 using VilevePay.Application.ViewModels.v1.Property;
 using VilevePay.Domain.Models;
@@ -11,10 +11,13 @@ namespace VilevePay.Application.AutoMapper
     {
         public DomainToViewModelMappingProfile()
         {
+            CreateMap<Endereco, EnderecoViewModel>()
+                .ForMember(dest => dest.TipoEndereco, opt => opt.MapFrom(src => (int)src.TipoEndereco));
+
             CreateMap<Property, PropertyViewModel>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => (int)src.Type));
 
-            CreateMap<EnderecoCep, EnderecoViewModel>()
+            CreateMap<EnderecoCep, ViewModels.v1.Endereco.EnderecoViewModel>()
                 .ForMember(dest => dest.CodigoCidade, opt => opt.MapFrom(src => src.CodigoCidade))
                 .ForMember(dest => dest.CodigoUf, opt => opt.MapFrom(src => src.CodigoUf))
                 .ForMember(dest => dest.IbgeMunicipio, opt => opt.MapFrom(src => src.IbgeMunicipio))

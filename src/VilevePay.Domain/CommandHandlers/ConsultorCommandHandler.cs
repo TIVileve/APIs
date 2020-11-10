@@ -47,7 +47,22 @@ namespace VilevePay.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+            if (onboarding == null)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                return await Task.FromResult(false);
+            }
+
+            if (onboarding.Consultor == null)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado."));
+                return await Task.FromResult(false);
+            }
+
+            var enderecos = _enderecoRepository.Find(e => e.Consultor.Id.Equals(onboarding.Consultor.Id)).ToList();
+
+            return await Task.FromResult(enderecos);
         }
 
         public async Task<object> Handle(ObterEnderecoPorIdCommand message, CancellationToken cancellationToken)
@@ -62,6 +77,12 @@ namespace VilevePay.Domain.CommandHandlers
             if (onboarding == null)
             {
                 await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                return await Task.FromResult(false);
+            }
+
+            if (onboarding.Consultor == null)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado."));
                 return await Task.FromResult(false);
             }
 
@@ -122,13 +143,26 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            _enderecoRepository.Remove(message.EnderecoId);
-
-            if (Commit())
+            if (onboarding.Consultor == null)
             {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado."));
+                return Task.FromResult(false);
             }
 
-            return Task.FromResult(true);
+            var endereco = _enderecoRepository.GetById(message.EnderecoId);
+            if (endereco != null)
+            {
+                _enderecoRepository.Remove(message.EnderecoId);
+
+                if (Commit())
+                {
+                }
+
+                return Task.FromResult(true);
+            }
+
+            _bus.RaiseEvent(new DomainNotification(message.MessageType, "Endereço não encontrado."));
+            return Task.FromResult(false);
         }
 
         public Task<bool> Handle(CadastrarPessoaJuridicaCommand message, CancellationToken cancellationToken)

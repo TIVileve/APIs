@@ -8,6 +8,7 @@ using VilevePay.Application.ViewModels.v1.Consultor;
 using VilevePay.Domain.Commands.Consultor;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
+using VilevePay.Domain.Models;
 
 namespace VilevePay.Application.Services
 {
@@ -32,35 +33,7 @@ namespace VilevePay.Application.Services
             var obterEnderecoCommand = new ObterEnderecoCommand(codigoConvite);
             var obterEnderecoResponse = await _bus.SendCommand(obterEnderecoCommand);
 
-            return _notifications.HasNotifications()
-                ? obterEnderecoResponse
-                : new List<EnderecoViewModel>
-                {
-                    new EnderecoViewModel
-                    {
-                        Id = Guid.NewGuid(),
-                        Cep = "34006-086",
-                        Logradouro = "Rua da Mata",
-                        Numero = 185,
-                        Complemento = "APT 1502 T2",
-                        Bairro = "Vila da Serra",
-                        Cidade = "Nova Lima",
-                        Estado = "MG",
-                        Principal = true
-                    },
-                    new EnderecoViewModel
-                    {
-                        Id = Guid.NewGuid(),
-                        Cep = "31540-600",
-                        Logradouro = "Rua França",
-                        Numero = 155,
-                        Complemento = "",
-                        Bairro = "Jardim Leblon",
-                        Cidade = "Belo Horizonte",
-                        Estado = "MG",
-                        Principal = false
-                    }
-                };
+            return _notifications.HasNotifications() ? obterEnderecoResponse : _mapper.Map<IEnumerable<EnderecoViewModel>>((IEnumerable<Endereco>)obterEnderecoResponse);
         }
 
         public async Task<object> ObterEnderecoPorId(string codigoConvite, Guid enderecoId)
@@ -68,19 +41,7 @@ namespace VilevePay.Application.Services
             var obterEnderecoPorIdCommand = new ObterEnderecoPorIdCommand(codigoConvite, enderecoId);
             var obterEnderecoPorIdResponse = await _bus.SendCommand(obterEnderecoPorIdCommand);
 
-            return _notifications.HasNotifications()
-                ? obterEnderecoPorIdResponse
-                : new EnderecoViewModel
-                {
-                    Id = Guid.NewGuid(),
-                    Cep = "34006-086",
-                    Logradouro = "Rua da Mata",
-                    Numero = 185,
-                    Complemento = "APT 1502 T2",
-                    Bairro = "Vila da Serra",
-                    Cidade = "Nova Lima",
-                    Estado = "MG"
-                };
+            return _notifications.HasNotifications() ? obterEnderecoPorIdResponse : _mapper.Map<EnderecoViewModel>((Endereco)obterEnderecoPorIdResponse);
         }
 
         public void CadastrarEndereco(string codigoConvite, int tipoEndereco, string cep, string logradouro, int numero,
