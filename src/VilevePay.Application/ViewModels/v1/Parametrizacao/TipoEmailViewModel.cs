@@ -2,7 +2,7 @@
 {
     public class TipoEmailViewModel
     {
-        public int TipoEmail { get; set; }
+        public long TipoEmail { get; set; }
         public string Nome { get; set; }
     }
 }

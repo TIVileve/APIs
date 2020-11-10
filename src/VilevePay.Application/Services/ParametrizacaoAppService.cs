@@ -67,21 +67,7 @@ namespace VilevePay.Application.Services
             var obterTipoEmailCommand = new ObterTipoEmailCommand();
             var obterTipoEmailResponse = await _bus.SendCommand(obterTipoEmailCommand);
 
-            return _notifications.HasNotifications()
-                ? obterTipoEmailResponse
-                : new List<TipoEmailViewModel>
-                {
-                    new TipoEmailViewModel
-                    {
-                        TipoEmail = 1,
-                        Nome = "Pessoal"
-                    },
-                    new TipoEmailViewModel
-                    {
-                        TipoEmail = 2,
-                        Nome = "Comercial"
-                    }
-                };
+            return _notifications.HasNotifications() ? obterTipoEmailResponse : _mapper.Map<IEnumerable<TipoEmailViewModel>>((IEnumerable<ParametrizacaoTipoEmail>)obterTipoEmailResponse);
         }
 
         public async Task<object> ObterTipoEndereco()
