@@ -55,14 +55,14 @@ namespace VilevePay.Domain.CommandHandlers
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return Task.FromResult(false);
+                return await Task.FromResult(false);
             }
 
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
             if (onboarding == null)
             {
                 await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
-                return Task.FromResult(false);
+                return await Task.FromResult(false);
             }
 
             var endereco = _enderecoRepository.GetById(message.EnderecoId);
@@ -70,7 +70,7 @@ namespace VilevePay.Domain.CommandHandlers
                 return await Task.FromResult(endereco);
 
             await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Endereço não encontrado."));
-            return Task.FromResult(false);
+            return await Task.FromResult(false);
         }
 
         public Task<bool> Handle(CadastrarEnderecoCommand message, CancellationToken cancellationToken)
