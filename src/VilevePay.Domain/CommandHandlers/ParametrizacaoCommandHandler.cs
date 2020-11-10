@@ -106,7 +106,7 @@ namespace VilevePay.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await HttpClientHelper.OnGet<IEnumerable<ParametrizacaoTipoTelefone>>(client, "v1/dados-complementares/perfis-usuario"));
+                return await Task.FromResult(await HttpClientHelper.OnGet<IEnumerable<ParametrizacaoTipoTelefone>>(client, "v1/dados-complementares/tipos-telefone"));
             }
             catch (Exception)
             {
