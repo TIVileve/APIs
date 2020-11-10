@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using VilevePay.Application.ViewModels.v1.Endereco;
+using VilevePay.Application.ViewModels.v1.Parametrizacao;
 using VilevePay.Application.ViewModels.v1.Property;
 using VilevePay.Domain.Models;
 using VilevePay.Domain.Responses;
@@ -23,6 +24,10 @@ namespace VilevePay.Application.AutoMapper
                 .ForMember(dest => dest.Bairro, opt => opt.MapFrom(src => src.Bairro))
                 .ForMember(dest => dest.Uf, opt => opt.MapFrom(src => src.Uf))
                 .ForMember(dest => dest.Resultado, opt => opt.MapFrom(src => src.Resultado));
+
+            CreateMap<ParametrizacaoEstadoCivil, EstadoCivilViewModel>()
+                .ForMember(dest => dest.CodigoEstadoCivil, opt => opt.MapFrom(src => src.CodigoEstadoCivil))
+                .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome));
         }
     }
 }

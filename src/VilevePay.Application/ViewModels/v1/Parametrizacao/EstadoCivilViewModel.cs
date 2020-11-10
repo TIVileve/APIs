@@ -2,7 +2,7 @@
 {
     public class EstadoCivilViewModel
     {
-        public int CodigoEstadoCivil { get; set; }
+        public long CodigoEstadoCivil { get; set; }
         public string Nome { get; set; }
     }
 }

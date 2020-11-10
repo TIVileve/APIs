@@ -8,6 +8,7 @@ using VilevePay.Application.ViewModels.v1.Parametrizacao;
 using VilevePay.Domain.Commands.Parametrizacao;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
+using VilevePay.Domain.Responses;
 
 namespace VilevePay.Application.Services
 {
@@ -32,36 +33,7 @@ namespace VilevePay.Application.Services
             var obterEstadoCivilCommand = new ObterEstadoCivilCommand();
             var obterEstadoCivilResponse = await _bus.SendCommand(obterEstadoCivilCommand);
 
-            return _notifications.HasNotifications()
-                ? obterEstadoCivilResponse
-                : new List<EstadoCivilViewModel>
-                {
-                    new EstadoCivilViewModel
-                    {
-                        CodigoEstadoCivil = 1,
-                        Nome = "Solteiro"
-                    },
-                    new EstadoCivilViewModel
-                    {
-                        CodigoEstadoCivil = 2,
-                        Nome = "Casado"
-                    },
-                    new EstadoCivilViewModel
-                    {
-                        CodigoEstadoCivil = 3,
-                        Nome = "Separado"
-                    },
-                    new EstadoCivilViewModel
-                    {
-                        CodigoEstadoCivil = 4,
-                        Nome = "Divorciado"
-                    },
-                    new EstadoCivilViewModel
-                    {
-                        CodigoEstadoCivil = 5,
-                        Nome = "Viúvo"
-                    }
-                };
+            return _notifications.HasNotifications() ? obterEstadoCivilResponse : _mapper.Map<IEnumerable<EstadoCivilViewModel>>((IEnumerable<ParametrizacaoEstadoCivil>)obterEstadoCivilResponse);
         }
 
         public async Task<object> ObterNacionalidade()
