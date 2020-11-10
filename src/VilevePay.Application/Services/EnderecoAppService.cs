@@ -7,6 +7,7 @@ using VilevePay.Application.ViewModels.v1.Endereco;
 using VilevePay.Domain.Commands.Endereco;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
+using VilevePay.Domain.Responses;
 
 namespace VilevePay.Application.Services
 {
@@ -31,20 +32,7 @@ namespace VilevePay.Application.Services
             var obterEnderecoCommand = new ObterEnderecoCommand(cep);
             var obterEnderecoResponse = await _bus.SendCommand(obterEnderecoCommand);
 
-            return _notifications.HasNotifications()
-                ? obterEnderecoResponse
-                : new EnderecoViewModel
-                {
-                    CodigoCidade = 1,
-                    CodigoUf = 1,
-                    IbgeMunicipio = 1,
-                    Cidade = "Nova Lima",
-                    Logradouro = "Rua da Mata",
-                    TipoLogradouro = "Rua",
-                    Bairro = "Vila da Serra",
-                    Uf = "MG",
-                    Resultado = 1
-                };
+            return _notifications.HasNotifications() ? obterEnderecoResponse : _mapper.Map<EnderecoViewModel>((EnderecoCep)obterEnderecoResponse);
         }
 
         public void Dispose()
