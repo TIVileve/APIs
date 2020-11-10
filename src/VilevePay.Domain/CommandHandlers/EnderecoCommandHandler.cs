@@ -38,8 +38,11 @@ namespace VilevePay.Domain.CommandHandlers
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
                 var enderecoCep = await HttpClientHelper.OnGet<EnderecoCep>(client, $"v1/servico/buscar-endereco-cep/{message.Cep}");
+                if (!enderecoCep.Resultado.Equals(0))
+                    return await Task.FromResult(enderecoCep);
 
-                return await Task.FromResult(enderecoCep);
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cep não encontrado."));
+                return await Task.FromResult(false);
             }
             catch (Exception)
             {
