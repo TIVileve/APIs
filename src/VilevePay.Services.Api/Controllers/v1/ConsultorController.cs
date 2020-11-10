@@ -98,7 +98,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public IActionResult CadastrarPessoaJuridica(string codigoConvite, [FromBody] CadastrarPessoaJuridicaViewModel pessoaJuridica)
         {
-            _consultorAppService.CadastrarPessoaJuridica(codigoConvite);
+            _consultorAppService.CadastrarPessoaJuridica(codigoConvite, pessoaJuridica.Cnpj, pessoaJuridica.RazaoSocial, pessoaJuridica.NomeFantasia, pessoaJuridica.InscricaoMunicipal,
+                pessoaJuridica.InscricaoEstadual, pessoaJuridica.DadosBancarios.CodigoBanco, pessoaJuridica.DadosBancarios.Agencia, pessoaJuridica.DadosBancarios.ContaSemDigito, pessoaJuridica.DadosBancarios.Digito,
+                pessoaJuridica.DadosBancarios.TipoConta, pessoaJuridica.ContratoSocialBase64, pessoaJuridica.UltimaAlteracaoBase64);
 
             if (IsValidOperation())
             {

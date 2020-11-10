@@ -60,9 +60,13 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(deletarEnderecoCommand);
         }
 
-        public void CadastrarPessoaJuridica(string codigoConvite)
+        public void CadastrarPessoaJuridica(string codigoConvite, string cnpj, string razaoSocial, string nomeFantasia, string inscricaoMunicipal,
+            string inscricaoEstadual, string codigoBanco, string agencia, string contaSemDigito, string digito,
+            int tipoConta, string contratoSocialBase64, string ultimaAlteracaoBase64)
         {
-            var cadastrarPessoaJuridicaCommand = new CadastrarPessoaJuridicaCommand(codigoConvite);
+            var cadastrarPessoaJuridicaCommand = new CadastrarPessoaJuridicaCommand(codigoConvite, cnpj, razaoSocial, nomeFantasia, inscricaoMunicipal,
+                inscricaoEstadual, codigoBanco, agencia, contaSemDigito, digito,
+                tipoConta, contratoSocialBase64, ultimaAlteracaoBase64);
             _bus.SendCommand(cadastrarPessoaJuridicaCommand);
         }
 

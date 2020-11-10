@@ -180,10 +180,14 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            var consultor = new Consultor(Guid.NewGuid())
+            if (onboarding.Consultor != null)
             {
-                OnboardingId = onboarding.Id
-            };
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "O consultor já possui cadastro no sistema."));
+                return Task.FromResult(false);
+            }
+
+            var consultor = new Consultor(Guid.NewGuid(), message.Cnpj, message.RazaoSocial, message.NomeFantasia, message.InscricaoMunicipal,
+                message.InscricaoEstadual, message.ContratoSocialBase64, message.UltimaAlteracaoBase64, onboarding.Id);
 
             _consultorRepository.Add(consultor);
 

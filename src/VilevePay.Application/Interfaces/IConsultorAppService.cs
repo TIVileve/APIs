@@ -13,7 +13,11 @@ namespace VilevePay.Application.Interfaces
             string comprovanteBase64);
 
         void DeletarEndereco(string codigoConvite, Guid enderecoId);
-        void CadastrarPessoaJuridica(string codigoConvite);
+
+        void CadastrarPessoaJuridica(string codigoConvite, string cnpj, string razaoSocial, string nomeFantasia, string inscricaoMunicipal,
+            string inscricaoEstadual, string codigoBanco, string agencia, string contaSemDigito, string digito,
+            int tipoConta, string contratoSocialBase64, string ultimaAlteracaoBase64);
+
         void CadastrarRepresentante(string codigoConvite);
         Task<object> ObterStatusOnboarding(string email);
     }

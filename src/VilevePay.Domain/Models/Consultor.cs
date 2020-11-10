@@ -6,9 +6,18 @@ namespace VilevePay.Domain.Models
 {
     public class Consultor : Entity
     {
-        public Consultor(Guid id)
+        public Consultor(Guid id, string cnpj, string razaoSocial, string nomeFantasia, string inscricaoMunicipal,
+            string inscricaoEstadual, string contratoSocialBase64, string ultimaAlteracaoBase64, Guid onboardingId)
         {
             Id = id;
+            Cnpj = cnpj;
+            RazaoSocial = razaoSocial;
+            NomeFantasia = nomeFantasia;
+            InscricaoMunicipal = inscricaoMunicipal;
+            InscricaoEstadual = inscricaoEstadual;
+            ContratoSocialBase64 = contratoSocialBase64;
+            UltimaAlteracaoBase64 = ultimaAlteracaoBase64;
+            OnboardingId = onboardingId;
         }
 
         // Empty constructor for EF
@@ -31,8 +40,17 @@ namespace VilevePay.Domain.Models
 
         public virtual ICollection<Endereco> Enderecos { get; set; }
 
-        public Consultor Update()
+        public Consultor Update(string cnpj, string razaoSocial, string nomeFantasia, string inscricaoMunicipal,
+            string inscricaoEstadual, string contratoSocialBase64, string ultimaAlteracaoBase64)
         {
+            Cnpj = cnpj;
+            RazaoSocial = razaoSocial;
+            NomeFantasia = nomeFantasia;
+            InscricaoMunicipal = inscricaoMunicipal;
+            InscricaoEstadual = inscricaoEstadual;
+            ContratoSocialBase64 = contratoSocialBase64;
+            UltimaAlteracaoBase64 = ultimaAlteracaoBase64;
+
             return this;
         }
     }
