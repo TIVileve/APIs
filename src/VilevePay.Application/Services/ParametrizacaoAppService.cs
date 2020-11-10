@@ -91,35 +91,7 @@ namespace VilevePay.Application.Services
             var obterOperacaoBancariaCommand = new ObterOperacaoBancariaCommand();
             var obterOperacaoBancariaResponse = await _bus.SendCommand(obterOperacaoBancariaCommand);
 
-            return _notifications.HasNotifications()
-                ? obterOperacaoBancariaResponse
-                : new List<OperacaoBancariaViewModel>
-                {
-                    new OperacaoBancariaViewModel
-                    {
-                        CodigoOperacao = 1,
-                        Tipo = "013",
-                        Nome = "Poupança / Física"
-                    },
-                    new OperacaoBancariaViewModel
-                    {
-                        CodigoOperacao = 2,
-                        Tipo = "SEM",
-                        Nome = "NULL"
-                    },
-                    new OperacaoBancariaViewModel
-                    {
-                        CodigoOperacao = 3,
-                        Tipo = "023",
-                        Nome = "Conta Caixa Fácil"
-                    },
-                    new OperacaoBancariaViewModel
-                    {
-                        CodigoOperacao = 5,
-                        Tipo = "001",
-                        Nome = "Conta Corrente / Física"
-                    }
-                };
+            return _notifications.HasNotifications() ? obterOperacaoBancariaResponse : _mapper.Map<IEnumerable<OperacaoBancariaViewModel>>((IEnumerable<ParametrizacaoOperacaoBancaria>)obterOperacaoBancariaResponse);
         }
 
         public async Task<object> ObterSexo()
@@ -133,17 +105,17 @@ namespace VilevePay.Application.Services
                 {
                     new SexoViewModel
                     {
-                        CodigoSexo = 1,
+                        CodigoSexo = 0,
                         Nome = "Feminino"
                     },
                     new SexoViewModel
                     {
-                        CodigoSexo = 2,
+                        CodigoSexo = 1,
                         Nome = "Masculino"
                     },
                     new SexoViewModel
                     {
-                        CodigoSexo = 3,
+                        CodigoSexo = 2,
                         Nome = "Não declarado"
                     }
                 };

@@ -183,7 +183,16 @@ namespace VilevePay.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            try
+            {
+                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                return await Task.FromResult(await HttpClientHelper.OnGet<IEnumerable<ParametrizacaoOperacaoBancaria>>(client, "v1/dados-complementares/operacoes-bancarias"));
+            }
+            catch (Exception)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                return await Task.FromResult(false);
+            }
         }
 
         public async Task<object> Handle(ObterSexoCommand message, CancellationToken cancellationToken)

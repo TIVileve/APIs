@@ -53,6 +53,11 @@ namespace VilevePay.Application.AutoMapper
             CreateMap<ParametrizacaoBanco, BancoViewModel>()
                 .ForMember(dest => dest.CodigoBanco, opt => opt.MapFrom(src => src.CodigoBanco))
                 .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome));
+
+            CreateMap<ParametrizacaoOperacaoBancaria, OperacaoBancariaViewModel>()
+                .ForMember(dest => dest.CodigoOperacao, opt => opt.MapFrom(src => src.CodigoOperacao))
+                .ForMember(dest => dest.Tipo, opt => opt.MapFrom(src => src.Tipo))
+                .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Name));
         }
     }
 }
