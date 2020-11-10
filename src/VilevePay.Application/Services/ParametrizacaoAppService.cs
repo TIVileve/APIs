@@ -83,31 +83,7 @@ namespace VilevePay.Application.Services
             var obterBancoCommand = new ObterBancoCommand();
             var obterBancoResponse = await _bus.SendCommand(obterBancoCommand);
 
-            return _notifications.HasNotifications()
-                ? obterBancoResponse
-                : new List<BancoViewModel>
-                {
-                    new BancoViewModel
-                    {
-                        CodigoBanco = 39,
-                        Nome = "Caixa"
-                    },
-                    new BancoViewModel
-                    {
-                        CodigoBanco = 40,
-                        Nome = "Bradesco"
-                    },
-                    new BancoViewModel
-                    {
-                        CodigoBanco = 41,
-                        Nome = "Santander"
-                    },
-                    new BancoViewModel
-                    {
-                        CodigoBanco = 42,
-                        Nome = "Itau"
-                    }
-                };
+            return _notifications.HasNotifications() ? obterBancoResponse : _mapper.Map<IEnumerable<BancoViewModel>>((IEnumerable<ParametrizacaoBanco>)obterBancoResponse);
         }
 
         public async Task<object> ObterOperacaoBancaria()

@@ -49,6 +49,10 @@ namespace VilevePay.Application.AutoMapper
             CreateMap<ParametrizacaoTipoEndereco, TipoEnderecoViewModel>()
                 .ForMember(dest => dest.TipoEndereco, opt => opt.MapFrom(src => src.TipoEndereco))
                 .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome));
+
+            CreateMap<ParametrizacaoBanco, BancoViewModel>()
+                .ForMember(dest => dest.CodigoBanco, opt => opt.MapFrom(src => src.CodigoBanco))
+                .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome));
         }
     }
 }
