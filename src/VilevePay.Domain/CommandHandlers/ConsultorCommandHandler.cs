@@ -76,6 +76,12 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
+            if (onboarding.Consultor == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado."));
+                return Task.FromResult(false);
+            }
+
             var endereco = new Endereco(Guid.NewGuid(), (TipoEndereco)message.TipoEndereco, message.Cep, message.Logradouro, message.Numero,
                 message.Complemento, message.Bairro, message.Cidade, message.Estado, message.Principal,
                 message.ComprovanteBase64, onboarding.Consultor.Id);

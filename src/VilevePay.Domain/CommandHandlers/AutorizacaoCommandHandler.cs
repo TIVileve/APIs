@@ -66,7 +66,7 @@ namespace VilevePay.Domain.CommandHandlers
 
             if (!onboarding.Email.Equals(message.Email))
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "E-mail não encontrado."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "E-mail não cadastrado."));
                 return Task.FromResult(false);
             }
 
