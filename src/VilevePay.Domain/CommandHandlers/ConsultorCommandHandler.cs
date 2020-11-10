@@ -1,10 +1,14 @@
-﻿using System.Threading;
+﻿using System;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using VilevePay.Domain.Commands.Consultor;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
+using VilevePay.Domain.Enums;
 using VilevePay.Domain.Interfaces;
+using VilevePay.Domain.Models;
 
 namespace VilevePay.Domain.CommandHandlers
 {
@@ -17,12 +21,19 @@ namespace VilevePay.Domain.CommandHandlers
         IRequestHandler<CadastrarRepresentanteCommand, bool>,
         IRequestHandler<ObterStatusOnboardingCommand, object>
     {
+        private readonly IOnboardingRepository _onboardingRepository;
+        private readonly IEnderecoRepository _enderecoRepository;
+
         public ConsultorCommandHandler(
+            IOnboardingRepository onboardingRepository,
+            IEnderecoRepository enderecoRepository,
             IUnitOfWork uow,
             IMediatorHandler bus,
             INotificationHandler<DomainNotification> notifications)
             : base(uow, bus, notifications)
         {
+            _onboardingRepository = onboardingRepository;
+            _enderecoRepository = enderecoRepository;
         }
 
         public async Task<object> Handle(ObterEnderecoCommand message, CancellationToken cancellationToken)
@@ -53,6 +64,23 @@ namespace VilevePay.Domain.CommandHandlers
             {
                 NotifyValidationErrors(message);
                 return Task.FromResult(false);
+            }
+
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+            if (onboarding == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                return Task.FromResult(false);
+            }
+
+            var endereco = new Endereco(Guid.NewGuid(), (TipoEndereco)message.TipoEndereco, message.Cep, message.Logradouro, message.Numero,
+                message.Complemento, message.Bairro, message.Cidade, message.Estado, message.Principal,
+                message.ComprovanteBase64, onboarding.Consultor.Id);
+
+            _enderecoRepository.Add(endereco);
+
+            if (Commit())
+            {
             }
 
             return Task.FromResult(true);
