@@ -42,41 +42,7 @@ namespace VilevePay.Application.Services
                 var obterNacionalidadeCommand = new ObterNacionalidadeCommand();
                 var obterNacionalidadeResponse = await _bus.SendCommand(obterNacionalidadeCommand);
 
-                return _notifications.HasNotifications()
-                    ? obterNacionalidadeResponse
-                    : new List<NacionalidadeViewModel>
-                    {
-                        new NacionalidadeViewModel
-                        {
-                            CodigoNacionalidade = 1,
-                            Nome = "Afeganistão",
-                            PrefixoPais = "DAF"
-                        },
-                        new NacionalidadeViewModel
-                        {
-                            CodigoNacionalidade = 2,
-                            Nome = "África do Sul",
-                            PrefixoPais = "DZA"
-                        },
-                        new NacionalidadeViewModel
-                        {
-                            CodigoNacionalidade = 3,
-                            Nome = "Albânia",
-                            PrefixoPais = "DAL"
-                        },
-                        new NacionalidadeViewModel
-                        {
-                            CodigoNacionalidade = 4,
-                            Nome = "Alemanha",
-                            PrefixoPais = "DDE"
-                        },
-                        new NacionalidadeViewModel
-                        {
-                            CodigoNacionalidade = 5,
-                            Nome = "Andorra",
-                            PrefixoPais = "DAD"
-                        }
-                    };
+                return _notifications.HasNotifications() ? obterNacionalidadeResponse : _mapper.Map<IEnumerable<NacionalidadeViewModel>>((IEnumerable<ParametrizacaoNacionalidade>)obterNacionalidadeResponse);
             }
         }
 

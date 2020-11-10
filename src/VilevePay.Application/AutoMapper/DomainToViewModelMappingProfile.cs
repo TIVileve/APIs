@@ -28,6 +28,11 @@ namespace VilevePay.Application.AutoMapper
             CreateMap<ParametrizacaoEstadoCivil, EstadoCivilViewModel>()
                 .ForMember(dest => dest.CodigoEstadoCivil, opt => opt.MapFrom(src => src.CodigoEstadoCivil))
                 .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome));
+
+            CreateMap<ParametrizacaoNacionalidade, NacionalidadeViewModel>()
+                .ForMember(dest => dest.CodigoNacionalidade, opt => opt.MapFrom(src => src.CodigoNacionalidade))
+                .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome))
+                .ForMember(dest => dest.PrefixoPais, opt => opt.MapFrom(src => src.PrefixoPais));
         }
     }
 }
