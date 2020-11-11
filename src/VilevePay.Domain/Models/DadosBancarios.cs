@@ -5,9 +5,16 @@ namespace VilevePay.Domain.Models
 {
     public class DadosBancarios : Entity
     {
-        public DadosBancarios(Guid id)
+        public DadosBancarios(Guid id, string codigoBanco, string agencia, string contaSemDigito, string digito,
+            string tipoConta, Guid consultorId)
         {
             Id = id;
+            CodigoBanco = codigoBanco;
+            Agencia = agencia;
+            ContaSemDigito = contaSemDigito;
+            Digito = digito;
+            TipoConta = tipoConta;
+            ConsultorId = consultorId;
         }
 
         // Empty constructor for EF
@@ -24,8 +31,15 @@ namespace VilevePay.Domain.Models
         public virtual Consultor Consultor { get; set; }
         public Guid ConsultorId { get; set; }
 
-        public DadosBancarios Update()
+        public DadosBancarios Update(string codigoBanco, string agencia, string contaSemDigito, string digito,
+            string tipoConta)
         {
+            CodigoBanco = codigoBanco;
+            Agencia = agencia;
+            ContaSemDigito = contaSemDigito;
+            Digito = digito;
+            TipoConta = tipoConta;
+
             return this;
         }
     }

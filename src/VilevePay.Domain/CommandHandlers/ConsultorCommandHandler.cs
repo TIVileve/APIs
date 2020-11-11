@@ -23,11 +23,13 @@ namespace VilevePay.Domain.CommandHandlers
     {
         private readonly IOnboardingRepository _onboardingRepository;
         private readonly IConsultorRepository _consultorRepository;
+        private readonly IDadosBancariosRepository _dadosBancariosRepository;
         private readonly IEnderecoRepository _enderecoRepository;
 
         public ConsultorCommandHandler(
             IOnboardingRepository onboardingRepository,
             IConsultorRepository consultorRepository,
+            IDadosBancariosRepository dadosBancariosRepository,
             IEnderecoRepository enderecoRepository,
             IUnitOfWork uow,
             IMediatorHandler bus,
@@ -36,6 +38,7 @@ namespace VilevePay.Domain.CommandHandlers
         {
             _onboardingRepository = onboardingRepository;
             _consultorRepository = consultorRepository;
+            _dadosBancariosRepository = dadosBancariosRepository;
             _enderecoRepository = enderecoRepository;
         }
 
@@ -190,6 +193,11 @@ namespace VilevePay.Domain.CommandHandlers
                 message.InscricaoEstadual, message.ContratoSocialBase64, message.UltimaAlteracaoBase64, onboarding.Id);
 
             _consultorRepository.Add(consultor);
+
+            var dadosBancarios = new DadosBancarios(Guid.NewGuid(), message.CodigoBanco, message.Agencia, message.ContaSemDigito, message.Digito,
+                message.TipoConta.ToString(), consultor.Id);
+
+            _dadosBancariosRepository.Add(dadosBancarios);
 
             if (Commit())
             {
