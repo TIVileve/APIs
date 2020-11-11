@@ -70,9 +70,11 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(cadastrarPessoaJuridicaCommand);
         }
 
-        public void CadastrarRepresentante(string codigoConvite)
+        public void CadastrarRepresentante(string codigoConvite, string cpf, string nomeCompleto, int sexo, int estadoCivil,
+            string nacionalidade, IEnumerable<object> emails, IEnumerable<object> telefones, string documentoFrenteBase64, string documentoVersoBase64)
         {
-            var cadastrarRepresentanteCommand = new CadastrarRepresentanteCommand(codigoConvite);
+            var cadastrarRepresentanteCommand = new CadastrarRepresentanteCommand(codigoConvite, cpf, nomeCompleto, sexo, estadoCivil,
+                nacionalidade, emails, telefones, documentoFrenteBase64, documentoVersoBase64);
             _bus.SendCommand(cadastrarRepresentanteCommand);
         }
 

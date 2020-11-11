@@ -25,12 +25,18 @@ namespace VilevePay.Domain.CommandHandlers
         private readonly IConsultorRepository _consultorRepository;
         private readonly IDadosBancariosRepository _dadosBancariosRepository;
         private readonly IEnderecoRepository _enderecoRepository;
+        private readonly IRepresentanteRepository _representanteRepository;
+        private readonly IRepresentanteEmailRepository _representanteEmailRepository;
+        private readonly IRepresentanteTelefoneRepository _representanteTelefoneRepository;
 
         public ConsultorCommandHandler(
             IOnboardingRepository onboardingRepository,
             IConsultorRepository consultorRepository,
             IDadosBancariosRepository dadosBancariosRepository,
             IEnderecoRepository enderecoRepository,
+            IRepresentanteRepository representanteRepository,
+            IRepresentanteEmailRepository representanteEmailRepository,
+            IRepresentanteTelefoneRepository representanteTelefoneRepository,
             IUnitOfWork uow,
             IMediatorHandler bus,
             INotificationHandler<DomainNotification> notifications)
@@ -40,6 +46,9 @@ namespace VilevePay.Domain.CommandHandlers
             _consultorRepository = consultorRepository;
             _dadosBancariosRepository = dadosBancariosRepository;
             _enderecoRepository = enderecoRepository;
+            _representanteRepository = representanteRepository;
+            _representanteEmailRepository = representanteEmailRepository;
+            _representanteTelefoneRepository = representanteTelefoneRepository;
         }
 
         public async Task<object> Handle(ObterEnderecoCommand message, CancellationToken cancellationToken)
@@ -212,6 +221,48 @@ namespace VilevePay.Domain.CommandHandlers
             {
                 NotifyValidationErrors(message);
                 return Task.FromResult(false);
+            }
+
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+            if (onboarding == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                return Task.FromResult(false);
+            }
+
+            if (onboarding.Consultor == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado."));
+                return Task.FromResult(false);
+            }
+
+            var representante = new Representante(Guid.NewGuid(), message.Cpf, message.NomeCompleto, message.Sexo, message.EstadoCivil,
+                message.Nacionalidade, message.DocumentoFrenteBase64, message.DocumentoVersoBase64, onboarding.Consultor.Id);
+
+            _representanteRepository.Add(representante);
+
+            foreach (var value in message.Emails)
+            {
+                var tipoEmail = (int?)value.GetType().GetProperty("TipoEmail")?.GetValue(value, null);
+                var email = value.GetType().GetProperty("Email")?.GetValue(value, null).ToString();
+
+                var representanteEmail = new RepresentanteEmail(Guid.NewGuid(), tipoEmail.GetValueOrDefault(), email, representante.Id);
+
+                _representanteEmailRepository.Add(representanteEmail);
+            }
+
+            foreach (var value in message.Telefones)
+            {
+                var tipoTelefone = (int?)value.GetType().GetProperty("TipoTelefone")?.GetValue(value, null);
+                var numero = value.GetType().GetProperty("Numero")?.GetValue(value, null).ToString();
+
+                var representanteTelefone = new RepresentanteTelefone(Guid.NewGuid(), tipoTelefone.GetValueOrDefault(), numero, representante.Id);
+
+                _representanteTelefoneRepository.Add(representanteTelefone);
+            }
+
+            if (Commit())
+            {
             }
 
             return Task.FromResult(true);

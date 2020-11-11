@@ -115,7 +115,8 @@ namespace VilevePay.Services.Api.Controllers.v1
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public IActionResult CadastrarRepresentante(string codigoConvite, [FromBody] CadastrarRepresentanteViewModel representante)
         {
-            _consultorAppService.CadastrarRepresentante(codigoConvite);
+            _consultorAppService.CadastrarRepresentante(codigoConvite, representante.Cpf, representante.NomeCompleto, representante.Sexo, representante.EstadoCivil,
+                representante.Nacionalidade, representante.Emails, representante.Telefones, representante.Documento.FrenteBase64, representante.Documento.VersoBase64);
 
             if (IsValidOperation())
             {

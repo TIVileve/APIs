@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using VilevePay.Domain.Core.Commands;
 
 namespace VilevePay.Domain.Commands.Consultor
@@ -10,20 +11,20 @@ namespace VilevePay.Domain.Commands.Consultor
         public string Email { get; protected set; }
 
         // Pessoa Juridica
-        public string Cnpj { get; set; }
-        public string RazaoSocial { get; set; }
-        public string NomeFantasia { get; set; }
-        public string InscricaoMunicipal { get; set; }
-        public string InscricaoEstadual { get; set; }
-        public string ContratoSocialBase64 { get; set; }
-        public string UltimaAlteracaoBase64 { get; set; }
+        public string Cnpj { get; protected set; }
+        public string RazaoSocial { get; protected set; }
+        public string NomeFantasia { get; protected set; }
+        public string InscricaoMunicipal { get; protected set; }
+        public string InscricaoEstadual { get; protected set; }
+        public string ContratoSocialBase64 { get; protected set; }
+        public string UltimaAlteracaoBase64 { get; protected set; }
 
         // Dados Bancarios
-        public string CodigoBanco { get; set; }
-        public string Agencia { get; set; }
-        public string ContaSemDigito { get; set; }
-        public string Digito { get; set; }
-        public int TipoConta { get; set; }
+        public string CodigoBanco { get; protected set; }
+        public string Agencia { get; protected set; }
+        public string ContaSemDigito { get; protected set; }
+        public string Digito { get; protected set; }
+        public int TipoConta { get; protected set; }
 
         // Endereco
         public int TipoEndereco { get; protected set; }
@@ -36,5 +37,16 @@ namespace VilevePay.Domain.Commands.Consultor
         public string Estado { get; protected set; }
         public bool Principal { get; protected set; }
         public string ComprovanteBase64 { get; protected set; }
+
+        // Representante
+        public string Cpf { get; protected set; }
+        public string NomeCompleto { get; protected set; }
+        public int Sexo { get; protected set; }
+        public int EstadoCivil { get; protected set; }
+        public string Nacionalidade { get; protected set; }
+        public IEnumerable<object> Emails { get; protected set; }
+        public IEnumerable<object> Telefones { get; protected set; }
+        public string DocumentoFrenteBase64 { get; protected set; }
+        public string DocumentoVersoBase64 { get; protected set; }
     }
 }

@@ -97,6 +97,9 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IConsultorRepository, ConsultorRepository>();
             services.AddScoped<IDadosBancariosRepository, DadosBancariosRepository>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+            services.AddScoped<IRepresentanteRepository, RepresentanteRepository>();
+            services.AddScoped<IRepresentanteEmailRepository, RepresentanteEmailRepository>();
+            services.AddScoped<IRepresentanteTelefoneRepository, RepresentanteTelefoneRepository>();
             services.AddScoped<IPropertyRepository, PropertyRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<VilevePayContext>();

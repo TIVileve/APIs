@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace VilevePay.Application.Interfaces
@@ -18,7 +19,9 @@ namespace VilevePay.Application.Interfaces
             string inscricaoEstadual, string codigoBanco, string agencia, string contaSemDigito, string digito,
             int tipoConta, string contratoSocialBase64, string ultimaAlteracaoBase64);
 
-        void CadastrarRepresentante(string codigoConvite);
+        void CadastrarRepresentante(string codigoConvite, string cpf, string nomeCompleto, int sexo, int estadoCivil,
+            string nacionalidade, IEnumerable<object> emails, IEnumerable<object> telefones, string documentoFrenteBase64, string documentoVersoBase64);
+
         Task<object> ObterStatusOnboarding(string email);
     }
 }

@@ -6,9 +6,18 @@ namespace VilevePay.Domain.Models
 {
     public class Representante : Entity
     {
-        public Representante(Guid id)
+        public Representante(Guid id, string cpf, string nomeCompleto, int sexo, int estadoCivil,
+            string nacionalidade, string documentoFrenteBase64, string documentoVersoBase64, Guid consultorId)
         {
             Id = id;
+            Cpf = cpf;
+            NomeCompleto = nomeCompleto;
+            Sexo = sexo;
+            EstadoCivil = estadoCivil;
+            Nacionalidade = nacionalidade;
+            DocumentoFrenteBase64 = documentoFrenteBase64;
+            DocumentoVersoBase64 = documentoVersoBase64;
+            ConsultorId = consultorId;
         }
 
         // Empty constructor for EF
@@ -29,8 +38,17 @@ namespace VilevePay.Domain.Models
         public virtual Consultor Consultor { get; set; }
         public Guid ConsultorId { get; set; }
 
-        public Representante Update()
+        public Representante Update(string cpf, string nomeCompleto, int sexo, int estadoCivil,
+            string nacionalidade, string documentoFrenteBase64, string documentoVersoBase64)
         {
+            Cpf = cpf;
+            NomeCompleto = nomeCompleto;
+            Sexo = sexo;
+            EstadoCivil = estadoCivil;
+            Nacionalidade = nacionalidade;
+            DocumentoFrenteBase64 = documentoFrenteBase64;
+            DocumentoVersoBase64 = documentoVersoBase64;
+
             return this;
         }
     }
