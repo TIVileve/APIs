@@ -5,6 +5,7 @@ using VilevePay.Application.Interfaces;
 using VilevePay.Application.Services;
 using VilevePay.Domain.CommandHandlers;
 using VilevePay.Domain.Commands.Autorizacao;
+using VilevePay.Domain.Commands.Cliente;
 using VilevePay.Domain.Commands.Consultor;
 using VilevePay.Domain.Commands.Parametrizacao;
 using VilevePay.Domain.Commands.Property;
@@ -43,6 +44,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IEnderecoAppService, EnderecoAppService>();
             services.AddScoped<IParametrizacaoAppService, ParametrizacaoAppService>();
             services.AddScoped<IConsultorAppService, ConsultorAppService>();
+            services.AddScoped<IClienteAppService, ClienteAppService>();
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
@@ -91,6 +93,9 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<CadastrarPessoaJuridicaCommand, bool>, ConsultorCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarRepresentanteCommand, bool>, ConsultorCommandHandler>();
             services.AddScoped<IRequestHandler<ObterStatusOnboardingCommand, object>, ConsultorCommandHandler>();
+
+            // Cliente
+            services.AddScoped<IRequestHandler<CadastrarClienteCommand, bool>, ClienteCommandHandler>();
 
             // Infra - Data
             services.AddScoped<IOnboardingRepository, OnboardingRepository>();
