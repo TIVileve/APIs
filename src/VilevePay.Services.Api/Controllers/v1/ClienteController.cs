@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VilevePay.Application.Interfaces;
@@ -39,6 +40,21 @@ namespace VilevePay.Services.Api.Controllers.v1
             if (IsValidOperation())
             {
                 return NoContent();
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
+        [HttpGet("seguros/produtos")]
+        [ProducesResponseType(typeof(ProdutoViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ObterProduto()
+        {
+            var response = await _clienteAppService.ObterProduto();
+
+            if (IsValidOperation())
+            {
+                return Ok(response);
             }
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));

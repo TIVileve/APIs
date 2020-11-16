@@ -131,11 +131,16 @@ namespace VilevePay.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
-            if (onboarding == null)
+            Onboarding onboarding = null;
+
+            if (!message.CodigoConvite.Equals("******"))
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
-                return await Task.FromResult(false);
+                onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+                if (onboarding == null)
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                    return await Task.FromResult(false);
+                }
             }
 
             try
@@ -156,6 +161,9 @@ namespace VilevePay.Domain.CommandHandlers
                 await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
                 return await Task.FromResult(false);
             }
+
+            if (onboarding == null)
+                return await Task.FromResult(true);
 
             onboarding.NumeroCelular = message.NumeroCelular;
 
@@ -221,11 +229,14 @@ namespace VilevePay.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
-            if (onboarding == null)
+            if (!message.CodigoConvite.Equals("******"))
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
-                return await Task.FromResult(false);
+                var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+                if (onboarding == null)
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                    return await Task.FromResult(false);
+                }
             }
 
             try

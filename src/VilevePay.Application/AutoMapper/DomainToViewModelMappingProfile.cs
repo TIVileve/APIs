@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using VilevePay.Application.ViewModels.v1.Cliente;
 using VilevePay.Application.ViewModels.v1.Consultor;
 using VilevePay.Application.ViewModels.v1.Parametrizacao;
 using VilevePay.Application.ViewModels.v1.Property;
@@ -61,6 +62,11 @@ namespace VilevePay.Application.AutoMapper
                 .ForMember(dest => dest.CodigoOperacao, opt => opt.MapFrom(src => src.CodigoOperacao))
                 .ForMember(dest => dest.Tipo, opt => opt.MapFrom(src => src.Tipo))
                 .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Name));
+
+            CreateMap<SeguroProduto, ProdutoViewModel>()
+                .ForMember(dest => dest.Itens, opt => opt.MapFrom(src => src.ProdutoItens));
+
+            CreateMap<SeguroProdutoItem, ProdutoItemViewModel>();
         }
     }
 }
