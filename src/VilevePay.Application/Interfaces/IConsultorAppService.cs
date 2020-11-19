@@ -6,7 +6,7 @@ namespace VilevePay.Application.Interfaces
 {
     public interface IConsultorAppService : IDisposable
     {
-        Task<object> ObterEndereco(string codigoConvite);
+        Task<object> ObterEndereco(string codigoConvite, string numeroCelular);
         Task<object> ObterEnderecoPorId(string codigoConvite, Guid enderecoId);
 
         void CadastrarEndereco(string codigoConvite, int tipoEndereco, string cep, string logradouro, int numero,

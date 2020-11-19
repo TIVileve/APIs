@@ -5,9 +5,10 @@ namespace VilevePay.Domain.Commands.Consultor
 {
     public class ObterEnderecoCommand : ConsultorCommand, IRequest<object>
     {
-        public ObterEnderecoCommand(string codigoConvite)
+        public ObterEnderecoCommand(string codigoConvite, string numeroCelular)
         {
             CodigoConvite = codigoConvite;
+            NumeroCelular = numeroCelular;
         }
 
         public override bool IsValid()

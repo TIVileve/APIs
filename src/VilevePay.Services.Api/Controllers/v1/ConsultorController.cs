@@ -34,9 +34,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpGet("convites/{codigoConvite}/enderecos")]
         [ProducesResponseType(typeof(IEnumerable<EnderecoViewModel>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> ObterEndereco(string codigoConvite)
+        public async Task<IActionResult> ObterEndereco(string codigoConvite, [FromHeader] string numeroCelular)
         {
-            var response = await _consultorAppService.ObterEndereco(codigoConvite);
+            var response = await _consultorAppService.ObterEndereco(codigoConvite, numeroCelular);
 
             if (IsValidOperation())
             {
