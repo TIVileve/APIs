@@ -44,13 +44,13 @@ namespace VilevePay.Application.Services
             return _notifications.HasNotifications() ? obterEnderecoPorIdResponse : _mapper.Map<EnderecoViewModel>((Endereco)obterEnderecoPorIdResponse);
         }
 
-        public void CadastrarEndereco(string codigoConvite, int tipoEndereco, string cep, string logradouro, int numero,
-            string complemento, string bairro, string cidade, string estado, bool principal,
-            string comprovanteBase64)
+        public void CadastrarEndereco(string codigoConvite, string numeroCelular, int tipoEndereco, string cep, string logradouro,
+            int numero, string complemento, string bairro, string cidade, string estado,
+            bool principal, string comprovanteBase64)
         {
-            var cadastrarEnderecoCommand = new CadastrarEnderecoCommand(codigoConvite, tipoEndereco, cep, logradouro, numero,
-                complemento, bairro, cidade, estado, principal,
-                comprovanteBase64);
+            var cadastrarEnderecoCommand = new CadastrarEnderecoCommand(codigoConvite, numeroCelular, tipoEndereco, cep, logradouro,
+                numero, complemento, bairro, cidade, estado,
+                principal, comprovanteBase64);
             _bus.SendCommand(cadastrarEnderecoCommand);
         }
 

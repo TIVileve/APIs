@@ -64,11 +64,11 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpPost("convites/{codigoConvite}/enderecos")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult CadastrarEndereco(string codigoConvite, [FromBody] CadastrarEnderecoViewModel endereco)
+        public IActionResult CadastrarEndereco(string codigoConvite, [FromHeader] string numeroCelular, [FromBody] CadastrarEnderecoViewModel endereco)
         {
-            _consultorAppService.CadastrarEndereco(codigoConvite, endereco.TipoEndereco, endereco.Cep, endereco.Logradouro, endereco.Numero,
-                endereco.Complemento, endereco.Bairro, endereco.Cidade, endereco.Estado, endereco.Principal,
-                endereco.ComprovanteBase64);
+            _consultorAppService.CadastrarEndereco(codigoConvite, numeroCelular, endereco.TipoEndereco, endereco.Cep, endereco.Logradouro,
+                endereco.Numero, endereco.Complemento, endereco.Bairro, endereco.Cidade, endereco.Estado,
+                endereco.Principal, endereco.ComprovanteBase64);
 
             if (IsValidOperation())
             {
