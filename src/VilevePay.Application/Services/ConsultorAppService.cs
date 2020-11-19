@@ -36,9 +36,9 @@ namespace VilevePay.Application.Services
             return _notifications.HasNotifications() ? obterEnderecoResponse : _mapper.Map<IEnumerable<EnderecoViewModel>>((IEnumerable<Endereco>)obterEnderecoResponse);
         }
 
-        public async Task<object> ObterEnderecoPorId(string codigoConvite, Guid enderecoId)
+        public async Task<object> ObterEnderecoPorId(string codigoConvite, string numeroCelular, Guid enderecoId)
         {
-            var obterEnderecoPorIdCommand = new ObterEnderecoPorIdCommand(codigoConvite, enderecoId);
+            var obterEnderecoPorIdCommand = new ObterEnderecoPorIdCommand(codigoConvite, numeroCelular, enderecoId);
             var obterEnderecoPorIdResponse = await _bus.SendCommand(obterEnderecoPorIdCommand);
 
             return _notifications.HasNotifications() ? obterEnderecoPorIdResponse : _mapper.Map<EnderecoViewModel>((Endereco)obterEnderecoPorIdResponse);

@@ -6,9 +6,10 @@ namespace VilevePay.Domain.Commands.Consultor
 {
     public class ObterEnderecoPorIdCommand : ConsultorCommand, IRequest<object>
     {
-        public ObterEnderecoPorIdCommand(string codigoConvite, Guid enderecoId)
+        public ObterEnderecoPorIdCommand(string codigoConvite, string numeroCelular, Guid enderecoId)
         {
             CodigoConvite = codigoConvite;
+            NumeroCelular = numeroCelular;
             EnderecoId = enderecoId;
         }
 
