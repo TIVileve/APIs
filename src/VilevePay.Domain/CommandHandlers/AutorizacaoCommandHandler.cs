@@ -114,18 +114,6 @@ namespace VilevePay.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            Onboarding onboarding = null;
-
-            if (!message.CodigoConvite.Equals("******"))
-            {
-                onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
-                if (onboarding == null)
-                {
-                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
-                    return await Task.FromResult(false);
-                }
-            }
-
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
@@ -145,12 +133,20 @@ namespace VilevePay.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            if (onboarding == null)
+            if (message.CodigoConvite.Equals("******"))
                 return await Task.FromResult(true);
 
-            onboarding.NumeroCelular = message.NumeroCelular;
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
+            if (onboarding != null)
+                return await Task.FromResult(true);
 
-            _onboardingRepository.Update(onboarding);
+            onboarding = new Onboarding(Guid.NewGuid())
+            {
+                CodigoConvite = message.CodigoConvite,
+                NumeroCelular = message.NumeroCelular
+            };
+
+            _onboardingRepository.Add(onboarding);
 
             if (Commit())
             {
