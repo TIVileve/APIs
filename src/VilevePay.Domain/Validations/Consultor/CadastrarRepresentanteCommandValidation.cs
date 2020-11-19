@@ -7,6 +7,7 @@ namespace VilevePay.Domain.Validations.Consultor
         public CadastrarRepresentanteCommandValidation()
         {
             ValidateCodigoConvite();
+            ValidateNumeroCelular();
         }
     }
 }

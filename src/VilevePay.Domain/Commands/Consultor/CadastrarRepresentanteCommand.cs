@@ -6,10 +6,12 @@ namespace VilevePay.Domain.Commands.Consultor
 {
     public class CadastrarRepresentanteCommand : ConsultorCommand, IRequest<bool>
     {
-        public CadastrarRepresentanteCommand(string codigoConvite, string cpf, string nomeCompleto, int sexo, int estadoCivil,
-            string nacionalidade, IEnumerable<object> emails, IEnumerable<object> telefones, string documentoFrenteBase64, string documentoVersoBase64)
+        public CadastrarRepresentanteCommand(string codigoConvite, string numeroCelular, string cpf, string nomeCompleto, int sexo,
+            int estadoCivil, string nacionalidade, IEnumerable<object> emails, IEnumerable<object> telefones, string documentoFrenteBase64,
+            string documentoVersoBase64)
         {
             CodigoConvite = codigoConvite;
+            NumeroCelular = numeroCelular;
             Cpf = cpf;
             NomeCompleto = nomeCompleto;
             Sexo = sexo;
