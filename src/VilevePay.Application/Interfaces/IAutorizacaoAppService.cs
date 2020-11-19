@@ -13,8 +13,8 @@ namespace VilevePay.Application.Interfaces
         Task ValidarCodigoConvite(string codigoConvite);
         Task ValidarTokenSms(string codigoConvite, string numeroCelular, string codigoToken);
         Task ValidarTokenEmail(string codigoConvite, string numeroCelular, string email, string codigoToken);
-        Task EnviarTokenSms(string codigoConvite, string numeroCelular);
-        Task EnviarTokenEmail(string codigoConvite, string email);
+        Task EnviarTokenSms(string numeroCelular);
+        Task EnviarTokenEmail(string email);
         void ValidarSelfie(string codigoConvite, string fotoBase64);
     }
 }

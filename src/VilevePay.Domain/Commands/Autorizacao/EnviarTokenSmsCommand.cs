@@ -5,9 +5,8 @@ namespace VilevePay.Domain.Commands.Autorizacao
 {
     public class EnviarTokenSmsCommand : AutorizacaoCommand, IRequest<bool>
     {
-        public EnviarTokenSmsCommand(string codigoConvite, string numeroCelular)
+        public EnviarTokenSmsCommand(string numeroCelular)
         {
-            CodigoConvite = codigoConvite;
             NumeroCelular = numeroCelular;
         }
 

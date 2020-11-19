@@ -208,16 +208,6 @@ namespace VilevePay.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            if (!message.CodigoConvite.Equals("******"))
-            {
-                var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
-                if (onboarding == null)
-                {
-                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
-                    return await Task.FromResult(false);
-                }
-            }
-
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
@@ -245,13 +235,6 @@ namespace VilevePay.Domain.CommandHandlers
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return await Task.FromResult(false);
-            }
-
-            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
-            if (onboarding == null)
-            {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
                 return await Task.FromResult(false);
             }
 

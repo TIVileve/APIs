@@ -5,9 +5,8 @@ namespace VilevePay.Domain.Commands.Autorizacao
 {
     public class EnviarTokenEmailCommand : AutorizacaoCommand, IRequest<bool>
     {
-        public EnviarTokenEmailCommand(string codigoConvite, string email)
+        public EnviarTokenEmailCommand(string email)
         {
-            CodigoConvite = codigoConvite;
             Email = email;
         }
 

@@ -65,7 +65,22 @@ namespace VilevePay.Services.Api.Controllers.v1
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> EnviarTokenSms([FromHeader] string numeroCelular)
         {
-            await _autorizacaoAppService.EnviarTokenSms("******", numeroCelular);
+            await _autorizacaoAppService.EnviarTokenSms(numeroCelular);
+
+            if (IsValidOperation())
+            {
+                return NoContent();
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
+        [HttpPost("e-mails/token")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> EnviarTokenEmail([FromHeader] string email)
+        {
+            await _autorizacaoAppService.EnviarTokenEmail(email);
 
             if (IsValidOperation())
             {
@@ -122,42 +137,12 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
-        [HttpPost("convites/{codigoConvite}/sms/token")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> EnviarTokenSms(string codigoConvite, [FromHeader] string numeroCelular)
-        {
-            await _autorizacaoAppService.EnviarTokenSms(codigoConvite, numeroCelular);
-
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
-        }
-
         [HttpGet("convites/{codigoConvite}/e-mails/token/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ValidarTokenEmail(string codigoConvite, [FromHeader] string numeroCelular, [FromHeader] string email, [FromHeader] string codigoToken)
         {
             await _autorizacaoAppService.ValidarTokenEmail(codigoConvite, numeroCelular, email, codigoToken);
-
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
-        }
-
-        [HttpPost("convites/{codigoConvite}/e-mails/token")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> EnviarTokenEmail(string codigoConvite, [FromHeader] string email)
-        {
-            await _autorizacaoAppService.EnviarTokenEmail(codigoConvite, email);
 
             if (IsValidOperation())
             {
