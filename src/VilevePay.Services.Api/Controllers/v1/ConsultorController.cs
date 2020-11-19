@@ -96,11 +96,11 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpPost("convites/{codigoConvite}/pessoas-juridicas")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult CadastrarPessoaJuridica(string codigoConvite, [FromBody] CadastrarPessoaJuridicaViewModel pessoaJuridica)
+        public IActionResult CadastrarPessoaJuridica(string codigoConvite, [FromHeader] string numeroCelular, [FromBody] CadastrarPessoaJuridicaViewModel pessoaJuridica)
         {
-            _consultorAppService.CadastrarPessoaJuridica(codigoConvite, pessoaJuridica.Cnpj, pessoaJuridica.RazaoSocial, pessoaJuridica.NomeFantasia, pessoaJuridica.InscricaoMunicipal,
-                pessoaJuridica.InscricaoEstadual, pessoaJuridica.DadosBancarios.CodigoBanco, pessoaJuridica.DadosBancarios.Agencia, pessoaJuridica.DadosBancarios.ContaSemDigito, pessoaJuridica.DadosBancarios.Digito,
-                pessoaJuridica.DadosBancarios.TipoConta, pessoaJuridica.ContratoSocialBase64, pessoaJuridica.UltimaAlteracaoBase64);
+            _consultorAppService.CadastrarPessoaJuridica(codigoConvite, numeroCelular, pessoaJuridica.Cnpj, pessoaJuridica.RazaoSocial, pessoaJuridica.NomeFantasia,
+                pessoaJuridica.InscricaoMunicipal, pessoaJuridica.InscricaoEstadual, pessoaJuridica.DadosBancarios.CodigoBanco, pessoaJuridica.DadosBancarios.Agencia, pessoaJuridica.DadosBancarios.ContaSemDigito,
+                pessoaJuridica.DadosBancarios.Digito, pessoaJuridica.DadosBancarios.TipoConta, pessoaJuridica.ContratoSocialBase64, pessoaJuridica.UltimaAlteracaoBase64);
 
             if (IsValidOperation())
             {

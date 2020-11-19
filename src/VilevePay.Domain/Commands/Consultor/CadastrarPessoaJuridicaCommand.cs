@@ -5,11 +5,12 @@ namespace VilevePay.Domain.Commands.Consultor
 {
     public class CadastrarPessoaJuridicaCommand : ConsultorCommand, IRequest<bool>
     {
-        public CadastrarPessoaJuridicaCommand(string codigoConvite, string cnpj, string razaoSocial, string nomeFantasia, string inscricaoMunicipal,
-            string inscricaoEstadual, string codigoBanco, string agencia, string contaSemDigito, string digito,
-            int tipoConta, string contratoSocialBase64, string ultimaAlteracaoBase64)
+        public CadastrarPessoaJuridicaCommand(string codigoConvite, string numeroCelular, string cnpj, string razaoSocial, string nomeFantasia,
+            string inscricaoMunicipal, string inscricaoEstadual, string codigoBanco, string agencia, string contaSemDigito,
+            string digito, int tipoConta, string contratoSocialBase64, string ultimaAlteracaoBase64)
         {
             CodigoConvite = codigoConvite;
+            NumeroCelular = numeroCelular;
             Cnpj = cnpj;
             RazaoSocial = razaoSocial;
             NomeFantasia = nomeFantasia;

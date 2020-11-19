@@ -15,9 +15,9 @@ namespace VilevePay.Application.Interfaces
 
         void DeletarEndereco(string codigoConvite, string numeroCelular, Guid enderecoId);
 
-        void CadastrarPessoaJuridica(string codigoConvite, string cnpj, string razaoSocial, string nomeFantasia, string inscricaoMunicipal,
-            string inscricaoEstadual, string codigoBanco, string agencia, string contaSemDigito, string digito,
-            int tipoConta, string contratoSocialBase64, string ultimaAlteracaoBase64);
+        void CadastrarPessoaJuridica(string codigoConvite, string numeroCelular, string cnpj, string razaoSocial, string nomeFantasia,
+            string inscricaoMunicipal, string inscricaoEstadual, string codigoBanco, string agencia, string contaSemDigito,
+            string digito, int tipoConta, string contratoSocialBase64, string ultimaAlteracaoBase64);
 
         void CadastrarRepresentante(string codigoConvite, string cpf, string nomeCompleto, int sexo, int estadoCivil,
             string nacionalidade, IEnumerable<object> emails, IEnumerable<object> telefones, string documentoFrenteBase64, string documentoVersoBase64);
