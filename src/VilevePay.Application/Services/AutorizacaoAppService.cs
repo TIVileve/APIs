@@ -41,9 +41,11 @@ namespace VilevePay.Application.Services
                 };
         }
 
-        public void CadastrarSenha(string codigoConvite, string email, string senha, string confirmarSenha)
+        public void CadastrarSenha(string codigoConvite, string numeroCelular, string email, string senha,
+            string confirmarSenha)
         {
-            var cadastrarSenhaCommand = new CadastrarSenhaCommand(codigoConvite, email, senha, confirmarSenha);
+            var cadastrarSenhaCommand = new CadastrarSenhaCommand(codigoConvite, numeroCelular, email, senha,
+                confirmarSenha);
             _bus.SendCommand(cadastrarSenhaCommand);
         }
 

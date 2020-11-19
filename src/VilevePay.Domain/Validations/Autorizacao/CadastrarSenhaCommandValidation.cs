@@ -7,6 +7,7 @@ namespace VilevePay.Domain.Validations.Autorizacao
         public CadastrarSenhaCommandValidation()
         {
             ValidateCodigoConvite();
+            ValidateNumeroCelular();
             ValidateEmail();
             ValidateSenha();
             ValidateConfirmarSenha();
