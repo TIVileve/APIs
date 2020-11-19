@@ -93,34 +93,17 @@ namespace VilevePay.Domain.CommandHandlers
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
                 var validarConsultor = await HttpClientHelper.OnGet<ValidarConsultor>(client, $"v1/consultor/validar/{message.CodigoConvite}");
-                if (validarConsultor.Valido.Equals(false))
-                {
-                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
-                    return await Task.FromResult(false);
-                }
+                if (!validarConsultor.Valido.Equals(false))
+                    return await Task.FromResult(true);
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                return await Task.FromResult(false);
             }
             catch (Exception)
             {
                 await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
                 return await Task.FromResult(false);
             }
-
-            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
-            if (onboarding != null)
-                return await Task.FromResult(true);
-
-            onboarding = new Onboarding(Guid.NewGuid())
-            {
-                CodigoConvite = message.CodigoConvite
-            };
-
-            _onboardingRepository.Add(onboarding);
-
-            if (Commit())
-            {
-            }
-
-            return await Task.FromResult(true);
         }
 
         public async Task<bool> Handle(ValidarTokenSmsCommand message, CancellationToken cancellationToken)
