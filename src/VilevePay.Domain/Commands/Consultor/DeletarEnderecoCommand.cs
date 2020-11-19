@@ -6,9 +6,10 @@ namespace VilevePay.Domain.Commands.Consultor
 {
     public class DeletarEnderecoCommand : ConsultorCommand, IRequest<bool>
     {
-        public DeletarEnderecoCommand(string codigoConvite, Guid enderecoId)
+        public DeletarEnderecoCommand(string codigoConvite, string numeroCelular, Guid enderecoId)
         {
             CodigoConvite = codigoConvite;
+            NumeroCelular = numeroCelular;
             EnderecoId = enderecoId;
         }
 

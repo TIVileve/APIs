@@ -148,10 +148,10 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite)).FirstOrDefault();
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
                 return Task.FromResult(false);
             }
 

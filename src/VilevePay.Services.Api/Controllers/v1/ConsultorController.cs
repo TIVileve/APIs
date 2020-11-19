@@ -81,9 +81,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpDelete("convites/{codigoConvite}/enderecos/{enderecoId}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult DeletarEndereco(string codigoConvite, Guid enderecoId)
+        public IActionResult DeletarEndereco(string codigoConvite, [FromHeader] string numeroCelular, Guid enderecoId)
         {
-            _consultorAppService.DeletarEndereco(codigoConvite, enderecoId);
+            _consultorAppService.DeletarEndereco(codigoConvite, numeroCelular, enderecoId);
 
             if (IsValidOperation())
             {
