@@ -1,5 +1,6 @@
 ﻿using System;
 using VilevePay.Domain.Core.Models;
+using VilevePay.Domain.Enums;
 
 namespace VilevePay.Domain.Models
 {
@@ -19,6 +20,7 @@ namespace VilevePay.Domain.Models
         public string NumeroCelular { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
+        public StatusOnboarding StatusOnboarding { get; set; }
         public virtual Consultor Consultor { get; set; }
 
         public Onboarding Update()

@@ -6,6 +6,7 @@ using MediatR;
 using VilevePay.Domain.Commands.Autorizacao;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
+using VilevePay.Domain.Enums;
 using VilevePay.Domain.Interfaces;
 using VilevePay.Domain.Models;
 using VilevePay.Domain.Responses;
@@ -71,6 +72,7 @@ namespace VilevePay.Domain.CommandHandlers
             }
 
             onboarding.Senha = message.Senha;
+            onboarding.StatusOnboarding = StatusOnboarding.ValidacaoSenha;
 
             _onboardingRepository.Update(onboarding);
 
@@ -143,7 +145,8 @@ namespace VilevePay.Domain.CommandHandlers
             onboarding = new Onboarding(Guid.NewGuid())
             {
                 CodigoConvite = message.CodigoConvite,
-                NumeroCelular = message.NumeroCelular
+                NumeroCelular = message.NumeroCelular,
+                StatusOnboarding = StatusOnboarding.ValidacaoToken
             };
 
             _onboardingRepository.Add(onboarding);
@@ -190,6 +193,7 @@ namespace VilevePay.Domain.CommandHandlers
             }
 
             onboarding.Email = message.Email;
+            onboarding.StatusOnboarding = StatusOnboarding.ValidacaoEmail;
 
             _onboardingRepository.Update(onboarding);
 

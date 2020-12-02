@@ -5,6 +5,7 @@ namespace VilevePay.Application.ViewModels.v1.Consultor
     public class EnderecoViewModel
     {
         public Guid Id { get; set; }
+        public string TipoEnderecoDescricao { get; set; }
         public int TipoEndereco { get; set; }
         public string Cep { get; set; }
         public string Logradouro { get; set; }

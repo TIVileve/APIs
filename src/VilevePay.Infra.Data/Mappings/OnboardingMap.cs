@@ -33,6 +33,8 @@ namespace VilevePay.Infra.Data.Mappings
                 .HasColumnType("varchar(100)")
                 .HasMaxLength(100);
 
+            builder.Property(o => o.StatusOnboarding);
+
             // Table & Column Mappings.
             builder.ToTable("Onboarding");
         }

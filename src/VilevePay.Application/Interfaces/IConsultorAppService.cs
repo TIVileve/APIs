@@ -23,6 +23,6 @@ namespace VilevePay.Application.Interfaces
             int estadoCivil, string nacionalidade, IEnumerable<object> emails, IEnumerable<object> telefones, string documentoFrenteBase64,
             string documentoVersoBase64);
 
-        Task<object> ObterStatusOnboarding(string email);
+        Task<object> ObterStatusOnboarding(string codigoConvite, string numeroCelular);
     }
 }

@@ -2,7 +2,7 @@
 using VilevePay.Application.ViewModels.v1.Cliente;
 using VilevePay.Application.ViewModels.v1.Consultor;
 using VilevePay.Application.ViewModels.v1.Parametrizacao;
-using VilevePay.Application.ViewModels.v1.Property;
+using VilevePay.Domain.Enums;
 using VilevePay.Domain.Models;
 using VilevePay.Domain.Responses;
 
@@ -12,11 +12,13 @@ namespace VilevePay.Application.AutoMapper
     {
         public DomainToViewModelMappingProfile()
         {
-            CreateMap<Endereco, EnderecoViewModel>()
-                .ForMember(dest => dest.TipoEndereco, opt => opt.MapFrom(src => (int)src.TipoEndereco));
+            CreateMap<Onboarding, StatusOnboardingViewModel>()
+                .ForMember(dest => dest.StatusOnboardingDescricao, opt => opt.MapFrom(src => Enumerations.GetEnumDescription(src.StatusOnboarding)))
+                .ForMember(dest => dest.StatusOnboarding, opt => opt.MapFrom(src => (int)src.StatusOnboarding));
 
-            CreateMap<Property, PropertyViewModel>()
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => (int)src.Type));
+            CreateMap<Endereco, EnderecoViewModel>()
+                .ForMember(dest => dest.TipoEnderecoDescricao, opt => opt.MapFrom(src => Enumerations.GetEnumDescription(src.TipoEndereco)))
+                .ForMember(dest => dest.TipoEndereco, opt => opt.MapFrom(src => (int)src.TipoEndereco));
 
             CreateMap<EnderecoCep, ViewModels.v1.Endereco.EnderecoViewModel>()
                 .ForMember(dest => dest.CodigoCidade, opt => opt.MapFrom(src => src.CodigoCidade))

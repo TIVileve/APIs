@@ -127,11 +127,18 @@ namespace VilevePay.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
+            if (message.Principal)
+                foreach (var item in onboarding.Consultor.Enderecos.Where(e => e.TipoEndereco.Equals((TipoEndereco)message.TipoEndereco)))
+                    item.Principal = false;
+
             var endereco = new Endereco(Guid.NewGuid(), (TipoEndereco)message.TipoEndereco, message.Cep, message.Logradouro, message.Numero,
                 message.Complemento, message.Bairro, message.Cidade, message.Estado, message.Principal,
                 message.ComprovanteBase64, onboarding.Consultor.Id);
 
             _enderecoRepository.Add(endereco);
+
+            onboarding.StatusOnboarding = ((TipoEndereco)message.TipoEndereco).Equals(TipoEndereco.Consultor) ? StatusOnboarding.EnderecoCnpj : StatusOnboarding.EnderecoRepresentante;
+            _onboardingRepository.Update(onboarding);
 
             if (Commit())
             {
@@ -208,6 +215,9 @@ namespace VilevePay.Domain.CommandHandlers
 
             _dadosBancariosRepository.Add(dadosBancarios);
 
+            onboarding.StatusOnboarding = StatusOnboarding.ContratoSocial;
+            _onboardingRepository.Update(onboarding);
+
             if (Commit())
             {
             }
@@ -261,6 +271,9 @@ namespace VilevePay.Domain.CommandHandlers
                 _representanteTelefoneRepository.Add(representanteTelefone);
             }
 
+            onboarding.StatusOnboarding = StatusOnboarding.DadosRepresentante;
+            _onboardingRepository.Update(onboarding);
+
             if (Commit())
             {
             }
@@ -276,7 +289,14 @@ namespace VilevePay.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
+            if (onboarding == null)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(onboarding);
         }
     }
 }

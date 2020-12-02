@@ -127,12 +127,12 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
-        [HttpGet("onboarding/status")]
+        [HttpGet("convites/{codigoConvite}/onboarding/status")]
         [ProducesResponseType(typeof(StatusOnboardingViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> ObterStatusOnboarding([FromHeader] string email)
+        public async Task<IActionResult> ObterStatusOnboarding(string codigoConvite, [FromHeader] string numeroCelular)
         {
-            var response = await _consultorAppService.ObterStatusOnboarding(email);
+            var response = await _consultorAppService.ObterStatusOnboarding(codigoConvite, numeroCelular);
 
             if (IsValidOperation())
             {

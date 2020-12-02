@@ -2,7 +2,7 @@
 {
     public class StatusOnboardingViewModel
     {
-        public string CodigoConvite { get; set; }
-        public StatusViewModel Status { get; set; }
+        public string StatusOnboardingDescricao { get; set; }
+        public int StatusOnboarding { get; set; }
     }
 }

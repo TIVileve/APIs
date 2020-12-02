@@ -80,18 +80,12 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(cadastrarRepresentanteCommand);
         }
 
-        public async Task<object> ObterStatusOnboarding(string email)
+        public async Task<object> ObterStatusOnboarding(string codigoConvite, string numeroCelular)
         {
-            var obterStatusOnboardingCommand = new ObterStatusOnboardingCommand(email);
+            var obterStatusOnboardingCommand = new ObterStatusOnboardingCommand(codigoConvite, numeroCelular);
             var obterStatusOnboardingResponse = await _bus.SendCommand(obterStatusOnboardingCommand);
 
-            return _notifications.HasNotifications()
-                ? obterStatusOnboardingResponse
-                : new StatusOnboardingViewModel
-                {
-                    CodigoConvite = "123456",
-                    Status = StatusViewModel.ComprovanteEndereco
-                };
+            return _notifications.HasNotifications() ? obterStatusOnboardingResponse : _mapper.Map<StatusOnboardingViewModel>((Onboarding)obterStatusOnboardingResponse);
         }
 
         public void Dispose()

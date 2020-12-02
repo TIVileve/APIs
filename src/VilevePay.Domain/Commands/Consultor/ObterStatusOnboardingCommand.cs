@@ -5,9 +5,10 @@ namespace VilevePay.Domain.Commands.Consultor
 {
     public class ObterStatusOnboardingCommand : ConsultorCommand, IRequest<object>
     {
-        public ObterStatusOnboardingCommand(string email)
+        public ObterStatusOnboardingCommand(string codigoConvite, string numeroCelular)
         {
-            Email = email;
+            CodigoConvite = codigoConvite;
+            NumeroCelular = numeroCelular;
         }
 
         public override bool IsValid()
