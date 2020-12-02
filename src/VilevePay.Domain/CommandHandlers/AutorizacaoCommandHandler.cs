@@ -51,7 +51,7 @@ namespace VilevePay.Domain.CommandHandlers
             if (onboarding == null)
             {
                 await _bus.RaiseEvent(new DomainNotification(message.MessageType, "E-mail ou senha inválidos."));
-                return Task.FromResult(false);
+                return await Task.FromResult(false);
             }
 
             return await Task.FromResult(onboarding);
