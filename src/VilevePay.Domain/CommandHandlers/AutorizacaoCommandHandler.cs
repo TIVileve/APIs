@@ -47,7 +47,14 @@ namespace VilevePay.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            var onboarding = _onboardingRepository.Find(o => o.Email.Equals(message.Email) && o.Senha.Equals(message.Senha)).FirstOrDefault();
+            if (onboarding == null)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "E-mail ou senha inválidos."));
+                return Task.FromResult(false);
+            }
+
+            return await Task.FromResult(onboarding);
         }
 
         public Task<bool> Handle(CadastrarSenhaCommand message, CancellationToken cancellationToken)
