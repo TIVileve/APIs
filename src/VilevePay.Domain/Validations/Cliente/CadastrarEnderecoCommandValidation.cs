@@ -2,9 +2,9 @@
 
 namespace VilevePay.Domain.Validations.Cliente
 {
-    public class CadastrarProdutoCommandValidation : ClienteValidation<CadastrarProdutoCommand>
+    public class CadastrarEnderecoCommandValidation : ClienteValidation<CadastrarEnderecoCommand>
     {
-        public CadastrarProdutoCommandValidation()
+        public CadastrarEnderecoCommandValidation()
         {
             ValidateClienteId();
         }

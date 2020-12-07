@@ -24,6 +24,7 @@ using VilevePay.Infra.Data.EventSourcing;
 using VilevePay.Infra.Data.Repository;
 using VilevePay.Infra.Data.Repository.EventSourcing;
 using VilevePay.Infra.Data.UoW;
+using CadastrarEnderecoCommand = VilevePay.Domain.Commands.Consultor.CadastrarEnderecoCommand;
 using ObterEnderecoCommand = VilevePay.Domain.Commands.Endereco.ObterEnderecoCommand;
 
 namespace VilevePay.Infra.CrossCutting.IoC
@@ -95,9 +96,10 @@ namespace VilevePay.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<ObterStatusOnboardingCommand, object>, ConsultorCommandHandler>();
 
             // Cliente
-            services.AddScoped<IRequestHandler<CadastrarClienteCommand, bool>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<CadastrarClienteCommand, object>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<ObterProdutoCommand, object>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarProdutoCommand, bool>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<Domain.Commands.Cliente.CadastrarEnderecoCommand, bool>, ClienteCommandHandler>();
 
             // Infra - Data
             services.AddScoped<IOnboardingRepository, OnboardingRepository>();

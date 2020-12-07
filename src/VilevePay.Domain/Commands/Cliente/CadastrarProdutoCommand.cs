@@ -1,12 +1,14 @@
-﻿using MediatR;
+﻿using System;
+using MediatR;
 using VilevePay.Domain.Validations.Cliente;
 
 namespace VilevePay.Domain.Commands.Cliente
 {
     public class CadastrarProdutoCommand : ClienteCommand, IRequest<bool>
     {
-        public CadastrarProdutoCommand()
+        public CadastrarProdutoCommand(Guid clienteId)
         {
+            ClienteId = clienteId;
         }
 
         public override bool IsValid()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -31,15 +32,15 @@ namespace VilevePay.Services.Api.Controllers.v1
         }
 
         [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(ClienteViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult CadastrarCliente([FromBody] CadastrarClienteViewModel cliente)
+        public async Task<IActionResult> CadastrarCliente([FromBody] CadastrarClienteViewModel cliente)
         {
-            _clienteAppService.CadastrarCliente();
+            var response = await _clienteAppService.CadastrarCliente();
 
             if (IsValidOperation())
             {
-                return NoContent();
+                return Ok(response);
             }
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
@@ -60,12 +61,28 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
-        [HttpPost]
+        [HttpPost("{clienteId}/seguros/produtos")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult CadastrarProduto([FromBody] CadastrarProdutoViewModel produto)
+        public IActionResult CadastrarProduto(Guid clienteId, [FromBody] CadastrarProdutoViewModel produto)
         {
-            _clienteAppService.CadastrarProduto();
+            _clienteAppService.CadastrarProduto(clienteId);
+
+            if (IsValidOperation())
+            {
+                return NoContent();
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
+        [HttpPost("{clienteId}/enderecos")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult CadastrarEndereco(Guid clienteId, [FromBody] CadastrarEnderecoViewModel endereco)
+        {
+            _clienteAppService.CadastrarEndereco(clienteId, endereco.Cep, endereco.Logradouro, endereco.Numero, endereco.Complemento,
+                endereco.Bairro, endereco.Cidade, endereco.Estado);
 
             if (IsValidOperation())
             {

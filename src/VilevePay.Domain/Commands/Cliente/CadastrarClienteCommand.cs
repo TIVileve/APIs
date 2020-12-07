@@ -3,7 +3,7 @@ using VilevePay.Domain.Validations.Cliente;
 
 namespace VilevePay.Domain.Commands.Cliente
 {
-    public class CadastrarClienteCommand : ClienteCommand, IRequest<bool>
+    public class CadastrarClienteCommand : ClienteCommand, IRequest<object>
     {
         public CadastrarClienteCommand()
         {

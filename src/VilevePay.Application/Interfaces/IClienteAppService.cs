@@ -5,8 +5,11 @@ namespace VilevePay.Application.Interfaces
 {
     public interface IClienteAppService : IDisposable
     {
-        void CadastrarCliente();
+        Task<object> CadastrarCliente();
         Task<object> ObterProduto();
-        void CadastrarProduto();
+        void CadastrarProduto(Guid clienteId);
+
+        void CadastrarEndereco(Guid clienteId, string cep, string logradouro, int numero, string complemento,
+            string bairro, string cidade, string estado);
     }
 }

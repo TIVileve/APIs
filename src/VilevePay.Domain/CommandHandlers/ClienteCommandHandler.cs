@@ -12,9 +12,10 @@ using VilevePay.Infra.CrossCutting.Io.Http;
 namespace VilevePay.Domain.CommandHandlers
 {
     public class ClienteCommandHandler : CommandHandler,
-        IRequestHandler<CadastrarClienteCommand, bool>,
+        IRequestHandler<CadastrarClienteCommand, object>,
         IRequestHandler<ObterProdutoCommand, object>,
-        IRequestHandler<CadastrarProdutoCommand, bool>
+        IRequestHandler<CadastrarProdutoCommand, bool>,
+        IRequestHandler<CadastrarEnderecoCommand, bool>
     {
         private readonly IHttpAppService _httpAppService;
 
@@ -28,15 +29,15 @@ namespace VilevePay.Domain.CommandHandlers
             _httpAppService = httpAppService;
         }
 
-        public Task<bool> Handle(CadastrarClienteCommand message, CancellationToken cancellationToken)
+        public async Task<object> Handle(CadastrarClienteCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return Task.FromResult(false);
+                return await Task.FromResult(false);
             }
 
-            return Task.FromResult(true);
+            return await Task.FromResult(true);
         }
 
         public async Task<object> Handle(ObterProdutoCommand message, CancellationToken cancellationToken)
@@ -60,6 +61,17 @@ namespace VilevePay.Domain.CommandHandlers
         }
 
         public Task<bool> Handle(CadastrarProdutoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> Handle(CadastrarEnderecoCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {

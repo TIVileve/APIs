@@ -27,10 +27,17 @@ namespace VilevePay.Application.Services
             _notifications = (DomainNotificationHandler)notifications;
         }
 
-        public void CadastrarCliente()
+        public async Task<object> CadastrarCliente()
         {
             var cadastrarClienteCommand = new CadastrarClienteCommand();
-            _bus.SendCommand(cadastrarClienteCommand);
+            var cadastrarClienteResponse = await _bus.SendCommand(cadastrarClienteCommand);
+
+            return _notifications.HasNotifications()
+                ? cadastrarClienteResponse
+                : new ClienteViewModel
+                {
+                    Id = Guid.NewGuid()
+                };
         }
 
         public async Task<object> ObterProduto()
@@ -41,10 +48,18 @@ namespace VilevePay.Application.Services
             return _notifications.HasNotifications() ? obterProdutoResponse : _mapper.Map<ProdutoViewModel>((SeguroProduto)obterProdutoResponse);
         }
 
-        public void CadastrarProduto()
+        public void CadastrarProduto(Guid clienteId)
         {
-            var cadastrarProdutoCommand = new CadastrarProdutoCommand();
+            var cadastrarProdutoCommand = new CadastrarProdutoCommand(clienteId);
             _bus.SendCommand(cadastrarProdutoCommand);
+        }
+
+        public void CadastrarEndereco(Guid clienteId, string cep, string logradouro, int numero, string complemento,
+            string bairro, string cidade, string estado)
+        {
+            var cadastrarEnderecoCommand = new CadastrarEnderecoCommand(clienteId, cep, logradouro, numero, complemento,
+                bairro, cidade, estado);
+            _bus.SendCommand(cadastrarEnderecoCommand);
         }
 
         public void Dispose()
