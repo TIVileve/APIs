@@ -41,6 +41,12 @@ namespace VilevePay.Application.Services
             return _notifications.HasNotifications() ? obterProdutoResponse : _mapper.Map<ProdutoViewModel>((SeguroProduto)obterProdutoResponse);
         }
 
+        public void CadastrarProduto()
+        {
+            var cadastrarProdutoCommand = new CadastrarProdutoCommand();
+            _bus.SendCommand(cadastrarProdutoCommand);
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

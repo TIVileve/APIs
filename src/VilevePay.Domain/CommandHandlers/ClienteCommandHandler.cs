@@ -13,7 +13,8 @@ namespace VilevePay.Domain.CommandHandlers
 {
     public class ClienteCommandHandler : CommandHandler,
         IRequestHandler<CadastrarClienteCommand, bool>,
-        IRequestHandler<ObterProdutoCommand, object>
+        IRequestHandler<ObterProdutoCommand, object>,
+        IRequestHandler<CadastrarProdutoCommand, bool>
     {
         private readonly IHttpAppService _httpAppService;
 
@@ -56,6 +57,17 @@ namespace VilevePay.Domain.CommandHandlers
                 await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
                 return await Task.FromResult(false);
             }
+        }
+
+        public Task<bool> Handle(CadastrarProdutoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
         }
     }
 }

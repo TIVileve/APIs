@@ -97,6 +97,7 @@ namespace VilevePay.Infra.CrossCutting.IoC
             // Cliente
             services.AddScoped<IRequestHandler<CadastrarClienteCommand, bool>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<ObterProdutoCommand, object>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<CadastrarProdutoCommand, bool>, ClienteCommandHandler>();
 
             // Infra - Data
             services.AddScoped<IOnboardingRepository, OnboardingRepository>();

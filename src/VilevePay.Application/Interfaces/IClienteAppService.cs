@@ -7,5 +7,6 @@ namespace VilevePay.Application.Interfaces
     {
         void CadastrarCliente();
         Task<object> ObterProduto();
+        void CadastrarProduto();
     }
 }

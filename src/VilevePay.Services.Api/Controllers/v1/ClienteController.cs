@@ -59,5 +59,20 @@ namespace VilevePay.Services.Api.Controllers.v1
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
+
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult CadastrarProduto([FromBody] CadastrarProdutoViewModel produto)
+        {
+            _clienteAppService.CadastrarProduto();
+
+            if (IsValidOperation())
+            {
+                return NoContent();
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
     }
 }
