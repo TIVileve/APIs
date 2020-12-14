@@ -62,6 +62,12 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(cadastrarEnderecoCommand);
         }
 
+        public void CadastrarDependente(Guid clienteId)
+        {
+            var cadastrarDependenteCommand = new CadastrarDependenteCommand(clienteId);
+            _bus.SendCommand(cadastrarDependenteCommand);
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

@@ -11,5 +11,7 @@ namespace VilevePay.Application.Interfaces
 
         void CadastrarEndereco(Guid clienteId, string cep, string logradouro, int numero, string complemento,
             string bairro, string cidade, string estado);
+
+        void CadastrarDependente(Guid clienteId);
     }
 }

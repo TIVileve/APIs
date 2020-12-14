@@ -91,5 +91,20 @@ namespace VilevePay.Services.Api.Controllers.v1
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
+
+        [HttpPost("{clienteId}/dependentes")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult CadastrarDependente(Guid clienteId, [FromBody] CadastrarDependenteViewModel dependente)
+        {
+            _clienteAppService.CadastrarDependente(clienteId);
+
+            if (IsValidOperation())
+            {
+                return NoContent();
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
     }
 }
