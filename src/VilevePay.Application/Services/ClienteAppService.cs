@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -60,6 +61,87 @@ namespace VilevePay.Application.Services
             var cadastrarEnderecoCommand = new CadastrarEnderecoCommand(clienteId, cep, logradouro, numero, complemento,
                 bairro, cidade, estado);
             _bus.SendCommand(cadastrarEnderecoCommand);
+        }
+
+        public async Task<object> ObterDependente(Guid clienteId)
+        {
+            var obterDependenteCommand = new ObterDependenteCommand(clienteId);
+            var obterDependenteResponse = await _bus.SendCommand(obterDependenteCommand);
+
+            return _notifications.HasNotifications()
+                ? obterDependenteResponse
+                : new List<DependenteViewModel>
+                {
+                    new DependenteViewModel
+                    {
+                        Id = Guid.NewGuid(),
+                        CodigoParentesco = 0,
+                        NomeCompleto = "Marcelo Camargos",
+                        DataNascimento = DateTime.Parse("23/06/1987"),
+                        Cpf = "083.364.506-45",
+                        Email = "marcelocamargosjr@gmail.com",
+                        TelefoneCelular = "5531999238117",
+                        Endereco = new CadastrarEnderecoViewModel
+                        {
+                            Cep = "34006-086",
+                            Logradouro = "Rua da Mata",
+                            Numero = 185,
+                            Complemento = "APT 1502 T2",
+                            Bairro = "Vila da Serra",
+                            Cidade = "Nova Lima",
+                            Estado = "MG"
+                        }
+                    },
+                    new DependenteViewModel
+                    {
+                        Id = Guid.NewGuid(),
+                        CodigoParentesco = 0,
+                        NomeCompleto = "Viviane Santiago",
+                        DataNascimento = DateTime.Parse("28/12/1976"),
+                        Cpf = "083.364.506-45",
+                        Email = "marcelocamargosjr@gmail.com",
+                        TelefoneCelular = "5531999238117",
+                        Endereco = new CadastrarEnderecoViewModel
+                        {
+                            Cep = "34006-086",
+                            Logradouro = "Rua da Mata",
+                            Numero = 185,
+                            Complemento = "APT 1502 T2",
+                            Bairro = "Vila da Serra",
+                            Cidade = "Nova Lima",
+                            Estado = "MG"
+                        }
+                    }
+                };
+        }
+
+        public async Task<object> ObterDependentePorId(Guid clienteId, Guid dependenteId)
+        {
+            var obterDependentePorIdCommand = new ObterDependentePorIdCommand(clienteId, dependenteId);
+            var obterDependentePorIdResponse = await _bus.SendCommand(obterDependentePorIdCommand);
+
+            return _notifications.HasNotifications()
+                ? obterDependentePorIdResponse
+                : new DependenteViewModel
+                {
+                    Id = Guid.NewGuid(),
+                    CodigoParentesco = 0,
+                    NomeCompleto = "Viviane Santiago",
+                    DataNascimento = DateTime.Parse("28/12/1976"),
+                    Cpf = "083.364.506-45",
+                    Email = "marcelocamargosjr@gmail.com",
+                    TelefoneCelular = "5531999238117",
+                    Endereco = new CadastrarEnderecoViewModel
+                    {
+                        Cep = "34006-086",
+                        Logradouro = "Rua da Mata",
+                        Numero = 185,
+                        Complemento = "APT 1502 T2",
+                        Bairro = "Vila da Serra",
+                        Cidade = "Nova Lima",
+                        Estado = "MG"
+                    }
+                };
         }
 
         public void CadastrarDependente(Guid clienteId)

@@ -16,6 +16,8 @@ namespace VilevePay.Domain.CommandHandlers
         IRequestHandler<ObterProdutoCommand, object>,
         IRequestHandler<CadastrarProdutoCommand, bool>,
         IRequestHandler<CadastrarEnderecoCommand, bool>,
+        IRequestHandler<ObterDependenteCommand, object>,
+        IRequestHandler<ObterDependentePorIdCommand, object>,
         IRequestHandler<CadastrarDependenteCommand, bool>
     {
         private readonly IHttpAppService _httpAppService;
@@ -81,6 +83,28 @@ namespace VilevePay.Domain.CommandHandlers
             }
 
             return Task.FromResult(true);
+        }
+
+        public async Task<object> Handle(ObterDependenteCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+
+        public async Task<object> Handle(ObterDependentePorIdCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
 
         public Task<bool> Handle(CadastrarDependenteCommand message, CancellationToken cancellationToken)

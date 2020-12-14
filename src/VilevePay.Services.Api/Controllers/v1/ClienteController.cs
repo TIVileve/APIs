@@ -92,6 +92,36 @@ namespace VilevePay.Services.Api.Controllers.v1
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
+        [HttpGet("{clienteId}/dependentes")]
+        [ProducesResponseType(typeof(IEnumerable<DependenteViewModel>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ObterDependente(Guid clienteId)
+        {
+            var response = await _clienteAppService.ObterDependente(clienteId);
+
+            if (IsValidOperation())
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
+        [HttpGet("{clienteId}/dependentes/{dependenteId}")]
+        [ProducesResponseType(typeof(DependenteViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ObterDependentePorId(Guid clienteId, Guid dependenteId)
+        {
+            var response = await _clienteAppService.ObterDependentePorId(clienteId, dependenteId);
+
+            if (IsValidOperation())
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
         [HttpPost("{clienteId}/dependentes")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]

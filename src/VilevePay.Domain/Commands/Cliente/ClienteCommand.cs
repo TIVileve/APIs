@@ -15,5 +15,8 @@ namespace VilevePay.Domain.Commands.Cliente
         public string Bairro { get; protected set; }
         public string Cidade { get; protected set; }
         public string Estado { get; protected set; }
+
+        // Dependente
+        public Guid DependenteId { get; protected set; }
     }
 }
