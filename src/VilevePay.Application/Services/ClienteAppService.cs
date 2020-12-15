@@ -150,6 +150,12 @@ namespace VilevePay.Application.Services
             _bus.SendCommand(cadastrarDependenteCommand);
         }
 
+        public void DeletarDependente(Guid clienteId, Guid dependenteId)
+        {
+            var deletarDependenteCommand = new DeletarDependenteCommand(clienteId, dependenteId);
+            _bus.SendCommand(deletarDependenteCommand);
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
