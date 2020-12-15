@@ -2,7 +2,7 @@
 {
     public class CadastrarDebitoContaViewModel
     {
-        public string BancoConvencionado { get; set; }
+        public int CodigoBancoConvencionado { get; set; }
         public string Agencia { get; set; }
         public string Conta { get; set; }
         public int DataCobranca { get; set; }
