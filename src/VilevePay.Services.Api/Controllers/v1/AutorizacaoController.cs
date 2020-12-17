@@ -155,9 +155,9 @@ namespace VilevePay.Services.Api.Controllers.v1
         [HttpPost("convites/{codigoConvite}/selfie/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public IActionResult ValidarSelfie(string codigoConvite, [FromBody] ValidarSelfieViewModel selfie)
+        public IActionResult ValidarSelfie(string codigoConvite, [FromHeader] string numeroCelular, [FromBody] ValidarSelfieViewModel selfie)
         {
-            _autorizacaoAppService.ValidarSelfie(codigoConvite, selfie.FotoBase64);
+            _autorizacaoAppService.ValidarSelfie(codigoConvite, numeroCelular, selfie.FotoBase64);
 
             if (IsValidOperation())
             {

@@ -5,9 +5,10 @@ namespace VilevePay.Domain.Commands.Autorizacao
 {
     public class ValidarSelfieCommand : AutorizacaoCommand, IRequest<bool>
     {
-        public ValidarSelfieCommand(string codigoConvite, string fotoBase64)
+        public ValidarSelfieCommand(string codigoConvite, string numeroCelular, string fotoBase64)
         {
             CodigoConvite = codigoConvite;
+            NumeroCelular = numeroCelular;
             FotoBase64 = fotoBase64;
         }
 
