@@ -138,6 +138,13 @@ namespace VilevePay.Domain.CommandHandlers
             _enderecoRepository.Add(endereco);
 
             onboarding.StatusOnboarding = ((TipoEndereco)message.TipoEndereco).Equals(TipoEndereco.Consultor) ? StatusOnboarding.EnderecoCnpj : StatusOnboarding.EnderecoRepresentante;
+
+            // Remover quando tirar selfie 
+            if (onboarding.StatusOnboarding.Equals(StatusOnboarding.EnderecoRepresentante))
+            {
+                onboarding.StatusOnboarding = StatusOnboarding.Finalizado;
+            }
+
             _onboardingRepository.Update(onboarding);
 
             if (Commit())

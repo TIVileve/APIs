@@ -23,6 +23,9 @@ namespace VilevePay.Domain.Enums
         DadosRepresentante = 5,
 
         [Description("Endereço do representante")]
-        EnderecoRepresentante = 6
+        EnderecoRepresentante = 6,
+
+        [Description("Finalizado")]
+        Finalizado = 7
     }
 }
