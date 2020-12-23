@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -77,7 +78,7 @@ namespace VilevePay.Application.Services
                         Id = Guid.NewGuid(),
                         CodigoParentesco = 0,
                         NomeCompleto = "Marcelo Camargos",
-                        DataNascimento = DateTime.Parse("23/06/1987"),
+                        DataNascimento = DateTime.ParseExact("23/06/1987", "dd/MM/yyyy", CultureInfo.InvariantCulture),
                         Cpf = "083.364.506-45",
                         Email = "marcelocamargosjr@gmail.com",
                         TelefoneCelular = "5531999238117",
@@ -97,7 +98,7 @@ namespace VilevePay.Application.Services
                         Id = Guid.NewGuid(),
                         CodigoParentesco = 0,
                         NomeCompleto = "Viviane Santiago",
-                        DataNascimento = DateTime.Parse("28/12/1976"),
+                        DataNascimento = DateTime.ParseExact("28/12/1976", "dd/MM/yyyy", CultureInfo.InvariantCulture),
                         Cpf = "083.364.506-45",
                         Email = "marcelocamargosjr@gmail.com",
                         TelefoneCelular = "5531999238117",
@@ -127,7 +128,7 @@ namespace VilevePay.Application.Services
                     Id = Guid.NewGuid(),
                     CodigoParentesco = 0,
                     NomeCompleto = "Viviane Santiago",
-                    DataNascimento = DateTime.Parse("28/12/1976"),
+                    DataNascimento = DateTime.ParseExact("28/12/1976", "dd/MM/yyyy", CultureInfo.InvariantCulture),
                     Cpf = "083.364.506-45",
                     Email = "marcelocamargosjr@gmail.com",
                     TelefoneCelular = "5531999238117",
