@@ -14,5 +14,8 @@ namespace VilevePay.Application.Interfaces
         Task<object> ObterBanco();
         Task<object> ObterOperacaoBancaria();
         Task<object> ObterSexo();
+        Task<object> ObterTipoParentesco();
+        Task<object> ObterTipoPagamento();
+        Task<object> ObterTipoConvenio();
     }
 }

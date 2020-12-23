@@ -164,5 +164,50 @@ namespace VilevePay.Services.Api.Controllers.v1
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
+
+        [HttpGet("tipos-parentesco")]
+        [ProducesResponseType(typeof(IEnumerable<ParentescoViewModel>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ObterTipoParentesco()
+        {
+            var response = await _parametrizacaoAppService.ObterTipoParentesco();
+
+            if (IsValidOperation())
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
+        [HttpGet("tipos-pagamento")]
+        [ProducesResponseType(typeof(IEnumerable<PagamentoViewModel>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ObterTipoPagamento()
+        {
+            var response = await _parametrizacaoAppService.ObterTipoPagamento();
+
+            if (IsValidOperation())
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
+
+        [HttpGet("tipos-convenio")]
+        [ProducesResponseType(typeof(IEnumerable<ConvenioViewModel>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ObterTipoConvenio()
+        {
+            var response = await _parametrizacaoAppService.ObterTipoConvenio();
+
+            if (IsValidOperation())
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
     }
 }

@@ -21,7 +21,10 @@ namespace VilevePay.Domain.CommandHandlers
         IRequestHandler<ObterTipoEnderecoCommand, object>,
         IRequestHandler<ObterBancoCommand, object>,
         IRequestHandler<ObterOperacaoBancariaCommand, object>,
-        IRequestHandler<ObterSexoCommand, object>
+        IRequestHandler<ObterSexoCommand, object>,
+        IRequestHandler<ObterTipoParentescoCommand, object>,
+        IRequestHandler<ObterTipoPagamentoCommand, object>,
+        IRequestHandler<ObterTipoConvenioCommand, object>
     {
         private readonly IHttpAppService _httpAppService;
 
@@ -196,6 +199,39 @@ namespace VilevePay.Domain.CommandHandlers
         }
 
         public async Task<object> Handle(ObterSexoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+
+        public async Task<object> Handle(ObterTipoParentescoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+
+        public async Task<object> Handle(ObterTipoPagamentoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+
+        public async Task<object> Handle(ObterTipoConvenioCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {

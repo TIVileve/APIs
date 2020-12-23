@@ -121,6 +121,92 @@ namespace VilevePay.Application.Services
                 };
         }
 
+        public async Task<object> ObterTipoParentesco()
+        {
+            var obterTipoParentescoCommand = new ObterTipoParentescoCommand();
+            var obterTipoParentescoResponse = await _bus.SendCommand(obterTipoParentescoCommand);
+
+            return _notifications.HasNotifications()
+                ? obterTipoParentescoResponse
+                : new List<ParentescoViewModel>
+                {
+                    new ParentescoViewModel
+                    {
+                        CodigoParentesco = 0,
+                        Nome = "Pai"
+                    },
+                    new ParentescoViewModel
+                    {
+                        CodigoParentesco = 1,
+                        Nome = "Sogro"
+                    },
+                    new ParentescoViewModel
+                    {
+                        CodigoParentesco = 2,
+                        Nome = "Irmão"
+                    }
+                };
+        }
+
+        public async Task<object> ObterTipoPagamento()
+        {
+            var obterTipoPagamentoCommand = new ObterTipoPagamentoCommand();
+            var obterTipoPagamentoResponse = await _bus.SendCommand(obterTipoPagamentoCommand);
+
+            return _notifications.HasNotifications()
+                ? obterTipoPagamentoResponse
+                : new List<PagamentoViewModel>
+                {
+                    new PagamentoViewModel
+                    {
+                        CodigoPagamento = 0,
+                        Nome = "Cartão de crédito"
+                    },
+                    new PagamentoViewModel
+                    {
+                        CodigoPagamento = 1,
+                        Nome = "Boleto"
+                    },
+                    new PagamentoViewModel
+                    {
+                        CodigoPagamento = 2,
+                        Nome = "Débito em conta"
+                    },
+                    new PagamentoViewModel
+                    {
+                        CodigoPagamento = 3,
+                        Nome = "Convênio"
+                    }
+                };
+        }
+
+        public async Task<object> ObterTipoConvenio()
+        {
+            var obterTipoConvenioCommand = new ObterTipoConvenioCommand();
+            var obterTipoConvenioResponse = await _bus.SendCommand(obterTipoConvenioCommand);
+
+            return _notifications.HasNotifications()
+                ? obterTipoConvenioResponse
+                : new List<ConvenioViewModel>
+                {
+                    new ConvenioViewModel
+                    {
+                        CodigoConvenio = 0,
+                        Nome = "Metropax"
+                    },
+                    new ConvenioViewModel
+                    {
+                        CodigoConvenio = 1,
+                        Nome = "Promed"
+                    },
+                    new ConvenioViewModel
+                    {
+                        CodigoConvenio = 2,
+                        Nome = "Vitallis"
+                    }
+                };
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
