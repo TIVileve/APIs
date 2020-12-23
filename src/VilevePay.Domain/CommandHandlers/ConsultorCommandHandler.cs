@@ -72,7 +72,7 @@ namespace VilevePay.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            var enderecos = _enderecoRepository.Find(e => e.Consultor.Id.Equals(onboarding.Consultor.Id)).ToList();
+            var enderecos = _enderecoRepository.Find(e => e.Consultor.Id.Equals(onboarding.Consultor.Id)).OrderBy(e => e.Principal).ToList();
 
             return await Task.FromResult(enderecos);
         }

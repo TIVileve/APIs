@@ -17,5 +17,6 @@ namespace VilevePay.Application.Interfaces
         void CadastrarDependente(Guid clienteId);
         void DeletarDependente(Guid clienteId, Guid dependenteId);
         void CadastrarPagamento(Guid clienteId);
+        Task<object> ObterCalculoMensal(Guid clienteId);
     }
 }

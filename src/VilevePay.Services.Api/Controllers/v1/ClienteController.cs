@@ -166,5 +166,20 @@ namespace VilevePay.Services.Api.Controllers.v1
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
+
+        [HttpGet("{clienteId}/calculos-mensais")]
+        [ProducesResponseType(typeof(DependenteViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ObterCalculoMensal(Guid clienteId)
+        {
+            var response = await _clienteAppService.ObterCalculoMensal(clienteId);
+
+            if (IsValidOperation())
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+        }
     }
 }

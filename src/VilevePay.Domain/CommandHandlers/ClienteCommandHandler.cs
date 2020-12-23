@@ -20,7 +20,8 @@ namespace VilevePay.Domain.CommandHandlers
         IRequestHandler<ObterDependentePorIdCommand, object>,
         IRequestHandler<CadastrarDependenteCommand, bool>,
         IRequestHandler<DeletarDependenteCommand, bool>,
-        IRequestHandler<CadastrarPagamentoCommand, bool>
+        IRequestHandler<CadastrarPagamentoCommand, bool>,
+        IRequestHandler<ObterCalculoMensalCommand, object>
     {
         private readonly IHttpAppService _httpAppService;
 
@@ -120,26 +121,37 @@ namespace VilevePay.Domain.CommandHandlers
             return Task.FromResult(true);
         }
 
-        public Task<bool> Handle(DeletarDependenteCommand request, CancellationToken cancellationToken)
+        public Task<bool> Handle(DeletarDependenteCommand message, CancellationToken cancellationToken)
         {
-            if (!request.IsValid())
+            if (!message.IsValid())
             {
-                NotifyValidationErrors(request);
+                NotifyValidationErrors(message);
                 return Task.FromResult(false);
             }
 
             return Task.FromResult(true);
         }
 
-        public Task<bool> Handle(CadastrarPagamentoCommand request, CancellationToken cancellationToken)
+        public Task<bool> Handle(CadastrarPagamentoCommand message, CancellationToken cancellationToken)
         {
-            if (!request.IsValid())
+            if (!message.IsValid())
             {
-                NotifyValidationErrors(request);
+                NotifyValidationErrors(message);
                 return Task.FromResult(false);
             }
 
             return Task.FromResult(true);
+        }
+
+        public async Task<object> Handle(ObterCalculoMensalCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
     }
 }
