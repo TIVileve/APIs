@@ -41,7 +41,7 @@ namespace VilevePay.Application.Services
             var obterEnderecoPorIdCommand = new ObterEnderecoPorIdCommand(codigoConvite, numeroCelular, enderecoId);
             var obterEnderecoPorIdResponse = await _bus.SendCommand(obterEnderecoPorIdCommand);
 
-            return _notifications.HasNotifications() ? obterEnderecoPorIdResponse : _mapper.Map<EnderecoViewModel>((Endereco)obterEnderecoPorIdResponse);
+            return _notifications.HasNotifications() ? obterEnderecoPorIdResponse : _mapper.Map<EnderecoPorIdViewModel>((Endereco)obterEnderecoPorIdResponse);
         }
 
         public void CadastrarEndereco(string codigoConvite, string numeroCelular, int tipoEndereco, string cep, string logradouro,

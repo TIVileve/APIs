@@ -14,6 +14,7 @@ namespace VilevePay.Application.ViewModels.v1.Autorizacao
         public string CodigoConvite { get; set; }
         public string NumeroCelular { get; set; }
         public string StatusOnboardingDescricao { get; set; }
-        public int StatusOnboarding { get; set; }
+        public int? StatusOnboarding { get; set; }
+        public Guid? ConsultorId { get; set; }
     }
 }

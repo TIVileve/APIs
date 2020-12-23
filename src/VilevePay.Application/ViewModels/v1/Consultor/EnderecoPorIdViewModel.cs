@@ -2,7 +2,7 @@
 
 namespace VilevePay.Application.ViewModels.v1.Consultor
 {
-    public class EnderecoViewModel
+    public class EnderecoPorIdViewModel
     {
         public Guid Id { get; set; }
         public string TipoEnderecoDescricao { get; set; }
@@ -15,5 +15,6 @@ namespace VilevePay.Application.ViewModels.v1.Consultor
         public string Cidade { get; set; }
         public string Estado { get; set; }
         public bool Principal { get; set; }
+        public string ComprovanteBase64 { get; set; }
     }
 }

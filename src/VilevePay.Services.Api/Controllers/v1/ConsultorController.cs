@@ -47,7 +47,7 @@ namespace VilevePay.Services.Api.Controllers.v1
         }
 
         [HttpGet("convites/{codigoConvite}/enderecos/{enderecoId}")]
-        [ProducesResponseType(typeof(EnderecoViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(EnderecoPorIdViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ObterEnderecoPorId(string codigoConvite, [FromHeader] string numeroCelular, Guid enderecoId)
         {

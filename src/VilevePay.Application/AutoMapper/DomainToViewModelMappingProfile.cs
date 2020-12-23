@@ -20,6 +20,10 @@ namespace VilevePay.Application.AutoMapper
                 .ForMember(dest => dest.TipoEnderecoDescricao, opt => opt.MapFrom(src => Enumerations.GetEnumDescription(src.TipoEndereco)))
                 .ForMember(dest => dest.TipoEndereco, opt => opt.MapFrom(src => (int)src.TipoEndereco));
 
+            CreateMap<Endereco, EnderecoPorIdViewModel>()
+                .ForMember(dest => dest.TipoEnderecoDescricao, opt => opt.MapFrom(src => Enumerations.GetEnumDescription(src.TipoEndereco)))
+                .ForMember(dest => dest.TipoEndereco, opt => opt.MapFrom(src => (int)src.TipoEndereco));
+
             CreateMap<EnderecoCep, ViewModels.v1.Endereco.EnderecoViewModel>()
                 .ForMember(dest => dest.CodigoCidade, opt => opt.MapFrom(src => src.CodigoCidade))
                 .ForMember(dest => dest.CodigoUf, opt => opt.MapFrom(src => src.CodigoUf))
