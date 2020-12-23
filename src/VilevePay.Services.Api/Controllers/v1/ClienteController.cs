@@ -168,7 +168,7 @@ namespace VilevePay.Services.Api.Controllers.v1
         }
 
         [HttpGet("{clienteId}/calculos-mensais")]
-        [ProducesResponseType(typeof(DependenteViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CalculoMensalViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ObterCalculoMensal(Guid clienteId)
         {

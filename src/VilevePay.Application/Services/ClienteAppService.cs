@@ -172,7 +172,7 @@ namespace VilevePay.Application.Services
                 ? obterCalculoMensalResponse
                 : new CalculoMensalViewModel
                 {
-                    Valor = 2567.67
+                    Valor = new Random().Next(1500, 3000)
                 };
         }
 
