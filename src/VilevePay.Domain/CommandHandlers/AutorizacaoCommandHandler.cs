@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -291,7 +292,21 @@ namespace VilevePay.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var test = await HttpClientHelper.OnPost<object, object>(client, $"v1/​consultor​/cadastrar​/pessoajuridica​/{message.CodigoConvite}", new
+
+                var token = await HttpClientHelper.OnPost<Token, object>(client, "v1/​auth/login", new
+                {
+                    usuario = "sistemaconsulta.api",
+                    senha = "123456"
+                });
+                if (token == null || string.IsNullOrEmpty(token.AccessToken))
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Usuário de integração não encontrado."));
+                    return await Task.FromResult(false);
+                }
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+
+                await HttpClientHelper.OnPost<object, object>(client, $"v1/​consultor​/cadastrar​/pessoajuridica​/{message.CodigoConvite}", new
                 {
                     razao_social = onboarding.Consultor.RazaoSocial,
                     nome_fantasia = onboarding.Consultor.NomeFantasia,
@@ -339,7 +354,7 @@ namespace VilevePay.Domain.CommandHandlers
                             bairro = item.Bairro,
                             cidade = item.Cidade,
                             sigla_estado = item.Estado,
-                            cep = item.Cep,
+                            cep = item.Cep.Replace("-", ""),
                             principal = item.Principal
                         }),
                         dados_bancarios = new List<object>
