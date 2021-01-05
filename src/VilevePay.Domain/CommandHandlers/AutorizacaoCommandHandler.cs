@@ -293,7 +293,7 @@ namespace VilevePay.Domain.CommandHandlers
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
 
-                var token = await HttpClientHelper.OnPost<Token, object>(client, "v1/​auth/login", new
+                var token = await HttpClientHelper.OnPost<Token, object>(client, "v1/auth/login", new
                 {
                     usuario = "sistemaconsulta.api",
                     senha = "123456"
