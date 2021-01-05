@@ -8,6 +8,7 @@ using VilevePay.Domain.Commands.Autorizacao;
 using VilevePay.Domain.Core.Bus;
 using VilevePay.Domain.Core.Notifications;
 using VilevePay.Domain.Enums;
+using VilevePay.Domain.ExtensionMethods;
 using VilevePay.Domain.Interfaces;
 using VilevePay.Domain.Models;
 using VilevePay.Domain.Responses;
@@ -313,7 +314,7 @@ namespace VilevePay.Domain.CommandHandlers
                         autenticacao = new
                         {
                             usuario = onboarding.Email,
-                            senha = "432f45b44c432414d2f97df0e5743818",
+                            senha = onboarding.Senha.CreateMd5(),
                             codigo_perfil = 17
                         },
                         emails = onboarding.Consultor.Representante.Emails.Select(item => new
