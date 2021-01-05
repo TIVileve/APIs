@@ -138,6 +138,7 @@ namespace VilevePay.Domain.CommandHandlers
             _enderecoRepository.Add(endereco);
 
             onboarding.StatusOnboarding = ((TipoEndereco)message.TipoEndereco).Equals(TipoEndereco.Consultor) ? StatusOnboarding.EnderecoCnpj : StatusOnboarding.EnderecoRepresentante;
+
             _onboardingRepository.Update(onboarding);
 
             if (Commit())
@@ -216,6 +217,7 @@ namespace VilevePay.Domain.CommandHandlers
             _dadosBancariosRepository.Add(dadosBancarios);
 
             onboarding.StatusOnboarding = StatusOnboarding.ContratoSocial;
+
             _onboardingRepository.Update(onboarding);
 
             if (Commit())
@@ -272,6 +274,7 @@ namespace VilevePay.Domain.CommandHandlers
             }
 
             onboarding.StatusOnboarding = StatusOnboarding.DadosRepresentante;
+
             _onboardingRepository.Update(onboarding);
 
             if (Commit())

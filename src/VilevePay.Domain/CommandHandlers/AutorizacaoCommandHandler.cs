@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -271,29 +272,106 @@ namespace VilevePay.Domain.CommandHandlers
             return await Task.FromResult(true);
         }
 
-        public Task<bool> Handle(ValidarSelfieCommand message, CancellationToken cancellationToken)
+        public async Task<bool> Handle(ValidarSelfieCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return Task.FromResult(false);
+                return await Task.FromResult(false);
             }
 
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
-                return Task.FromResult(false);
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                return await Task.FromResult(false);
+            }
+
+            try
+            {
+                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var test = await HttpClientHelper.OnPost<object, object>(client, $"v1/​consultor​/cadastrar​/pessoajuridica​/{message.CodigoConvite}", new
+                {
+                    razao_social = onboarding.Consultor.RazaoSocial,
+                    nome_fantasia = onboarding.Consultor.NomeFantasia,
+                    data_fundacao = "2015-01-18",
+                    codigo_nacionalidade = "1",
+                    cnpj = onboarding.Consultor.Cnpj,
+                    codigo_ramo_atividade = 1,
+                    inscricao_municipal = onboarding.Consultor.InscricaoMunicipal,
+                    inscricao_estadual = onboarding.Consultor.InscricaoEstadual,
+                    pessoa = new
+                    {
+                        nome_completo = onboarding.Consultor.Representante.NomeCompleto,
+                        apelido = onboarding.Consultor.Representante.NomeCompleto.Substring(0, onboarding.Consultor.Representante.NomeCompleto.IndexOf(" ", StringComparison.Ordinal)),
+                        nome_social = onboarding.Consultor.Representante.NomeCompleto.Substring(0, onboarding.Consultor.Representante.NomeCompleto.IndexOf(" ", StringComparison.Ordinal)),
+                        codigo_sexo = onboarding.Consultor.Representante.Sexo,
+                        codigo_estado_civil = onboarding.Consultor.Representante.EstadoCivil,
+                        data_nascimento = "1962-01-13",
+                        codigo_nacionalidade = onboarding.Consultor.Representante.Nacionalidade,
+                        cpf = onboarding.Consultor.Representante.Cpf,
+                        autenticacao = new
+                        {
+                            usuario = onboarding.Email,
+                            senha = "432f45b44c432414d2f97df0e5743818",
+                            codigo_perfil = 17
+                        },
+                        emails = onboarding.Consultor.Representante.Emails.Select(item => new
+                        {
+                            tipo_email = item.TipoEmail,
+                            email = item.Email,
+                            principal = 1
+                        }),
+                        telefones = onboarding.Consultor.Representante.Telefones.Select(item => new
+                        {
+                            tipo_telefone = item.TipoTelefone,
+                            ddd = item.Numero.Substring(0, 2),
+                            telefone = item.Numero.Substring(2),
+                            principal = 1
+                        }),
+                        enderecos = onboarding.Consultor.Enderecos.Select(item => new
+                        {
+                            tipo_endereco = item.TipoEndereco,
+                            rua = item.Logradouro,
+                            numero = item.Numero,
+                            complemento = item.Complemento,
+                            bairro = item.Bairro,
+                            cidade = item.Cidade,
+                            sigla_estado = item.Estado,
+                            cep = item.Cep,
+                            principal = item.Principal
+                        }),
+                        dados_bancarios = new List<object>
+                        {
+                            new
+                            {
+                                codigo_banco = onboarding.Consultor.DadosBancarios.CodigoBanco,
+                                agencia = onboarding.Consultor.DadosBancarios.Agencia,
+                                conta = $"{onboarding.Consultor.DadosBancarios.ContaSemDigito}{onboarding.Consultor.DadosBancarios.Digito}",
+                                codigo_operacao = 1,
+                                cpf_favorecido = onboarding.Consultor.Representante.Cpf,
+                                favorecido_fisica_juridica = "J",
+                                principal = 1
+                            }
+                        }
+                    }
+                });
+            }
+            catch (Exception)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                return await Task.FromResult(false);
             }
 
             onboarding.StatusOnboarding = StatusOnboarding.Finalizado;
+
             _onboardingRepository.Update(onboarding);
 
             if (Commit())
             {
             }
 
-            return Task.FromResult(true);
+            return await Task.FromResult(true);
         }
     }
 }

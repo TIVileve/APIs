@@ -86,10 +86,10 @@ namespace VilevePay.Application.Services
             await _bus.SendCommand(enviarTokenEmailCommand);
         }
 
-        public void ValidarSelfie(string codigoConvite, string numeroCelular, string fotoBase64)
+        public async Task ValidarSelfie(string codigoConvite, string numeroCelular, string fotoBase64)
         {
             var validarSelfieCommand = new ValidarSelfieCommand(codigoConvite, numeroCelular, fotoBase64);
-            _bus.SendCommand(validarSelfieCommand);
+            await _bus.SendCommand(validarSelfieCommand);
         }
 
         public void Dispose()
