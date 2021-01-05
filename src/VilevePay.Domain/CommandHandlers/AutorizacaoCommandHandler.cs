@@ -306,7 +306,7 @@ namespace VilevePay.Domain.CommandHandlers
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
-                await HttpClientHelper.OnPost<object, object>(client, $"v1/​consultor​/cadastrar​/pessoajuridica​/{message.CodigoConvite}", new
+                await HttpClientHelper.OnPost<object, object>(client, $"v1/consultor/cadastrar/pessoajuridica/{message.CodigoConvite}", new
                 {
                     razao_social = onboarding.Consultor.RazaoSocial,
                     nome_fantasia = onboarding.Consultor.NomeFantasia,
