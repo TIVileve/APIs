@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Vileve.Application\Vileve.Application.csproj" />
+    <ProjectReference Include="..\Vileve.Domain.Core\Vileve.Domain.Core.csproj" />
+    <ProjectReference Include="..\Vileve.Domain\Vileve.Domain.csproj" />
+    <ProjectReference Include="..\Vileve.Infra.CrossCutting.Bus\Vileve.Infra.CrossCutting.Bus.csproj" />
+    <ProjectReference Include="..\Vileve.Infra.CrossCutting.Identity\Vileve.Infra.CrossCutting.Identity.csproj" />
+    <ProjectReference Include="..\Vileve.Infra.CrossCutting.Io\Vileve.Infra.CrossCutting.Io.csproj" />
+    <ProjectReference Include="..\Vileve.Infra.Data\Vileve.Infra.Data.csproj" />
+  </ItemGroup>
+
+</Project>

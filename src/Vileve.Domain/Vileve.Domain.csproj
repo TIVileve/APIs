@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extensions.FluentValidation.Br" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Vileve.Domain.Core\Vileve.Domain.Core.csproj" />
+    <ProjectReference Include="..\Vileve.Infra.CrossCutting.Io\Vileve.Infra.CrossCutting.Io.csproj" />
+  </ItemGroup>
+
+</Project>
