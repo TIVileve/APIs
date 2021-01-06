@@ -104,7 +104,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var validarConsultor = await HttpClientHelper.OnGet<ValidarConsultor>(client, $"v1/consultor/validar/{message.CodigoConvite}");
+                var validarConsultor = await _httpAppService.OnGet<ValidarConsultor>(client, $"v1/consultor/validar/{message.CodigoConvite}");
                 if (!validarConsultor.Valido.Equals(false))
                     return await Task.FromResult(true);
 
@@ -129,7 +129,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var validarToken = await HttpClientHelper.OnPost<ValidarToken, object>(client, "v1/validacao-contato/validar-token", new
+                var validarToken = await _httpAppService.OnPost<ValidarToken, object>(client, "v1/validacao-contato/validar-token", new
                 {
                     token = message.CodigoToken
                 });
@@ -186,7 +186,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var validarToken = await HttpClientHelper.OnPost<ValidarToken, object>(client, "v1/validacao-contato/validar-token", new
+                var validarToken = await _httpAppService.OnPost<ValidarToken, object>(client, "v1/validacao-contato/validar-token", new
                 {
                     token = message.CodigoToken
                 });
@@ -225,7 +225,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var enviarTokenSms = await HttpClientHelper.OnPost<EnviarTokenSms, object>(client, "v1/validacao-contato/enviar-token-sms", new
+                var enviarTokenSms = await _httpAppService.OnPost<EnviarTokenSms, object>(client, "v1/validacao-contato/enviar-token-sms", new
                 {
                     numero_telefone = message.NumeroCelular
                 });
@@ -255,7 +255,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var enviarTokenEmail = await HttpClientHelper.OnPost<EnviarTokenEmail, object>(client, "v1/validacao-contato/enviar-token-email", new
+                var enviarTokenEmail = await _httpAppService.OnPost<EnviarTokenEmail, object>(client, "v1/validacao-contato/enviar-token-email", new
                 {
                     email = message.Email
                 });
@@ -293,7 +293,7 @@ namespace Vileve.Domain.CommandHandlers
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
 
-                var token = await HttpClientHelper.OnPost<Token, object>(client, "v1/auth/login", new
+                var token = await _httpAppService.OnPost<Token, object>(client, "v1/auth/login", new
                 {
                     usuario = "sistemaconsulta.api",
                     senha = "123456"
@@ -306,7 +306,7 @@ namespace Vileve.Domain.CommandHandlers
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
-                await HttpClientHelper.OnPost<object, object>(client, $"v1/consultor/cadastrar/pessoajuridica/{message.CodigoConvite}", new
+                await _httpAppService.OnPost<object, object>(client, $"v1/consultor/cadastrar/pessoajuridica/{message.CodigoConvite}", new
                 {
                     razao_social = onboarding.Consultor.RazaoSocial,
                     nome_fantasia = onboarding.Consultor.NomeFantasia,

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Vileve.Application.Interfaces;
 using Vileve.Application.ViewModels.v1.Parametrizacao;
 using Vileve.Domain.Core.Bus;
@@ -18,15 +20,18 @@ namespace Vileve.Services.Api.Controllers.v1
     public class ParametrizacaoController : ApiController
     {
         private readonly IParametrizacaoAppService _parametrizacaoAppService;
+        private readonly ILogger<ParametrizacaoController> _logger;
         private readonly DomainNotificationHandler _notifications;
 
         public ParametrizacaoController(
             IParametrizacaoAppService parametrizacaoAppService,
+            ILogger<ParametrizacaoController> logger,
             INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator)
             : base(notifications, mediator)
         {
             _parametrizacaoAppService = parametrizacaoAppService;
+            _logger = logger;
             _notifications = (DomainNotificationHandler)notifications;
         }
 
@@ -40,6 +45,15 @@ namespace Vileve.Services.Api.Controllers.v1
             if (IsValidOperation())
             {
                 return Ok(response);
+            }
+
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
             }
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
@@ -57,6 +71,15 @@ namespace Vileve.Services.Api.Controllers.v1
                 return Ok(response);
             }
 
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
+            }
+
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
@@ -70,6 +93,15 @@ namespace Vileve.Services.Api.Controllers.v1
             if (IsValidOperation())
             {
                 return Ok(response);
+            }
+
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
             }
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
@@ -87,6 +119,15 @@ namespace Vileve.Services.Api.Controllers.v1
                 return Ok(response);
             }
 
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
+            }
+
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
@@ -100,6 +141,15 @@ namespace Vileve.Services.Api.Controllers.v1
             if (IsValidOperation())
             {
                 return Ok(response);
+            }
+
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
             }
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
@@ -117,6 +167,15 @@ namespace Vileve.Services.Api.Controllers.v1
                 return Ok(response);
             }
 
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
+            }
+
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
@@ -130,6 +189,15 @@ namespace Vileve.Services.Api.Controllers.v1
             if (IsValidOperation())
             {
                 return Ok(response);
+            }
+
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
             }
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
@@ -147,6 +215,15 @@ namespace Vileve.Services.Api.Controllers.v1
                 return Ok(response);
             }
 
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
+            }
+
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
@@ -160,6 +237,15 @@ namespace Vileve.Services.Api.Controllers.v1
             if (IsValidOperation())
             {
                 return Ok(response);
+            }
+
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
             }
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
@@ -177,6 +263,15 @@ namespace Vileve.Services.Api.Controllers.v1
                 return Ok(response);
             }
 
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
+            }
+
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
@@ -192,6 +287,15 @@ namespace Vileve.Services.Api.Controllers.v1
                 return Ok(response);
             }
 
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
+            }
+
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
@@ -205,6 +309,15 @@ namespace Vileve.Services.Api.Controllers.v1
             if (IsValidOperation())
             {
                 return Ok(response);
+            }
+
+            if (_notifications.HasNotifications())
+            {
+                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+                {
+                    parameters = new { },
+                    errors = _notifications.GetNotifications().Select(n => n)
+                }));
             }
 
             return BadRequest(_notifications.GetNotifications().Select(n => n.Value));

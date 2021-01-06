@@ -1,3 +1,5 @@
+using System;
+using Elmah.Io.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -65,6 +67,13 @@ namespace Vileve.Services.Api
 
             // .NET Native DI Abstraction
             services.AddDependencyInjectionSetup();
+
+            // elmah.io Config
+            services.AddElmahIo(o =>
+            {
+                o.ApiKey = "74f193118fec49c5a22d9d3659f37c6e";
+                o.LogId = new Guid("0245a3f7-5d90-4318-83d2-af17d29a3c0c");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,6 +104,8 @@ namespace Vileve.Services.Api
             });
 
             app.UseSwaggerSetup();
+
+            app.UseElmahIo();
         }
     }
 }

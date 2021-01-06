@@ -37,7 +37,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var enderecoCep = await HttpClientHelper.OnGet<EnderecoCep>(client, $"v1/servico/buscar-endereco-cep/{message.Cep}");
+                var enderecoCep = await _httpAppService.OnGet<EnderecoCep>(client, $"v1/servico/buscar-endereco-cep/{message.Cep}");
                 if (!enderecoCep.Resultado.Equals(0))
                     return await Task.FromResult(enderecoCep);
 

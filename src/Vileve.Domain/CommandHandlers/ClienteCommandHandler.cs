@@ -57,7 +57,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await HttpClientHelper.OnGet<SeguroProduto>(client, "v1/proposta/seguro/produtos"));
+                return await Task.FromResult(await _httpAppService.OnGet<SeguroProduto>(client, "v1/proposta/seguro/produtos"));
             }
             catch (Exception)
             {

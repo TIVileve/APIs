@@ -10,8 +10,8 @@ using Vileve.Infra.Data.Context;
 namespace Vileve.Infra.Data.Migrations
 {
     [DbContext(typeof(VileveContext))]
-    [Migration("20201110035547_Add_TableEnderecos")]
-    partial class Add_TableEnderecos
+    [Migration("20210106025732_Initial_VileveContext")]
+    partial class Initial_VileveContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -200,12 +200,123 @@ namespace Vileve.Infra.Data.Migrations
                         .HasColumnType("varchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<int>("StatusOnboarding")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Onboarding");
+                });
+
+            modelBuilder.Entity("Vileve.Domain.Models.Representante", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ConsultorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Cpf")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime?>("CreationDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DocumentoFrenteBase64")
+                        .HasColumnType("varchar(MAX)");
+
+                    b.Property<string>("DocumentoVersoBase64")
+                        .HasColumnType("varchar(MAX)");
+
+                    b.Property<int>("EstadoCivil")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nacionalidade")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("NomeCompleto")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("Sexo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsultorId")
+                        .IsUnique();
+
+                    b.ToTable("Representantes");
+                });
+
+            modelBuilder.Entity("Vileve.Domain.Models.RepresentanteEmail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<Guid>("RepresentanteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TipoEmail")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RepresentanteId");
+
+                    b.ToTable("RepresentantesEmails");
+                });
+
+            modelBuilder.Entity("Vileve.Domain.Models.RepresentanteTelefone", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Numero")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<Guid>("RepresentanteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TipoTelefone")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RepresentanteId");
+
+                    b.ToTable("RepresentantesTelefones");
                 });
 
             modelBuilder.Entity("Vileve.Domain.Models.Consultor", b =>
@@ -231,6 +342,33 @@ namespace Vileve.Infra.Data.Migrations
                     b.HasOne("Vileve.Domain.Models.Consultor", "Consultor")
                         .WithMany("Enderecos")
                         .HasForeignKey("ConsultorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Vileve.Domain.Models.Representante", b =>
+                {
+                    b.HasOne("Vileve.Domain.Models.Consultor", "Consultor")
+                        .WithOne("Representante")
+                        .HasForeignKey("Vileve.Domain.Models.Representante", "ConsultorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Vileve.Domain.Models.RepresentanteEmail", b =>
+                {
+                    b.HasOne("Vileve.Domain.Models.Representante", "Representante")
+                        .WithMany("Emails")
+                        .HasForeignKey("RepresentanteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Vileve.Domain.Models.RepresentanteTelefone", b =>
+                {
+                    b.HasOne("Vileve.Domain.Models.Representante", "Representante")
+                        .WithMany("Telefones")
+                        .HasForeignKey("RepresentanteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -49,7 +49,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await HttpClientHelper.OnGet<IEnumerable<ParametrizacaoEstadoCivil>>(client, "v1/dados-complementares/estados-civis"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoEstadoCivil>>(client, "v1/dados-complementares/estados-civis"));
             }
             catch (Exception)
             {
@@ -69,7 +69,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await HttpClientHelper.OnGet<IEnumerable<ParametrizacaoNacionalidade>>(client, "v1/dados-complementares/nacionalidades"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoNacionalidade>>(client, "v1/dados-complementares/nacionalidades"));
             }
             catch (Exception)
             {
@@ -89,7 +89,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await HttpClientHelper.OnGet<IEnumerable<ParametrizacaoPerfilUsuario>>(client, "v1/dados-complementares/perfis-usuario"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoPerfilUsuario>>(client, "v1/dados-complementares/perfis-usuario"));
             }
             catch (Exception)
             {
@@ -109,7 +109,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await HttpClientHelper.OnGet<IEnumerable<ParametrizacaoTipoTelefone>>(client, "v1/dados-complementares/tipos-telefone"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoTelefone>>(client, "v1/dados-complementares/tipos-telefone"));
             }
             catch (Exception)
             {
@@ -129,7 +129,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await HttpClientHelper.OnGet<IEnumerable<ParametrizacaoTipoEmail>>(client, "v1/dados-complementares/tipos-email"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoEmail>>(client, "v1/dados-complementares/tipos-email"));
             }
             catch (Exception)
             {
@@ -149,7 +149,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await HttpClientHelper.OnGet<IEnumerable<ParametrizacaoTipoEndereco>>(client, "v1/dados-complementares/tipos-endereco"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoEndereco>>(client, "v1/dados-complementares/tipos-endereco"));
             }
             catch (Exception)
             {
@@ -169,7 +169,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await HttpClientHelper.OnGet<IEnumerable<ParametrizacaoBanco>>(client, "v1/dados-complementares/bancos"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoBanco>>(client, "v1/dados-complementares/bancos"));
             }
             catch (Exception)
             {
@@ -189,7 +189,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await HttpClientHelper.OnGet<IEnumerable<ParametrizacaoOperacaoBancaria>>(client, "v1/dados-complementares/operacoes-bancarias"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoOperacaoBancaria>>(client, "v1/dados-complementares/operacoes-bancarias"));
             }
             catch (Exception)
             {
