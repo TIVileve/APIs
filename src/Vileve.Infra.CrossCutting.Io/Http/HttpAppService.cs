@@ -40,7 +40,7 @@ namespace Vileve.Infra.CrossCutting.Io.Http
 
             _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
             {
-                errors = responseContent,
+                responseContent,
                 route
             }));
 
@@ -72,7 +72,7 @@ namespace Vileve.Infra.CrossCutting.Io.Http
             _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
             {
                 parameters = jsonInString,
-                errors = responseContent,
+                responseContent,
                 route
             }));
 
