@@ -38,6 +38,12 @@ namespace Vileve.Infra.CrossCutting.Io.Http
             var response = await httpClient.GetAsync(route);
             var responseContent = await response.Content.ReadAsStringAsync();
 
+            _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+            {
+                errors = responseContent,
+                route
+            }));
+
             if (!response.IsSuccessStatusCode)
             {
                 _logger.Log(LogLevel.Error, JsonSerializer.Serialize(new
@@ -62,6 +68,13 @@ namespace Vileve.Infra.CrossCutting.Io.Http
 
             var response = await httpClient.PostAsync(route, new StringContent(jsonInString, Encoding.UTF8, "application/json"));
             var responseContent = await response.Content.ReadAsStringAsync();
+
+            _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+            {
+                parameters = jsonInString,
+                errors = responseContent,
+                route
+            }));
 
             if (!response.IsSuccessStatusCode)
             {
