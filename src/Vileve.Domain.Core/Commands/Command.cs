@@ -9,9 +9,11 @@ namespace Vileve.Domain.Core.Commands
         protected Command()
         {
             Timestamp = DateTime.Now;
+            RequestId = Guid.NewGuid();
         }
 
         public DateTime Timestamp { get; }
+        public Guid RequestId { get; }
         public ValidationResult ValidationResult { get; set; }
 
         public abstract bool IsValid();

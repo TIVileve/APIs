@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,19 +18,15 @@ namespace Vileve.Services.Api.Controllers.v1
     public class ParametrizacaoController : ApiController
     {
         private readonly IParametrizacaoAppService _parametrizacaoAppService;
-        private readonly ILogger<ParametrizacaoController> _logger;
-        private readonly DomainNotificationHandler _notifications;
 
         public ParametrizacaoController(
             IParametrizacaoAppService parametrizacaoAppService,
             ILogger<ParametrizacaoController> logger,
             INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator)
-            : base(notifications, mediator)
+            : base(logger, notifications, mediator)
         {
             _parametrizacaoAppService = parametrizacaoAppService;
-            _logger = logger;
-            _notifications = (DomainNotificationHandler)notifications;
         }
 
         [HttpGet("estados-civis")]
@@ -42,21 +36,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterEstadoCivil();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("nacionalidades")]
@@ -66,21 +46,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterNacionalidade();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("perfil-usuarios")]
@@ -90,21 +56,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterPerfilUsuario();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("tipos-telefone")]
@@ -114,21 +66,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterTipoTelefone();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("tipos-email")]
@@ -138,21 +76,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterTipoEmail();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("tipos-endereco")]
@@ -162,21 +86,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterTipoEndereco();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("bancos")]
@@ -186,21 +96,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterBanco();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("operacoes-bancarias")]
@@ -210,21 +106,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterOperacaoBancaria();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("sexos")]
@@ -234,21 +116,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterSexo();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("tipos-parentesco")]
@@ -258,21 +126,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterTipoParentesco();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("tipos-pagamento")]
@@ -282,21 +136,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterTipoPagamento();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("tipos-convenio")]
@@ -306,21 +146,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _parametrizacaoAppService.ObterTipoConvenio();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
     }
 }

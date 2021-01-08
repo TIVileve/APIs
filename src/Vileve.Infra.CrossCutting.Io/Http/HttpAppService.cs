@@ -13,7 +13,7 @@ namespace Vileve.Infra.CrossCutting.Io.Http
     public class HttpAppService : IHttpAppService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private static ILogger<HttpAppService> _logger;
+        private readonly ILogger<HttpAppService> _logger;
 
         public HttpAppService(
             IHttpClientFactory httpClientFactory,
@@ -33,31 +33,39 @@ namespace Vileve.Infra.CrossCutting.Io.Http
             return client;
         }
 
-        public async Task<T> OnGet<T>(HttpClient httpClient, string route)
+        public async Task<T> OnGet<T>(HttpClient httpClient, Guid requestId, string route)
         {
             var response = await httpClient.GetAsync(route);
             var responseContent = await response.Content.ReadAsStringAsync();
 
+            object result;
+
+            try
+            {
+                result = JsonSerializer.Deserialize<object>(responseContent);
+            }
+            catch (Exception)
+            {
+                result = responseContent;
+            }
+
             _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
             {
-                responseContent,
-                route
+                requestId,
+                route,
+                response.IsSuccessStatusCode,
+                response.StatusCode,
+                response.ReasonPhrase,
+                result
             }));
 
             if (!response.IsSuccessStatusCode)
-            {
-                _logger.Log(LogLevel.Error, JsonSerializer.Serialize(new
-                {
-                    errors = responseContent,
-                    route
-                }));
                 throw new HttpRequestException(responseContent);
-            }
 
             return await response.Content.ReadAsAsync<T>();
         }
 
-        public async Task<T> OnPost<T, TObject>(HttpClient httpClient, string route, TObject content)
+        public async Task<T> OnPost<T, TObject>(HttpClient httpClient, Guid requestId, string route, TObject content)
         {
             var jsonInString = content is string
                 ? content.ToString()
@@ -69,23 +77,30 @@ namespace Vileve.Infra.CrossCutting.Io.Http
             var response = await httpClient.PostAsync(route, new StringContent(jsonInString, Encoding.UTF8, "application/json"));
             var responseContent = await response.Content.ReadAsStringAsync();
 
+            object result;
+
+            try
+            {
+                result = JsonSerializer.Deserialize<object>(responseContent);
+            }
+            catch (Exception)
+            {
+                result = responseContent;
+            }
+
             _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
             {
-                parameters = jsonInString,
-                responseContent,
-                route
+                requestId,
+                route,
+                content,
+                response.IsSuccessStatusCode,
+                response.StatusCode,
+                response.ReasonPhrase,
+                result
             }));
 
             if (!response.IsSuccessStatusCode)
-            {
-                _logger.Log(LogLevel.Error, JsonSerializer.Serialize(new
-                {
-                    parameters = jsonInString,
-                    errors = responseContent,
-                    route
-                }));
                 throw new HttpRequestException(responseContent);
-            }
 
             return await response.Content.ReadAsAsync<T>();
         }

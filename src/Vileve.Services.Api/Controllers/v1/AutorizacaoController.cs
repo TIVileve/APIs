@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,19 +18,15 @@ namespace Vileve.Services.Api.Controllers.v1
     public class AutorizacaoController : ApiController
     {
         private readonly IAutorizacaoAppService _autorizacaoAppService;
-        private readonly ILogger<AutorizacaoController> _logger;
-        private readonly DomainNotificationHandler _notifications;
 
         public AutorizacaoController(
             IAutorizacaoAppService autorizacaoAppService,
             ILogger<AutorizacaoController> logger,
             INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator)
-            : base(notifications, mediator)
+            : base(logger, notifications, mediator)
         {
             _autorizacaoAppService = autorizacaoAppService;
-            _logger = logger;
-            _notifications = (DomainNotificationHandler)notifications;
         }
 
         [HttpGet("login")]
@@ -42,21 +36,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _autorizacaoAppService.Login(email, senha);
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { email, senha },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("sms/token/validar")]
@@ -66,21 +46,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             await _autorizacaoAppService.ValidarTokenSms("******", numeroCelular, codigoToken);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { numeroCelular, codigoToken },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpPost("sms/token")]
@@ -90,21 +56,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             await _autorizacaoAppService.EnviarTokenSms(numeroCelular);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { numeroCelular },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpPost("e-mails/token")]
@@ -114,21 +66,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             await _autorizacaoAppService.EnviarTokenEmail(email);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { email },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpPost("convites/{codigoConvite}/senhas")]
@@ -140,28 +78,7 @@ namespace Vileve.Services.Api.Controllers.v1
             _autorizacaoAppService.CadastrarSenha(codigoConvite, numeroCelular, email, senha,
                 confirmarSenha);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new
-                    {
-                        codigoConvite,
-                        numeroCelular,
-                        email,
-                        senha,
-                        confirmarSenha
-                    },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpGet("convites/{codigoConvite}/validar")]
@@ -171,21 +88,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             await _autorizacaoAppService.ValidarCodigoConvite(codigoConvite);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { codigoConvite },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpGet("convites/{codigoConvite}/sms/token/validar")]
@@ -195,21 +98,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             await _autorizacaoAppService.ValidarTokenSms(codigoConvite, numeroCelular, codigoToken);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { codigoConvite, numeroCelular, codigoToken },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpGet("convites/{codigoConvite}/e-mails/token/validar")]
@@ -219,21 +108,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             await _autorizacaoAppService.ValidarTokenEmail(codigoConvite, numeroCelular, email, codigoToken);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { codigoConvite, numeroCelular, email, codigoToken },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpPost("convites/{codigoConvite}/selfie/validar")]
@@ -243,21 +118,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             await _autorizacaoAppService.ValidarSelfie(codigoConvite, numeroCelular, selfie.FotoBase64);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { codigoConvite, numeroCelular, selfie.FotoBase64 },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
     }
 }

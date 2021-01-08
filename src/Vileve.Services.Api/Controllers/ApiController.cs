@@ -3,6 +3,9 @@ using System.Linq;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
 
@@ -10,13 +13,16 @@ namespace Vileve.Services.Api.Controllers
 {
     public abstract class ApiController : ControllerBase
     {
+        private readonly ILogger _logger;
         private readonly DomainNotificationHandler _notifications;
         private readonly IMediatorHandler _mediator;
 
         protected ApiController(
+            ILogger logger,
             INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator)
         {
+            _logger = logger;
             _notifications = (DomainNotificationHandler)notifications;
             _mediator = mediator;
         }
@@ -32,18 +38,18 @@ namespace Vileve.Services.Api.Controllers
         {
             if (IsValidOperation())
             {
-                return Ok(new
-                {
-                    success = true,
-                    data = result
-                });
+                if (result == null)
+                    return NoContent();
+
+                return Ok(result);
             }
 
-            return BadRequest(new
+            _logger.Log(LogLevel.Warning, JsonConvert.SerializeObject(Notifications, new JsonSerializerSettings
             {
-                success = false,
-                errors = _notifications.GetNotifications().Select(n => n.Value)
-            });
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            }));
+
+            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
         }
 
         protected void NotifyModelStateErrors()
@@ -58,7 +64,7 @@ namespace Vileve.Services.Api.Controllers
 
         protected void NotifyError(string code, string message)
         {
-            _mediator.RaiseEvent(new DomainNotification(code, message));
+            _mediator.RaiseEvent(new DomainNotification(code, message, null));
         }
 
         protected void AddIdentityErrors(IdentityResult result)

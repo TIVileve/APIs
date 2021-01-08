@@ -62,13 +62,13 @@ namespace Vileve.Domain.CommandHandlers
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos.", message));
                 return await Task.FromResult(false);
             }
 
             if (onboarding.Consultor == null)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado."));
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado.", message));
                 return await Task.FromResult(false);
             }
 
@@ -88,13 +88,13 @@ namespace Vileve.Domain.CommandHandlers
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos.", message));
                 return await Task.FromResult(false);
             }
 
             if (onboarding.Consultor == null)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado."));
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado.", message));
                 return await Task.FromResult(false);
             }
 
@@ -102,7 +102,7 @@ namespace Vileve.Domain.CommandHandlers
             if (endereco != null)
                 return await Task.FromResult(endereco);
 
-            await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Endereço não encontrado."));
+            await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Endereço não encontrado.", message));
             return await Task.FromResult(false);
         }
 
@@ -117,13 +117,13 @@ namespace Vileve.Domain.CommandHandlers
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos.", message));
                 return Task.FromResult(false);
             }
 
             if (onboarding.Consultor == null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado.", message));
                 return Task.FromResult(false);
             }
 
@@ -159,13 +159,13 @@ namespace Vileve.Domain.CommandHandlers
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos.", message));
                 return Task.FromResult(false);
             }
 
             if (onboarding.Consultor == null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado.", message));
                 return Task.FromResult(false);
             }
 
@@ -181,7 +181,7 @@ namespace Vileve.Domain.CommandHandlers
                 return Task.FromResult(true);
             }
 
-            _bus.RaiseEvent(new DomainNotification(message.MessageType, "Endereço não encontrado."));
+            _bus.RaiseEvent(new DomainNotification(message.MessageType, "Endereço não encontrado.", message));
             return Task.FromResult(false);
         }
 
@@ -196,13 +196,13 @@ namespace Vileve.Domain.CommandHandlers
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos.", message));
                 return Task.FromResult(false);
             }
 
             if (onboarding.Consultor != null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "O consultor já possui cadastro no sistema."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "O consultor já possui cadastro no sistema.", message));
                 return Task.FromResult(false);
             }
 
@@ -238,13 +238,13 @@ namespace Vileve.Domain.CommandHandlers
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos.", message));
                 return Task.FromResult(false);
             }
 
             if (onboarding.Consultor == null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não cadastrado.", message));
                 return Task.FromResult(false);
             }
 
@@ -295,7 +295,7 @@ namespace Vileve.Domain.CommandHandlers
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos.", message));
                 return await Task.FromResult(false);
             }
 

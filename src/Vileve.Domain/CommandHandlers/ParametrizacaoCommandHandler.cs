@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Vileve.Domain.Commands.Parametrizacao;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
@@ -27,15 +29,18 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<ObterTipoConvenioCommand, object>
     {
         private readonly IHttpAppService _httpAppService;
+        private readonly ILogger<ParametrizacaoCommandHandler> _logger;
 
         public ParametrizacaoCommandHandler(
             IHttpAppService httpAppService,
+            ILogger<ParametrizacaoCommandHandler> logger,
             IUnitOfWork uow,
             IMediatorHandler bus,
             INotificationHandler<DomainNotification> notifications)
             : base(uow, bus, notifications)
         {
             _httpAppService = httpAppService;
+            _logger = logger;
         }
 
         public async Task<object> Handle(ObterEstadoCivilCommand message, CancellationToken cancellationToken)
@@ -49,11 +54,17 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoEstadoCivil>>(client, "v1/dados-complementares/estados-civis"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoEstadoCivil>>(client, message.RequestId, "v1/dados-complementares/estados-civis"));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
         }
@@ -69,11 +80,17 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoNacionalidade>>(client, "v1/dados-complementares/nacionalidades"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoNacionalidade>>(client, message.RequestId, "v1/dados-complementares/nacionalidades"));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
         }
@@ -89,11 +106,17 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoPerfilUsuario>>(client, "v1/dados-complementares/perfis-usuario"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoPerfilUsuario>>(client, message.RequestId, "v1/dados-complementares/perfis-usuario"));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
         }
@@ -109,11 +132,17 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoTelefone>>(client, "v1/dados-complementares/tipos-telefone"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoTelefone>>(client, message.RequestId, "v1/dados-complementares/tipos-telefone"));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
         }
@@ -129,11 +158,17 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoEmail>>(client, "v1/dados-complementares/tipos-email"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoEmail>>(client, message.RequestId, "v1/dados-complementares/tipos-email"));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
         }
@@ -149,11 +184,17 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoEndereco>>(client, "v1/dados-complementares/tipos-endereco"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoEndereco>>(client, message.RequestId, "v1/dados-complementares/tipos-endereco"));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
         }
@@ -169,11 +210,17 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoBanco>>(client, "v1/dados-complementares/bancos"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoBanco>>(client, message.RequestId, "v1/dados-complementares/bancos"));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
         }
@@ -189,11 +236,17 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoOperacaoBancaria>>(client, "v1/dados-complementares/operacoes-bancarias"));
+                return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoOperacaoBancaria>>(client, message.RequestId, "v1/dados-complementares/operacoes-bancarias"));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
         }

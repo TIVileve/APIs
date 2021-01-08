@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,19 +18,15 @@ namespace Vileve.Services.Api.Controllers.v1
     public class EnderecoController : ApiController
     {
         private readonly IEnderecoAppService _enderecoAppService;
-        private readonly ILogger<EnderecoController> _logger;
-        private readonly DomainNotificationHandler _notifications;
 
         public EnderecoController(
             IEnderecoAppService enderecoAppService,
             ILogger<EnderecoController> logger,
             INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator)
-            : base(notifications, mediator)
+            : base(logger, notifications, mediator)
         {
             _enderecoAppService = enderecoAppService;
-            _logger = logger;
-            _notifications = (DomainNotificationHandler)notifications;
         }
 
         [HttpGet("{cep}")]
@@ -42,21 +36,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _enderecoAppService.ObterEndereco(cep);
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { cep },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
     }
 }

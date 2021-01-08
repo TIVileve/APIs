@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Vileve.Domain.Commands.Autorizacao;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
@@ -29,10 +31,12 @@ namespace Vileve.Domain.CommandHandlers
     {
         private readonly IHttpAppService _httpAppService;
         private readonly IOnboardingRepository _onboardingRepository;
+        private readonly ILogger<AutorizacaoCommandHandler> _logger;
 
         public AutorizacaoCommandHandler(
             IHttpAppService httpAppService,
             IOnboardingRepository onboardingRepository,
+            ILogger<AutorizacaoCommandHandler> logger,
             IUnitOfWork uow,
             IMediatorHandler bus,
             INotificationHandler<DomainNotification> notifications)
@@ -40,6 +44,7 @@ namespace Vileve.Domain.CommandHandlers
         {
             _httpAppService = httpAppService;
             _onboardingRepository = onboardingRepository;
+            _logger = logger;
         }
 
         public async Task<object> Handle(LoginCommand message, CancellationToken cancellationToken)
@@ -53,7 +58,7 @@ namespace Vileve.Domain.CommandHandlers
             var onboarding = _onboardingRepository.Find(o => o.Email.Equals(message.Email) && o.Senha.Equals(message.Senha)).FirstOrDefault();
             if (onboarding == null)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "E-mail ou senha inválidos."));
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "E-mail ou senha inválidos.", message));
                 return await Task.FromResult(false);
             }
 
@@ -71,13 +76,13 @@ namespace Vileve.Domain.CommandHandlers
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos.", message));
                 return Task.FromResult(false);
             }
 
             if (!onboarding.Email.Equals(message.Email))
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "E-mail não cadastrado."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "E-mail não cadastrado.", message));
                 return Task.FromResult(false);
             }
 
@@ -104,16 +109,22 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var validarConsultor = await _httpAppService.OnGet<ValidarConsultor>(client, $"v1/consultor/validar/{message.CodigoConvite}");
+                var validarConsultor = await _httpAppService.OnGet<ValidarConsultor>(client, message.RequestId, $"v1/consultor/validar/{message.CodigoConvite}");
                 if (!validarConsultor.Valido.Equals(false))
                     return await Task.FromResult(true);
 
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado."));
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite não encontrado.", message));
                 return await Task.FromResult(false);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
         }
@@ -129,19 +140,25 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var validarToken = await _httpAppService.OnPost<ValidarToken, object>(client, "v1/validacao-contato/validar-token", new
+                var validarToken = await _httpAppService.OnPost<ValidarToken, object>(client, message.RequestId, "v1/validacao-contato/validar-token", new
                 {
                     token = message.CodigoToken
                 });
                 if (validarToken.Valido.Equals(false))
                 {
-                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Token inválido."));
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Token inválido.", message));
                     return await Task.FromResult(false);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
 
@@ -179,26 +196,32 @@ namespace Vileve.Domain.CommandHandlers
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos.", message));
                 return await Task.FromResult(false);
             }
 
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var validarToken = await _httpAppService.OnPost<ValidarToken, object>(client, "v1/validacao-contato/validar-token", new
+                var validarToken = await _httpAppService.OnPost<ValidarToken, object>(client, message.RequestId, "v1/validacao-contato/validar-token", new
                 {
                     token = message.CodigoToken
                 });
                 if (validarToken.Valido.Equals(false))
                 {
-                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Token inválido."));
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Token inválido.", message));
                     return await Task.FromResult(false);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
 
@@ -225,19 +248,25 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var enviarTokenSms = await _httpAppService.OnPost<EnviarTokenSms, object>(client, "v1/validacao-contato/enviar-token-sms", new
+                var enviarTokenSms = await _httpAppService.OnPost<EnviarTokenSms, object>(client, message.RequestId, "v1/validacao-contato/enviar-token-sms", new
                 {
                     numero_telefone = message.NumeroCelular
                 });
                 if (enviarTokenSms.Sucesso.Equals(false))
                 {
-                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                     return await Task.FromResult(false);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
 
@@ -255,19 +284,25 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                var enviarTokenEmail = await _httpAppService.OnPost<EnviarTokenEmail, object>(client, "v1/validacao-contato/enviar-token-email", new
+                var enviarTokenEmail = await _httpAppService.OnPost<EnviarTokenEmail, object>(client, message.RequestId, "v1/validacao-contato/enviar-token-email", new
                 {
                     email = message.Email
                 });
                 if (enviarTokenEmail.Sucesso.Equals(false))
                 {
-                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                     return await Task.FromResult(false);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
 
@@ -285,7 +320,7 @@ namespace Vileve.Domain.CommandHandlers
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding == null)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos."));
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Código do convite ou número de celular inválidos.", message));
                 return await Task.FromResult(false);
             }
 
@@ -293,20 +328,20 @@ namespace Vileve.Domain.CommandHandlers
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
 
-                var token = await _httpAppService.OnPost<Token, object>(client, "v1/auth/login", new
+                var token = await _httpAppService.OnPost<Token, object>(client, message.RequestId, "v1/auth/login", new
                 {
                     usuario = "sistemaconsulta.api",
                     senha = "123456"
                 });
                 if (token == null || string.IsNullOrEmpty(token.AccessToken))
                 {
-                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Usuário de integração não encontrado."));
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Usuário de integração não encontrado.", message));
                     return await Task.FromResult(false);
                 }
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
-                await _httpAppService.OnPost<object, object>(client, $"v1/consultor/cadastrar/pessoajuridica/{message.CodigoConvite}", new
+                await _httpAppService.OnPost<object, object>(client, message.RequestId, $"v1/consultor/cadastrar/pessoajuridica/{message.CodigoConvite}", new
                 {
                     razao_social = onboarding.Consultor.RazaoSocial,
                     nome_fantasia = onboarding.Consultor.NomeFantasia,
@@ -373,9 +408,15 @@ namespace Vileve.Domain.CommandHandlers
                     }
                 });
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
 

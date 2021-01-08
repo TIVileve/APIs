@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,19 +19,15 @@ namespace Vileve.Services.Api.Controllers.v1
     public class ConsultorController : ApiController
     {
         private readonly IConsultorAppService _consultorAppService;
-        private readonly ILogger<ConsultorController> _logger;
-        private readonly DomainNotificationHandler _notifications;
 
         public ConsultorController(
             IConsultorAppService consultorAppService,
             ILogger<ConsultorController> logger,
             INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator)
-            : base(notifications, mediator)
+            : base(logger, notifications, mediator)
         {
             _consultorAppService = consultorAppService;
-            _logger = logger;
-            _notifications = (DomainNotificationHandler)notifications;
         }
 
         [HttpGet("convites/{codigoConvite}/enderecos")]
@@ -43,21 +37,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _consultorAppService.ObterEndereco(codigoConvite, numeroCelular);
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { codigoConvite, numeroCelular },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("convites/{codigoConvite}/enderecos/{enderecoId}")]
@@ -67,21 +47,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _consultorAppService.ObterEnderecoPorId(codigoConvite, numeroCelular, enderecoId);
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { codigoConvite, numeroCelular, enderecoId },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpPost("convites/{codigoConvite}/enderecos")]
@@ -93,21 +59,7 @@ namespace Vileve.Services.Api.Controllers.v1
                 endereco.Numero, endereco.Complemento, endereco.Bairro, endereco.Cidade, endereco.Estado,
                 endereco.Principal, endereco.ComprovanteBase64);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { codigoConvite, numeroCelular, endereco },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpDelete("convites/{codigoConvite}/enderecos/{enderecoId}")]
@@ -117,21 +69,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             _consultorAppService.DeletarEndereco(codigoConvite, numeroCelular, enderecoId);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { codigoConvite, numeroCelular, enderecoId },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpPost("convites/{codigoConvite}/pessoas-juridicas")]
@@ -143,21 +81,7 @@ namespace Vileve.Services.Api.Controllers.v1
                 pessoaJuridica.InscricaoMunicipal, pessoaJuridica.InscricaoEstadual, pessoaJuridica.DadosBancarios.CodigoBanco, pessoaJuridica.DadosBancarios.Agencia, pessoaJuridica.DadosBancarios.ContaSemDigito,
                 pessoaJuridica.DadosBancarios.Digito, pessoaJuridica.DadosBancarios.TipoConta, pessoaJuridica.ContratoSocialBase64, pessoaJuridica.UltimaAlteracaoBase64);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { codigoConvite, numeroCelular, pessoaJuridica },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpPost("convites/{codigoConvite}/representantes")]
@@ -169,21 +93,7 @@ namespace Vileve.Services.Api.Controllers.v1
                 representante.EstadoCivil, representante.Nacionalidade, representante.Emails, representante.Telefones, representante.Documento.FrenteBase64,
                 representante.Documento.VersoBase64);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { codigoConvite, numeroCelular, representante },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpGet("convites/{codigoConvite}/onboarding/status")]
@@ -193,21 +103,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _consultorAppService.ObterStatusOnboarding(codigoConvite, numeroCelular);
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { codigoConvite, numeroCelular },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
     }
 }

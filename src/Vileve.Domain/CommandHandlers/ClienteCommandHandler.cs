@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Vileve.Domain.Commands.Cliente;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
@@ -24,15 +26,18 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<ObterCalculoMensalCommand, object>
     {
         private readonly IHttpAppService _httpAppService;
+        private readonly ILogger<ClienteCommandHandler> _logger;
 
         public ClienteCommandHandler(
             IHttpAppService httpAppService,
+            ILogger<ClienteCommandHandler> logger,
             IUnitOfWork uow,
             IMediatorHandler bus,
             INotificationHandler<DomainNotification> notifications)
             : base(uow, bus, notifications)
         {
             _httpAppService = httpAppService;
+            _logger = logger;
         }
 
         public async Task<object> Handle(CadastrarClienteCommand message, CancellationToken cancellationToken)
@@ -57,11 +62,17 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
-                return await Task.FromResult(await _httpAppService.OnGet<SeguroProduto>(client, "v1/proposta/seguro/produtos"));
+                return await Task.FromResult(await _httpAppService.OnGet<SeguroProduto>(client, message.RequestId, "v1/proposta/seguro/produtos"));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde."));
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
         }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,19 +19,15 @@ namespace Vileve.Services.Api.Controllers.v1
     public class ClienteController : ApiController
     {
         private readonly IClienteAppService _clienteAppService;
-        private readonly ILogger<ClienteController> _logger;
-        private readonly DomainNotificationHandler _notifications;
 
         public ClienteController(
             IClienteAppService clienteAppService,
             ILogger<ClienteController> logger,
             INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator)
-            : base(notifications, mediator)
+            : base(logger, notifications, mediator)
         {
             _clienteAppService = clienteAppService;
-            _logger = logger;
-            _notifications = (DomainNotificationHandler)notifications;
         }
 
         [HttpPost]
@@ -43,21 +37,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _clienteAppService.CadastrarCliente();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { cliente },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("seguros/produtos")]
@@ -67,21 +47,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _clienteAppService.ObterProduto();
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpPost("{clienteId}/seguros/produtos")]
@@ -91,21 +57,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             _clienteAppService.CadastrarProduto(clienteId);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { clienteId, produto },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpPost("{clienteId}/enderecos")]
@@ -116,21 +68,7 @@ namespace Vileve.Services.Api.Controllers.v1
             _clienteAppService.CadastrarEndereco(clienteId, endereco.Cep, endereco.Logradouro, endereco.Numero, endereco.Complemento,
                 endereco.Bairro, endereco.Cidade, endereco.Estado);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { clienteId, endereco },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpGet("{clienteId}/dependentes")]
@@ -140,21 +78,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _clienteAppService.ObterDependente(clienteId);
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { clienteId },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpGet("{clienteId}/dependentes/{dependenteId}")]
@@ -164,21 +88,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _clienteAppService.ObterDependentePorId(clienteId, dependenteId);
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { clienteId, dependenteId },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
 
         [HttpPost("{clienteId}/dependentes")]
@@ -188,21 +98,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             _clienteAppService.CadastrarDependente(clienteId);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { clienteId, dependente },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpDelete("{clienteId}/dependentes/{dependenteId}")]
@@ -212,21 +108,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             _clienteAppService.DeletarDependente(clienteId, dependenteId);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { clienteId, dependenteId },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpPost("{clienteId}/pagamentos")]
@@ -236,21 +118,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             _clienteAppService.CadastrarPagamento(clienteId);
 
-            if (IsValidOperation())
-            {
-                return NoContent();
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { clienteId, pagamento },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response();
         }
 
         [HttpGet("{clienteId}/calculos-mensais")]
@@ -260,21 +128,7 @@ namespace Vileve.Services.Api.Controllers.v1
         {
             var response = await _clienteAppService.ObterCalculoMensal(clienteId);
 
-            if (IsValidOperation())
-            {
-                return Ok(response);
-            }
-
-            if (_notifications.HasNotifications())
-            {
-                _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
-                {
-                    parameters = new { clienteId },
-                    errors = _notifications.GetNotifications().Select(n => n)
-                }));
-            }
-
-            return BadRequest(_notifications.GetNotifications().Select(n => n.Value));
+            return Response(response);
         }
     }
 }
