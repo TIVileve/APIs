@@ -380,7 +380,7 @@ namespace Vileve.Domain.CommandHandlers
                             telefone = item.Numero.Substring(2),
                             principal = 1
                         }),
-                        enderecos = onboarding.Consultor.Enderecos.Select(item => new
+                        enderecos = onboarding.Consultor.Enderecos.Where(e => !string.IsNullOrEmpty(e.Cep)).Select(item => new
                         {
                             tipo_endereco = item.TipoEndereco,
                             rua = item.Logradouro,
