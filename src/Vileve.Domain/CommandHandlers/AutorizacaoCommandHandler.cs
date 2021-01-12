@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Vileve.Domain.Commands.Autorizacao;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
@@ -16,6 +16,7 @@ using Vileve.Domain.Interfaces;
 using Vileve.Domain.Models;
 using Vileve.Domain.Responses;
 using Vileve.Infra.CrossCutting.Io.Http;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Vileve.Domain.CommandHandlers
 {
@@ -430,7 +431,19 @@ namespace Vileve.Domain.CommandHandlers
                     e.Message
                 }));
 
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
+                try
+                {
+                    var responseError = JsonConvert.DeserializeObject<ResponseError>(e.Message);
+                    foreach (var error in responseError.Erros)
+                    {
+                        await _bus.RaiseEvent(new DomainNotification(message.MessageType, error, message));
+                    }
+                }
+                catch (Exception)
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
+                }
+
                 return await Task.FromResult(false);
             }
 
