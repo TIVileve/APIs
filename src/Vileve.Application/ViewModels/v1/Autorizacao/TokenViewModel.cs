@@ -16,5 +16,7 @@ namespace Vileve.Application.ViewModels.v1.Autorizacao
         public string StatusOnboardingDescricao { get; set; }
         public int? StatusOnboarding { get; set; }
         public Guid? ConsultorId { get; set; }
+        public string RepresentanteNomeCompleto { get; set; }
+        public bool Valido { get; set; }
     }
 }

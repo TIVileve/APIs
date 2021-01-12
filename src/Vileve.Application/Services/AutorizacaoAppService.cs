@@ -44,7 +44,9 @@ namespace Vileve.Application.Services
                     NumeroCelular = ((Onboarding)loginResponse)?.NumeroCelular,
                     StatusOnboardingDescricao = Enumerations.GetEnumDescription(((Onboarding)loginResponse)?.StatusOnboarding),
                     StatusOnboarding = (int?)((Onboarding)loginResponse)?.StatusOnboarding,
-                    ConsultorId = ((Onboarding)loginResponse)?.Consultor?.Id
+                    ConsultorId = ((Onboarding)loginResponse)?.Consultor?.Id,
+                    RepresentanteNomeCompleto = ((Onboarding)loginResponse)?.Consultor?.Representante?.NomeCompleto,
+                    Valido = true
                 };
         }
 

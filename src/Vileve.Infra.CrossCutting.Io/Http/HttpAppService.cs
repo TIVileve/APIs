@@ -35,6 +35,12 @@ namespace Vileve.Infra.CrossCutting.Io.Http
 
         public async Task<T> OnGet<T>(HttpClient httpClient, Guid requestId, string route)
         {
+            _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+            {
+                requestId,
+                route
+            }));
+
             var response = await httpClient.GetAsync(route);
             var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -67,6 +73,13 @@ namespace Vileve.Infra.CrossCutting.Io.Http
 
         public async Task<T> OnPost<T, TObject>(HttpClient httpClient, Guid requestId, string route, TObject content)
         {
+            _logger.Log(LogLevel.Warning, JsonSerializer.Serialize(new
+            {
+                requestId,
+                route,
+                content
+            }));
+
             var jsonInString = content is string
                 ? content.ToString()
                 : JsonConvert.SerializeObject(content, new JsonSerializerSettings

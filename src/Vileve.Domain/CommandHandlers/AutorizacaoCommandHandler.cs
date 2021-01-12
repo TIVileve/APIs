@@ -341,6 +341,20 @@ namespace Vileve.Domain.CommandHandlers
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
+                string apelido;
+                string nomeSocial;
+
+                if (onboarding.Consultor.Representante.NomeCompleto.IndexOf(" ", StringComparison.Ordinal).Equals(-1))
+                {
+                    apelido = onboarding.Consultor.Representante.NomeCompleto;
+                    nomeSocial = onboarding.Consultor.Representante.NomeCompleto;
+                }
+                else
+                {
+                    apelido = onboarding.Consultor.Representante.NomeCompleto.Substring(0, onboarding.Consultor.Representante.NomeCompleto.IndexOf(" ", StringComparison.Ordinal));
+                    nomeSocial = onboarding.Consultor.Representante.NomeCompleto.Substring(0, onboarding.Consultor.Representante.NomeCompleto.IndexOf(" ", StringComparison.Ordinal));
+                }
+
                 await _httpAppService.OnPost<object, object>(client, message.RequestId, $"v1/consultor/cadastrar/pessoajuridica/{message.CodigoConvite}", new
                 {
                     razao_social = onboarding.Consultor.RazaoSocial,
@@ -354,8 +368,8 @@ namespace Vileve.Domain.CommandHandlers
                     pessoa = new
                     {
                         nome_completo = onboarding.Consultor.Representante.NomeCompleto,
-                        apelido = onboarding.Consultor.Representante.NomeCompleto.Substring(0, onboarding.Consultor.Representante.NomeCompleto.IndexOf(" ", StringComparison.Ordinal)),
-                        nome_social = onboarding.Consultor.Representante.NomeCompleto.Substring(0, onboarding.Consultor.Representante.NomeCompleto.IndexOf(" ", StringComparison.Ordinal)),
+                        apelido,
+                        nome_social = nomeSocial,
                         codigo_sexo = onboarding.Consultor.Representante.Sexo,
                         codigo_estado_civil = onboarding.Consultor.Representante.EstadoCivil,
                         data_nascimento = "1962-01-13",
