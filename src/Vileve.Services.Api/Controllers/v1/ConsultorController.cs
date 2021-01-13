@@ -106,7 +106,7 @@ namespace Vileve.Services.Api.Controllers.v1
             return Response(response);
         }
 
-        [HttpGet("{email}")]
+        [HttpGet("{email}/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ValidarConsultor(string email)
@@ -116,7 +116,7 @@ namespace Vileve.Services.Api.Controllers.v1
             return Response();
         }
 
-        [HttpGet("pessoas-juridicas/{cnpj}")]
+        [HttpGet("pessoas-juridicas/{cnpj}/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ValidarPessoaJuridica(string cnpj)
@@ -126,7 +126,7 @@ namespace Vileve.Services.Api.Controllers.v1
             return Response();
         }
 
-        [HttpGet("representantes/{cpf}")]
+        [HttpGet("representantes/{cpf}/validar")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ValidarRepresentante(string cpf)
