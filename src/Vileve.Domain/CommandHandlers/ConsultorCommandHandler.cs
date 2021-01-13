@@ -344,11 +344,13 @@ namespace Vileve.Domain.CommandHandlers
                 try
                 {
                     await _httpAppService.OnGet<VerificaUsuario>(client, message.RequestId, $"v1/auth/verifica-usuario/{message.Email}");
+
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não encontrado.", message));
+                    return await Task.FromResult(false);
                 }
                 catch (Exception)
                 {
-                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não encontrado.", message));
-                    return await Task.FromResult(false);
+                    // ignored
                 }
             }
             catch (Exception e)
