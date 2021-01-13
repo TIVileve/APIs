@@ -343,7 +343,7 @@ namespace Vileve.Domain.CommandHandlers
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
                 var verificaUsuario = await _httpAppService.OnGet<VerificaUsuario>(client, message.RequestId, $"v1/auth/verifica-usuario/{HttpUtility.UrlEncode(message.Email)}");
-                if (verificaUsuario.Valido.Equals(false))
+                if (verificaUsuario.Valido.Equals(true))
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não encontrado.", message));
                     return await Task.FromResult(false);
