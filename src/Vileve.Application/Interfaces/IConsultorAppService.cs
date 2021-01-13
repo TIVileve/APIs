@@ -24,6 +24,7 @@ namespace Vileve.Application.Interfaces
             string documentoVersoBase64);
 
         Task<object> ObterStatusOnboarding(string codigoConvite, string numeroCelular);
+        Task ValidarConsultor(string email);
         Task ValidarPessoaJuridica(string cnpj);
         Task ValidarRepresentante(string cpf);
     }

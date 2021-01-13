@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Vileve.Domain.Commands.Consultor;
@@ -25,6 +26,7 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<CadastrarPessoaJuridicaCommand, bool>,
         IRequestHandler<CadastrarRepresentanteCommand, bool>,
         IRequestHandler<ObterStatusOnboardingCommand, object>,
+        IRequestHandler<ValidarConsultorCommand, bool>,
         IRequestHandler<ValidarPessoaJuridicaCommand, bool>,
         IRequestHandler<ValidarRepresentanteCommand, bool>
     {
@@ -313,6 +315,53 @@ namespace Vileve.Domain.CommandHandlers
             }
 
             return await Task.FromResult(onboarding);
+        }
+
+        public async Task<bool> Handle(ValidarConsultorCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            try
+            {
+                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+
+                var token = await _httpAppService.OnPost<Token, object>(client, message.RequestId, "v1/auth/login", new
+                {
+                    usuario = "sistemaconsulta.api",
+                    senha = "123456"
+                });
+                if (token == null || string.IsNullOrEmpty(token.AccessToken))
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Usuário de integração não encontrado.", message));
+                    return await Task.FromResult(false);
+                }
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+
+                var verificaUsuario = await _httpAppService.OnGet<VerificaUsuario>(client, message.RequestId, $"v1/auth/verifica-usuario/{HttpUtility.UrlEncode(message.Email)}");
+                if (verificaUsuario.Valido.Equals(false))
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não encontrado.", message));
+                    return await Task.FromResult(false);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
 
         public async Task<bool> Handle(ValidarPessoaJuridicaCommand message, CancellationToken cancellationToken)
