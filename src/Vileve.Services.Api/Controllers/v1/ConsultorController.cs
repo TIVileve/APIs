@@ -105,5 +105,25 @@ namespace Vileve.Services.Api.Controllers.v1
 
             return Response(response);
         }
+
+        [HttpGet("pessoas-juridicas/{cnpj}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ValidarPessoaJuridica(string cnpj)
+        {
+            await _consultorAppService.ValidarPessoaJuridica(cnpj);
+
+            return Response();
+        }
+
+        [HttpGet("representantes/{cpf}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ValidarRepresentante(string cpf)
+        {
+            await _consultorAppService.ValidarRepresentante(cpf);
+
+            return Response();
+        }
     }
 }

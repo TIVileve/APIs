@@ -88,6 +88,18 @@ namespace Vileve.Application.Services
             return _notifications.HasNotifications() ? obterStatusOnboardingResponse : _mapper.Map<StatusOnboardingViewModel>((Onboarding)obterStatusOnboardingResponse);
         }
 
+        public async Task ValidarPessoaJuridica(string cnpj)
+        {
+            var validarPessoaJuridicaCommand = new ValidarPessoaJuridicaCommand(cnpj);
+            await _bus.SendCommand(validarPessoaJuridicaCommand);
+        }
+
+        public async Task ValidarRepresentante(string cpf)
+        {
+            var validarRepresentanteCommand = new ValidarRepresentanteCommand(cpf);
+            await _bus.SendCommand(validarRepresentanteCommand);
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

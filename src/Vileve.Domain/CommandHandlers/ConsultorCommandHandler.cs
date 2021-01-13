@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Vileve.Domain.Commands.Consultor;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
 using Vileve.Domain.Enums;
 using Vileve.Domain.Interfaces;
 using Vileve.Domain.Models;
+using Vileve.Domain.Responses;
+using Vileve.Infra.CrossCutting.Io.Http;
 
 namespace Vileve.Domain.CommandHandlers
 {
@@ -19,8 +24,11 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<DeletarEnderecoCommand, bool>,
         IRequestHandler<CadastrarPessoaJuridicaCommand, bool>,
         IRequestHandler<CadastrarRepresentanteCommand, bool>,
-        IRequestHandler<ObterStatusOnboardingCommand, object>
+        IRequestHandler<ObterStatusOnboardingCommand, object>,
+        IRequestHandler<ValidarPessoaJuridicaCommand, bool>,
+        IRequestHandler<ValidarRepresentanteCommand, bool>
     {
+        private readonly IHttpAppService _httpAppService;
         private readonly IOnboardingRepository _onboardingRepository;
         private readonly IConsultorRepository _consultorRepository;
         private readonly IDadosBancariosRepository _dadosBancariosRepository;
@@ -28,8 +36,10 @@ namespace Vileve.Domain.CommandHandlers
         private readonly IRepresentanteRepository _representanteRepository;
         private readonly IRepresentanteEmailRepository _representanteEmailRepository;
         private readonly IRepresentanteTelefoneRepository _representanteTelefoneRepository;
+        private readonly ILogger<ConsultorCommandHandler> _logger;
 
         public ConsultorCommandHandler(
+            IHttpAppService httpAppService,
             IOnboardingRepository onboardingRepository,
             IConsultorRepository consultorRepository,
             IDadosBancariosRepository dadosBancariosRepository,
@@ -37,11 +47,13 @@ namespace Vileve.Domain.CommandHandlers
             IRepresentanteRepository representanteRepository,
             IRepresentanteEmailRepository representanteEmailRepository,
             IRepresentanteTelefoneRepository representanteTelefoneRepository,
+            ILogger<ConsultorCommandHandler> logger,
             IUnitOfWork uow,
             IMediatorHandler bus,
             INotificationHandler<DomainNotification> notifications)
             : base(uow, bus, notifications)
         {
+            _httpAppService = httpAppService;
             _onboardingRepository = onboardingRepository;
             _consultorRepository = consultorRepository;
             _dadosBancariosRepository = dadosBancariosRepository;
@@ -49,6 +61,7 @@ namespace Vileve.Domain.CommandHandlers
             _representanteRepository = representanteRepository;
             _representanteEmailRepository = representanteEmailRepository;
             _representanteTelefoneRepository = representanteTelefoneRepository;
+            _logger = logger;
         }
 
         public async Task<object> Handle(ObterEnderecoCommand message, CancellationToken cancellationToken)
@@ -256,7 +269,7 @@ namespace Vileve.Domain.CommandHandlers
             foreach (var value in message.Emails)
             {
                 var tipoEmail = (int?)value.GetType().GetProperty("TipoEmail")?.GetValue(value, null);
-                var email = value.GetType().GetProperty("Email")?.GetValue(value, null).ToString();
+                var email = value.GetType().GetProperty("Email")?.GetValue(value, null)?.ToString();
 
                 var representanteEmail = new RepresentanteEmail(Guid.NewGuid(), tipoEmail.GetValueOrDefault(), email, representante.Id);
 
@@ -266,7 +279,7 @@ namespace Vileve.Domain.CommandHandlers
             foreach (var value in message.Telefones)
             {
                 var tipoTelefone = (int?)value.GetType().GetProperty("TipoTelefone")?.GetValue(value, null);
-                var numero = value.GetType().GetProperty("Numero")?.GetValue(value, null).ToString();
+                var numero = value.GetType().GetProperty("Numero")?.GetValue(value, null)?.ToString();
 
                 var representanteTelefone = new RepresentanteTelefone(Guid.NewGuid(), tipoTelefone.GetValueOrDefault(), numero, representante.Id);
 
@@ -300,6 +313,106 @@ namespace Vileve.Domain.CommandHandlers
             }
 
             return await Task.FromResult(onboarding);
+        }
+
+        public async Task<bool> Handle(ValidarPessoaJuridicaCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            try
+            {
+                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+
+                var token = await _httpAppService.OnPost<Token, object>(client, message.RequestId, "v1/auth/login", new
+                {
+                    usuario = "sistemaconsulta.api",
+                    senha = "123456"
+                });
+                if (token == null || string.IsNullOrEmpty(token.AccessToken))
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Usuário de integração não encontrado.", message));
+                    return await Task.FromResult(false);
+                }
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+
+                try
+                {
+                    await _httpAppService.OnGet<object>(client, message.RequestId, $"v1/consultor/consultar/{message.Cnpj}");
+                }
+                catch (Exception)
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Pessoa jurídica não encontrada.", message));
+                    return await Task.FromResult(false);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+
+        public async Task<bool> Handle(ValidarRepresentanteCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            try
+            {
+                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+
+                var token = await _httpAppService.OnPost<Token, object>(client, message.RequestId, "v1/auth/login", new
+                {
+                    usuario = "sistemaconsulta.api",
+                    senha = "123456"
+                });
+                if (token == null || string.IsNullOrEmpty(token.AccessToken))
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Usuário de integração não encontrado.", message));
+                    return await Task.FromResult(false);
+                }
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+
+                try
+                {
+                    await _httpAppService.OnGet<object>(client, message.RequestId, $"v1/consultor/consultar/{message.Cpf}");
+                }
+                catch (Exception)
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Representante não encontrado.", message));
+                    return await Task.FromResult(false);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
     }
 }

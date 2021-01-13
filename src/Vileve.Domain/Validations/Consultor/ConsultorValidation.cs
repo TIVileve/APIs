@@ -32,5 +32,19 @@ namespace Vileve.Domain.Validations.Consultor
                 .NotEmpty().WithMessage("O campo e-mail é obrigatório.")
                 .EmailAddress().WithMessage("O campo e-mail está inválido.");
         }
+
+        protected void ValidateCnpj()
+        {
+            RuleFor(c => c.Cnpj)
+                .NotEmpty().WithMessage("O campo CNPJ é obrigatório.")
+                .IsValidCNPJ().WithMessage("O campo CNPJ está inválido.");
+        }
+
+        protected void ValidateCpf()
+        {
+            RuleFor(c => c.Cpf)
+                .NotEmpty().WithMessage("O campo CPF é obrigatório.")
+                .IsValidCPF().WithMessage("O campo CPF está inválido.");
+        }
     }
 }
