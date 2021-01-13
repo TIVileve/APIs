@@ -4,7 +4,6 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Vileve.Domain.Commands.Consultor;
@@ -342,7 +341,7 @@ namespace Vileve.Domain.CommandHandlers
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
-                var verificaUsuario = await _httpAppService.OnGet<VerificaUsuario>(client, message.RequestId, $"v1/auth/verifica-usuario/{HttpUtility.UrlEncode(message.Email)}");
+                var verificaUsuario = await _httpAppService.OnGet<VerificaUsuario>(client, message.RequestId, $"v1/auth/verifica-usuario/{message.Email}");
                 if (verificaUsuario.Valido.Equals(true))
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor não encontrado.", message));
