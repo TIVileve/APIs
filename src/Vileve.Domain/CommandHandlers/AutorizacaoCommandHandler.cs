@@ -431,15 +431,26 @@ namespace Vileve.Domain.CommandHandlers
                     e.Message
                 }));
 
+                var errors = new List<string>();
+
                 try
                 {
                     var responseError = JsonConvert.DeserializeObject<ResponseError>(e.Message);
-                    foreach (var error in responseError.Erros)
+                    errors.AddRange(responseError.Erros);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
+                if (errors.Any())
+                {
+                    foreach (var error in errors)
                     {
                         await _bus.RaiseEvent(new DomainNotification(message.MessageType, error, message));
                     }
                 }
-                catch (Exception)
+                else
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 }
