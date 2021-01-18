@@ -71,8 +71,8 @@ namespace Vileve.Services.Api
             // elmah.io Config
             services.AddElmahIo(o =>
             {
-                o.ApiKey = "74f193118fec49c5a22d9d3659f37c6e";
-                o.LogId = new Guid("0245a3f7-5d90-4318-83d2-af17d29a3c0c");
+                o.ApiKey = "d84faef876234265bfbed47bd6012bcc";
+                o.LogId = new Guid("cf7129aa-e399-43a6-b732-2ea3f8f7f82b");
             });
         }
 
