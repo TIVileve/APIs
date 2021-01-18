@@ -105,18 +105,13 @@ namespace Vileve.Application.Services
                 {
                     new SexoViewModel
                     {
-                        CodigoSexo = 0,
+                        CodigoSexo = 2,
                         Nome = "Feminino"
                     },
                     new SexoViewModel
                     {
                         CodigoSexo = 1,
                         Nome = "Masculino"
-                    },
-                    new SexoViewModel
-                    {
-                        CodigoSexo = 2,
-                        Nome = "Não declarado"
                     }
                 };
         }
