@@ -20,6 +20,7 @@ namespace Vileve.Infra.Data.Context
         public DbSet<Representante> Representantes { get; set; }
         public DbSet<RepresentanteEmail> RepresentantesEmails { get; set; }
         public DbSet<RepresentanteTelefone> RepresentantesTelefones { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseLazyLoadingProxies();
 
@@ -32,6 +33,7 @@ namespace Vileve.Infra.Data.Context
             modelBuilder.ApplyConfiguration(new RepresentanteMap());
             modelBuilder.ApplyConfiguration(new RepresentanteEmailMap());
             modelBuilder.ApplyConfiguration(new RepresentanteTelefoneMap());
+            modelBuilder.ApplyConfiguration(new ClienteMap());
 
             base.OnModelCreating(modelBuilder);
         }

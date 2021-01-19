@@ -121,6 +121,7 @@ namespace Vileve.Infra.CrossCutting.IoC
             services.AddScoped<IRepresentanteRepository, RepresentanteRepository>();
             services.AddScoped<IRepresentanteEmailRepository, RepresentanteEmailRepository>();
             services.AddScoped<IRepresentanteTelefoneRepository, RepresentanteTelefoneRepository>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IPropertyRepository, PropertyRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<VileveContext>();
