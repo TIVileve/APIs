@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vileve.Infra.Data.Context;
 
 namespace Vileve.Infra.Data.Migrations
 {
     [DbContext(typeof(VileveContext))]
-    partial class VileveContextModelSnapshot : ModelSnapshot
+    [Migration("20210125180003_Add_TableClientesEnderecos")]
+    partial class Add_TableClientesEnderecos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
