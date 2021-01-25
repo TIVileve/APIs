@@ -123,6 +123,7 @@ namespace Vileve.Infra.CrossCutting.IoC
             services.AddScoped<IRepresentanteTelefoneRepository, RepresentanteTelefoneRepository>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IClienteProdutoRepository, ClienteProdutoRepository>();
+            services.AddScoped<IClienteEnderecoRepository, ClienteEnderecoRepository>();
             services.AddScoped<IPropertyRepository, PropertyRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<VileveContext>();
