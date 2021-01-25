@@ -23,6 +23,7 @@ namespace Vileve.Infra.Data.Context
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<ClienteProduto> ClientesProdutos { get; set; }
         public DbSet<ClienteEndereco> ClientesEnderecos { get; set; }
+        public DbSet<ClienteDependente> ClientesDependentes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseLazyLoadingProxies();
 
@@ -38,6 +39,7 @@ namespace Vileve.Infra.Data.Context
             modelBuilder.ApplyConfiguration(new ClienteMap());
             modelBuilder.ApplyConfiguration(new ClienteProdutoMap());
             modelBuilder.ApplyConfiguration(new ClienteEnderecoMap());
+            modelBuilder.ApplyConfiguration(new ClienteDependenteMap());
 
             base.OnModelCreating(modelBuilder);
         }
