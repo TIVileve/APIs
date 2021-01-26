@@ -143,7 +143,8 @@ namespace Vileve.Domain.CommandHandlers
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
                 var validarToken = await _httpAppService.OnPost<ValidarToken, object>(client, message.RequestId, "v1/validacao-contato/validar-token", new
                 {
-                    token = message.CodigoToken
+                    token = message.CodigoToken,
+                    numero_telefone = message.NumeroCelular
                 });
                 if (validarToken.Valido.Equals(false))
                 {
@@ -206,7 +207,8 @@ namespace Vileve.Domain.CommandHandlers
                 var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
                 var validarToken = await _httpAppService.OnPost<ValidarToken, object>(client, message.RequestId, "v1/validacao-contato/validar-token", new
                 {
-                    token = message.CodigoToken
+                    token = message.CodigoToken,
+                    email = message.Email
                 });
                 if (validarToken.Valido.Equals(false))
                 {
