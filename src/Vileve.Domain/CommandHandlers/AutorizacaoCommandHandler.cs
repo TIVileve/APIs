@@ -358,7 +358,7 @@ namespace Vileve.Domain.CommandHandlers
                     nomeSocial = onboarding.Consultor.Representante.NomeCompleto.Substring(0, onboarding.Consultor.Representante.NomeCompleto.IndexOf(" ", StringComparison.Ordinal));
                 }
 
-                await _httpAppService.OnPost<object, object>(client, message.RequestId, $"v1/consultor/cadastrar/pessoajuridica/{message.CodigoConvite}", new
+                var test = await _httpAppService.OnPost<object, object>(client, message.RequestId, $"v1/consultor/cadastrar/pessoajuridica/{message.CodigoConvite}", new
                 {
                     razao_social = onboarding.Consultor.RazaoSocial,
                     nome_fantasia = onboarding.Consultor.NomeFantasia,
@@ -397,7 +397,7 @@ namespace Vileve.Domain.CommandHandlers
                             telefone = item.Numero.Substring(2),
                             principal = 1
                         }),
-                        enderecos = onboarding.Consultor.Enderecos.Where(e => !string.IsNullOrWhiteSpace(e.Cep)).Select(item => new
+                        enderecos = onboarding.Consultor.Enderecos.Select(item => new
                         {
                             tipo_endereco = item.TipoEndereco,
                             rua = item.Logradouro,
@@ -423,6 +423,41 @@ namespace Vileve.Domain.CommandHandlers
                             }
                         }
                     }
+                });
+
+                await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/selfie", new
+                {
+                    codigo_pessoa = 0,
+                    arquivo_base64 = message.FotoBase64
+                });
+
+                await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/documento-identificacao", new
+                {
+                    codigo_pessoa = 0,
+                    frente = new
+                    {
+                        arquivo_base64 = onboarding.Consultor.Representante.DocumentoFrenteBase64
+                    },
+                    verso = new
+                    {
+                        arquivo_base64 = onboarding.Consultor.Representante.DocumentoVersoBase64
+                    }
+                });
+
+                foreach (var item in onboarding.Consultor.Enderecos)
+                {
+                    await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/comprovante-endereco", new
+                    {
+                        codigo_pessoa = 0,
+                        arquivo_base64 = item.ComprovanteBase64
+                    });
+                }
+
+                await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
+                {
+                    codigo_pessoa = 0,
+                    tipo_contrato = "contrato",
+                    arquivo_base64 = onboarding.Consultor.ContratoSocialBase64
                 });
             }
             catch (Exception e)
