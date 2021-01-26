@@ -333,7 +333,7 @@ namespace Vileve.Domain.CommandHandlers
                     usuario = "sistemaconsulta.api",
                     senha = "123456"
                 });
-                if (token == null || string.IsNullOrEmpty(token.AccessToken))
+                if (token == null || string.IsNullOrWhiteSpace(token.AccessToken))
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Usuário de integração não encontrado.", message));
                     return await Task.FromResult(false);
@@ -383,7 +383,7 @@ namespace Vileve.Domain.CommandHandlers
                     usuario = "sistemaconsulta.api",
                     senha = "123456"
                 });
-                if (token == null || string.IsNullOrEmpty(token.AccessToken))
+                if (token == null || string.IsNullOrWhiteSpace(token.AccessToken))
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Usuário de integração não encontrado.", message));
                     return await Task.FromResult(false);
@@ -435,7 +435,7 @@ namespace Vileve.Domain.CommandHandlers
                     usuario = "sistemaconsulta.api",
                     senha = "123456"
                 });
-                if (token == null || string.IsNullOrEmpty(token.AccessToken))
+                if (token == null || string.IsNullOrWhiteSpace(token.AccessToken))
                 {
                     await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Usuário de integração não encontrado.", message));
                     return await Task.FromResult(false);

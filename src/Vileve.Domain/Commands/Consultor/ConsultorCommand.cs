@@ -7,7 +7,14 @@ namespace Vileve.Domain.Commands.Consultor
     public abstract class ConsultorCommand : Command
     {
         public string CodigoConvite { get; protected set; }
-        public string NumeroCelular { get; protected set; }
+        private string _numeroCelular;
+
+        public string NumeroCelular
+        {
+            get => _numeroCelular;
+            protected set => _numeroCelular = string.IsNullOrWhiteSpace(value) ? null : value.Contains("+") ? value : $"+{value}";
+        }
+
         public Guid EnderecoId { get; protected set; }
         public string Email { get; protected set; }
 
