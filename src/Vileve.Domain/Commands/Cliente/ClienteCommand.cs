@@ -16,6 +16,9 @@ namespace Vileve.Domain.Commands.Cliente
         public string TelefoneCelular { get; protected set; }
         public Guid? ConsultorId { get; protected set; }
 
+        // Produto
+        public string CodigoProduto { get; protected set; }
+
         // Endereco
         public string Cep { get; protected set; }
         public string Logradouro { get; protected set; }

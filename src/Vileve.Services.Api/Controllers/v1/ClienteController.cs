@@ -56,7 +56,7 @@ namespace Vileve.Services.Api.Controllers.v1
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public IActionResult CadastrarProduto(Guid clienteId, [FromBody] CadastrarProdutoViewModel produto)
         {
-            _clienteAppService.CadastrarProduto(clienteId);
+            _clienteAppService.CadastrarProduto(clienteId, produto.CodigoProduto);
 
             return Response();
         }

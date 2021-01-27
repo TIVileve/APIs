@@ -48,9 +48,9 @@ namespace Vileve.Application.Services
             return _notifications.HasNotifications() ? obterProdutoResponse : _mapper.Map<ProdutoViewModel>((SeguroProduto)obterProdutoResponse);
         }
 
-        public void CadastrarProduto(Guid clienteId)
+        public void CadastrarProduto(Guid clienteId, string codigoProduto)
         {
-            var cadastrarProdutoCommand = new CadastrarProdutoCommand(clienteId);
+            var cadastrarProdutoCommand = new CadastrarProdutoCommand(clienteId, codigoProduto);
             _bus.SendCommand(cadastrarProdutoCommand);
         }
 
