@@ -9,6 +9,7 @@ using Vileve.Application.ViewModels.v1.Cliente;
 using Vileve.Domain.Commands.Cliente;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
+using Vileve.Domain.Models;
 using Vileve.Domain.Responses;
 
 namespace Vileve.Application.Services
@@ -29,17 +30,14 @@ namespace Vileve.Application.Services
             _notifications = (DomainNotificationHandler)notifications;
         }
 
-        public async Task<object> CadastrarCliente()
+        public async Task<object> CadastrarCliente(string cpf, string nomeCompleto, DateTime dataNascimento, string email,
+            string telefoneFixo, string telefoneCelular, Guid? consultorId)
         {
-            var cadastrarClienteCommand = new CadastrarClienteCommand();
+            var cadastrarClienteCommand = new CadastrarClienteCommand(cpf, nomeCompleto, dataNascimento, email,
+                telefoneFixo, telefoneCelular, consultorId);
             var cadastrarClienteResponse = await _bus.SendCommand(cadastrarClienteCommand);
 
-            return _notifications.HasNotifications()
-                ? cadastrarClienteResponse
-                : new ClienteViewModel
-                {
-                    Id = Guid.NewGuid()
-                };
+            return _notifications.HasNotifications() ? cadastrarClienteResponse : _mapper.Map<ClienteViewModel>((Cliente)cadastrarClienteResponse);
         }
 
         public async Task<object> ObterProduto()

@@ -8,6 +8,7 @@ using Vileve.Domain.Commands.Cliente;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
 using Vileve.Domain.Interfaces;
+using Vileve.Domain.Models;
 using Vileve.Domain.Responses;
 using Vileve.Infra.CrossCutting.Io.Http;
 
@@ -26,10 +27,12 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<ObterCalculoMensalCommand, object>
     {
         private readonly IHttpAppService _httpAppService;
+        private readonly IClienteRepository _clienteRepository;
         private readonly ILogger<ClienteCommandHandler> _logger;
 
         public ClienteCommandHandler(
             IHttpAppService httpAppService,
+            IClienteRepository clienteRepository,
             ILogger<ClienteCommandHandler> logger,
             IUnitOfWork uow,
             IMediatorHandler bus,
@@ -37,6 +40,7 @@ namespace Vileve.Domain.CommandHandlers
             : base(uow, bus, notifications)
         {
             _httpAppService = httpAppService;
+            _clienteRepository = clienteRepository;
             _logger = logger;
         }
 
@@ -48,7 +52,16 @@ namespace Vileve.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            var cliente = new Cliente(Guid.NewGuid(), message.Cpf, message.NomeCompleto, message.DataNascimento, message.Email,
+                message.TelefoneFixo, message.TelefoneCelular, message.ConsultorId);
+
+            _clienteRepository.Add(cliente);
+
+            if (Commit())
+            {
+            }
+
+            return await Task.FromResult(cliente);
         }
 
         public async Task<object> Handle(ObterProdutoCommand message, CancellationToken cancellationToken)

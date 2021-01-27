@@ -73,6 +73,8 @@ namespace Vileve.Application.AutoMapper
                 .ForMember(dest => dest.Itens, opt => opt.MapFrom(src => src.ProdutoItens));
 
             CreateMap<SeguroProdutoItem, ProdutoItemViewModel>();
+
+            CreateMap<Cliente, ClienteViewModel>();
         }
     }
 }

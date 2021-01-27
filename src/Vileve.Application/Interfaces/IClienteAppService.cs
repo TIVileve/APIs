@@ -5,7 +5,9 @@ namespace Vileve.Application.Interfaces
 {
     public interface IClienteAppService : IDisposable
     {
-        Task<object> CadastrarCliente();
+        Task<object> CadastrarCliente(string cpf, string nomeCompleto, DateTime dataNascimento, string email,
+            string telefoneFixo, string telefoneCelular, Guid? consultorId);
+
         Task<object> ObterProduto();
         void CadastrarProduto(Guid clienteId);
 
