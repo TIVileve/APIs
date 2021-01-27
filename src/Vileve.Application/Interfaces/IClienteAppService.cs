@@ -12,7 +12,7 @@ namespace Vileve.Application.Interfaces
         void CadastrarProduto(Guid clienteId, string codigoProduto);
 
         void CadastrarEndereco(Guid clienteId, string cep, string logradouro, int numero, string complemento,
-            string bairro, string cidade, string estado);
+            string bairro, string cidade, string estado, string comprovanteBase64);
 
         Task<object> ObterDependente(Guid clienteId);
         Task<object> ObterDependentePorId(Guid clienteId, Guid dependenteId);

@@ -67,7 +67,7 @@ namespace Vileve.Services.Api.Controllers.v1
         public IActionResult CadastrarEndereco(Guid clienteId, [FromBody] CadastrarEnderecoViewModel endereco)
         {
             _clienteAppService.CadastrarEndereco(clienteId, endereco.Cep, endereco.Logradouro, endereco.Numero, endereco.Complemento,
-                endereco.Bairro, endereco.Cidade, endereco.Estado);
+                endereco.Bairro, endereco.Cidade, endereco.Estado, null);
 
             return Response();
         }

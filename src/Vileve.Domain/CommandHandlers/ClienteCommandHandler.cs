@@ -29,12 +29,14 @@ namespace Vileve.Domain.CommandHandlers
         private readonly IHttpAppService _httpAppService;
         private readonly IClienteRepository _clienteRepository;
         private readonly IClienteProdutoRepository _clienteProdutoRepository;
+        private readonly IClienteEnderecoRepository _clienteEnderecoRepository;
         private readonly ILogger<ClienteCommandHandler> _logger;
 
         public ClienteCommandHandler(
             IHttpAppService httpAppService,
             IClienteRepository clienteRepository,
             IClienteProdutoRepository clienteProdutoRepository,
+            IClienteEnderecoRepository clienteEnderecoRepository,
             ILogger<ClienteCommandHandler> logger,
             IUnitOfWork uow,
             IMediatorHandler bus,
@@ -44,6 +46,7 @@ namespace Vileve.Domain.CommandHandlers
             _httpAppService = httpAppService;
             _clienteRepository = clienteRepository;
             _clienteProdutoRepository = clienteProdutoRepository;
+            _clienteEnderecoRepository = clienteEnderecoRepository;
             _logger = logger;
         }
 
@@ -125,6 +128,22 @@ namespace Vileve.Domain.CommandHandlers
             {
                 NotifyValidationErrors(message);
                 return Task.FromResult(false);
+            }
+
+            var cliente = _clienteRepository.GetById(message.ClienteId);
+            if (cliente == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cliente não cadastrado.", message));
+                return Task.FromResult(false);
+            }
+
+            var clienteEndereco = new ClienteEndereco(Guid.NewGuid(), message.Cep, message.Logradouro, message.Numero, message.Complemento,
+                message.Bairro, message.Cidade, message.Estado, message.ComprovanteBase64, message.ClienteId);
+
+            _clienteEnderecoRepository.Add(clienteEndereco);
+
+            if (Commit())
+            {
             }
 
             return Task.FromResult(true);

@@ -7,7 +7,7 @@ namespace Vileve.Domain.Commands.Cliente
     public class CadastrarEnderecoCommand : ClienteCommand, IRequest<bool>
     {
         public CadastrarEnderecoCommand(Guid clienteId, string cep, string logradouro, int numero, string complemento,
-            string bairro, string cidade, string estado)
+            string bairro, string cidade, string estado, string comprovanteBase64)
         {
             ClienteId = clienteId;
             Cep = cep;
@@ -17,6 +17,7 @@ namespace Vileve.Domain.Commands.Cliente
             Bairro = bairro;
             Cidade = cidade;
             Estado = estado;
+            ComprovanteBase64 = comprovanteBase64;
         }
 
         public override bool IsValid()

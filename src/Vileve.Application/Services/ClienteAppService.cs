@@ -55,10 +55,10 @@ namespace Vileve.Application.Services
         }
 
         public void CadastrarEndereco(Guid clienteId, string cep, string logradouro, int numero, string complemento,
-            string bairro, string cidade, string estado)
+            string bairro, string cidade, string estado, string comprovanteBase64)
         {
             var cadastrarEnderecoCommand = new CadastrarEnderecoCommand(clienteId, cep, logradouro, numero, complemento,
-                bairro, cidade, estado);
+                bairro, cidade, estado, comprovanteBase64);
             _bus.SendCommand(cadastrarEnderecoCommand);
         }
 
