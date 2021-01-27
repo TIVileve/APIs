@@ -169,7 +169,13 @@ namespace Vileve.Domain.CommandHandlers
 
             var onboarding = _onboardingRepository.Find(o => o.CodigoConvite.Equals(message.CodigoConvite) && o.NumeroCelular.Equals(message.NumeroCelular)).FirstOrDefault();
             if (onboarding != null)
-                return await Task.FromResult(true);
+            {
+                if (onboarding.StatusOnboarding.Equals(StatusOnboarding.ValidacaoToken) || onboarding.StatusOnboarding.Equals(StatusOnboarding.ValidacaoEmail))
+                    return await Task.FromResult(true);
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor encontrado. Acesse sua conta!", message));
+                return await Task.FromResult(false);
+            }
 
             onboarding = new Onboarding(Guid.NewGuid())
             {
