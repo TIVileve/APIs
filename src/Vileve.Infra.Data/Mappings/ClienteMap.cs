@@ -45,8 +45,8 @@ namespace Vileve.Infra.Data.Mappings
             builder.ToTable("Clientes");
 
             builder.HasOne(c => c.Consultor)
-                .WithOne()
-                .HasForeignKey<Cliente>(c => c.ConsultorId)
+                .WithMany()
+                .HasForeignKey(c => c.ConsultorId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

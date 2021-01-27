@@ -50,7 +50,7 @@ namespace Vileve.Infra.Data.Mappings
             builder.ToTable("ClientesEnderecos");
 
             builder.HasOne(ce => ce.Cliente)
-                .WithMany()
+                .WithMany(c => c.Enderecos)
                 .HasForeignKey(ce => ce.ClienteId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();

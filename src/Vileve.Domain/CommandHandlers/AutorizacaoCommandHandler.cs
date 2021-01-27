@@ -425,40 +425,40 @@ namespace Vileve.Domain.CommandHandlers
                     }
                 });
 
-                await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/selfie", new
-                {
-                    codigo_pessoa = 0,
-                    arquivo_base64 = message.FotoBase64
-                });
+                // await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/selfie", new
+                // {
+                //     codigo_pessoa = 0,
+                //     arquivo_base64 = message.FotoBase64
+                // });
 
-                await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/documento-identificacao", new
-                {
-                    codigo_pessoa = 0,
-                    frente = new
-                    {
-                        arquivo_base64 = onboarding.Consultor.Representante.DocumentoFrenteBase64
-                    },
-                    verso = new
-                    {
-                        arquivo_base64 = onboarding.Consultor.Representante.DocumentoVersoBase64
-                    }
-                });
+                // await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/documento-identificacao", new
+                // {
+                //     codigo_pessoa = 0,
+                //     frente = new
+                //     {
+                //         arquivo_base64 = onboarding.Consultor.Representante.DocumentoFrenteBase64
+                //     },
+                //     verso = new
+                //     {
+                //         arquivo_base64 = onboarding.Consultor.Representante.DocumentoVersoBase64
+                //     }
+                // });
 
-                foreach (var item in onboarding.Consultor.Enderecos)
-                {
-                    await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/comprovante-endereco", new
-                    {
-                        codigo_pessoa = 0,
-                        arquivo_base64 = item.ComprovanteBase64
-                    });
-                }
+                // foreach (var item in onboarding.Consultor.Enderecos)
+                // {
+                //     await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/comprovante-endereco", new
+                //     {
+                //         codigo_pessoa = 0,
+                //         arquivo_base64 = item.ComprovanteBase64
+                //     });
+                // }
 
-                await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
-                {
-                    codigo_pessoa = 0,
-                    tipo_contrato = "contrato",
-                    arquivo_base64 = onboarding.Consultor.ContratoSocialBase64
-                });
+                // await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
+                // {
+                //     codigo_pessoa = 0,
+                //     tipo_contrato = "contrato",
+                //     arquivo_base64 = onboarding.Consultor.ContratoSocialBase64
+                // });
             }
             catch (Exception e)
             {

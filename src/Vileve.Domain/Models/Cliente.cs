@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Vileve.Domain.Core.Models;
 
 namespace Vileve.Domain.Models
@@ -33,7 +34,7 @@ namespace Vileve.Domain.Models
         public virtual Consultor Consultor { get; set; }
         public Guid? ConsultorId { get; set; }
 
-        // public virtual ICollection<Endereco> Enderecos { get; set; }
+        public virtual ICollection<ClienteEndereco> Enderecos { get; set; }
 
         public Cliente Update(string cpf, string nomeCompleto, DateTime dataNascimento, string email,
             string telefoneFixo, string telefoneCelular)
