@@ -435,13 +435,13 @@ namespace Vileve.Domain.CommandHandlers
                 {
                     try
                     {
-                        var selfie = await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/selfie", new
+                        var selfie = await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/selfie", new
                         {
                             codigo_pessoa = pessoaJuridica.CodigoPessoa,
                             arquivo_base64 = message.FotoBase64
                         });
 
-                        var documentoIdentificacao = await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/documento-identificacao", new
+                        var documentoIdentificacao = await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/documento-identificacao", new
                         {
                             codigo_pessoa = pessoaJuridica.CodigoPessoa,
                             frente = new
@@ -456,21 +456,21 @@ namespace Vileve.Domain.CommandHandlers
 
                         // foreach (var item in onboarding.Consultor.Enderecos)
                         // {
-                        //     await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/comprovante-endereco", new
+                        //     await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/comprovante-endereco", new
                         //     {
                         //         codigo_pessoa = 0,
                         //         arquivo_base64 = item.ComprovanteBase64
                         //     });
                         // }
 
-                        var contratoSocial = await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
+                        var contratoSocial = await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
                         {
                             codigo_pessoa = pessoaJuridica.CodigoPessoa,
                             tipo_contrato = "contrato",
                             arquivo_base64 = onboarding.Consultor.ContratoSocialBase64
                         });
 
-                        var alteracaoContratoSocial = await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
+                        var alteracaoContratoSocial = await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
                         {
                             codigo_pessoa = pessoaJuridica.CodigoPessoa,
                             tipo_contrato = "alteracao",
