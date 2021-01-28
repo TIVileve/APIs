@@ -463,14 +463,14 @@ namespace Vileve.Domain.CommandHandlers
                         //     });
                         // }
 
-                        await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
+                        var contratoSocial = await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
                         {
                             codigo_pessoa = pessoaJuridica.CodigoPessoa,
                             tipo_contrato = "contrato",
                             arquivo_base64 = onboarding.Consultor.ContratoSocialBase64
                         });
 
-                        await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
+                        var alteracaoContratoSocial = await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
                         {
                             codigo_pessoa = pessoaJuridica.CodigoPessoa,
                             tipo_contrato = "alteracao",
