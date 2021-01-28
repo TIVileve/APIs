@@ -12,7 +12,14 @@ namespace Vileve.Domain.Commands.Cliente
         public DateTime DataNascimento { get; protected set; }
         public string Email { get; protected set; }
         public string TelefoneFixo { get; protected set; }
-        public string TelefoneCelular { get; protected set; }
+        private string _telefoneCelular;
+
+        public string TelefoneCelular
+        {
+            get => _telefoneCelular;
+            protected set => _telefoneCelular = string.IsNullOrWhiteSpace(value) ? null : value.Contains("+") ? value : $"+{value}";
+        }
+
         public Guid? ConsultorId { get; protected set; }
 
         // Produto

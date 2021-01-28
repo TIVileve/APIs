@@ -61,6 +61,31 @@ namespace Vileve.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
+            try
+            {
+                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var enviarTokenSms = await _httpAppService.OnPost<EnviarTokenSms, object>(client, message.RequestId, "v1/validacao-contato/enviar-token-sms", new
+                {
+                    numero_telefone = message.TelefoneCelular
+                });
+                if (enviarTokenSms.Sucesso.Equals(false))
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
+                    return await Task.FromResult(false);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
+                return await Task.FromResult(false);
+            }
+
             var cliente = new Cliente(Guid.NewGuid(), message.Cpf, message.NomeCompleto, message.DataNascimento, message.Email,
                 message.TelefoneFixo, message.TelefoneCelular, message.ConsultorId);
 
