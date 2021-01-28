@@ -481,25 +481,25 @@ namespace Vileve.Domain.CommandHandlers
                         }));
                     }
 
-                    try
-                    {
-                        foreach (var item in onboarding.Consultor.Enderecos)
-                        {
-                            await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/comprovante-endereco", new
-                            {
-                                codigo_pessoa = 0,
-                                arquivo_base64 = item.ComprovanteBase64
-                            });
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
-                        {
-                            message.RequestId,
-                            e.Message
-                        }));
-                    }
+                    // try
+                    // {
+                    //     foreach (var item in onboarding.Consultor.Enderecos)
+                    //     {
+                    //         await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/comprovante-endereco", new
+                    //         {
+                    //             codigo_pessoa = 0,
+                    //             arquivo_base64 = item.ComprovanteBase64
+                    //         });
+                    //     }
+                    // }
+                    // catch (Exception e)
+                    // {
+                    //     _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                    //     {
+                    //         message.RequestId,
+                    //         e.Message
+                    //     }));
+                    // }
 
                     try
                     {
