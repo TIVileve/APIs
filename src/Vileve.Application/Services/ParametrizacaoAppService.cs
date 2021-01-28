@@ -99,21 +99,7 @@ namespace Vileve.Application.Services
             var obterSexoCommand = new ObterSexoCommand();
             var obterSexoResponse = await _bus.SendCommand(obterSexoCommand);
 
-            return _notifications.HasNotifications()
-                ? obterSexoResponse
-                : new List<SexoViewModel>
-                {
-                    new SexoViewModel
-                    {
-                        CodigoSexo = 2,
-                        Nome = "Feminino"
-                    },
-                    new SexoViewModel
-                    {
-                        CodigoSexo = 1,
-                        Nome = "Masculino"
-                    }
-                };
+            return _notifications.HasNotifications() ? obterSexoResponse : _mapper.Map<IEnumerable<SexoViewModel>>((IEnumerable<ParametrizacaoSexo>)obterSexoResponse);
         }
 
         public async Task<object> ObterTipoParentesco()

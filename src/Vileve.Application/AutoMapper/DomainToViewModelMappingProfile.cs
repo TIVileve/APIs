@@ -70,6 +70,10 @@ namespace Vileve.Application.AutoMapper
                 .ForMember(dest => dest.Tipo, opt => opt.MapFrom(src => src.Tipo))
                 .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Name));
 
+            CreateMap<ParametrizacaoSexo, SexoViewModel>()
+                .ForMember(dest => dest.CodigoSexo, opt => opt.MapFrom(src => src.CodigoSexo))
+                .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome));
+
             CreateMap<SeguroProduto, ProdutoViewModel>()
                 .ForMember(dest => dest.Itens, opt => opt.MapFrom(src => src.ProdutoItens));
 
