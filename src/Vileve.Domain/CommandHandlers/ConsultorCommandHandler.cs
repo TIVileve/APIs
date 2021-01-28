@@ -86,9 +86,7 @@ namespace Vileve.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            var enderecos = _enderecoRepository.Find(e => e.Consultor.Id.Equals(onboarding.Consultor.Id)).OrderByDescending(e => e.Principal).ToList();
-
-            return await Task.FromResult(enderecos);
+            return await Task.FromResult(onboarding.Consultor.Enderecos.OrderByDescending(e => e.Principal));
         }
 
         public async Task<object> Handle(ObterEnderecoPorIdCommand message, CancellationToken cancellationToken)
