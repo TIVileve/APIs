@@ -143,9 +143,13 @@ namespace Vileve.Application.Services
                 };
         }
 
-        public void CadastrarDependente(Guid clienteId)
+        public void CadastrarDependente(Guid clienteId, string codigoParentesco, string nomeCompleto, DateTime dataNascimento, string cpf,
+            string email, string telefoneCelular, string cep, string logradouro, int numero,
+            string complemento, string bairro, string cidade, string estado)
         {
-            var cadastrarDependenteCommand = new CadastrarDependenteCommand(clienteId);
+            var cadastrarDependenteCommand = new CadastrarDependenteCommand(clienteId, codigoParentesco, nomeCompleto, dataNascimento, cpf,
+                email, telefoneCelular, cep, logradouro, numero,
+                complemento, bairro, cidade, estado);
             _bus.SendCommand(cadastrarDependenteCommand);
         }
 

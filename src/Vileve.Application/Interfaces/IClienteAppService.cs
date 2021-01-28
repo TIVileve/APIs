@@ -16,7 +16,11 @@ namespace Vileve.Application.Interfaces
 
         Task<object> ObterDependente(Guid clienteId);
         Task<object> ObterDependentePorId(Guid clienteId, Guid dependenteId);
-        void CadastrarDependente(Guid clienteId);
+
+        void CadastrarDependente(Guid clienteId, string codigoParentesco, string nomeCompleto, DateTime dataNascimento, string cpf,
+            string email, string telefoneCelular, string cep, string logradouro, int numero,
+            string complemento, string bairro, string cidade, string estado);
+
         void DeletarDependente(Guid clienteId, Guid dependenteId);
         void CadastrarPagamento(Guid clienteId);
         Task<object> ObterCalculoMensal(Guid clienteId);

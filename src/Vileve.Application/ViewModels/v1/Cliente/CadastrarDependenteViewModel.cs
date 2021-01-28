@@ -4,7 +4,7 @@ namespace Vileve.Application.ViewModels.v1.Cliente
 {
     public class CadastrarDependenteViewModel
     {
-        public int CodigoParentesco { get; set; }
+        public string CodigoParentesco { get; set; }
         public string NomeCompleto { get; set; }
         public DateTime DataNascimento { get; set; }
         public string Cpf { get; set; }

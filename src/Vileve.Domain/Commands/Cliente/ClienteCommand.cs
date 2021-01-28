@@ -5,9 +5,8 @@ namespace Vileve.Domain.Commands.Cliente
 {
     public abstract class ClienteCommand : Command
     {
+        // Cliente e Dependente
         public Guid ClienteId { get; protected set; }
-
-        // Cliente
         public string Cpf { get; protected set; }
         public string NomeCompleto { get; protected set; }
         public DateTime DataNascimento { get; protected set; }
@@ -31,5 +30,6 @@ namespace Vileve.Domain.Commands.Cliente
 
         // Dependente
         public Guid DependenteId { get; protected set; }
+        public string CodigoParentesco { get; protected set; }
     }
 }

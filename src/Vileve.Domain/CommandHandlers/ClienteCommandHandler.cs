@@ -30,6 +30,7 @@ namespace Vileve.Domain.CommandHandlers
         private readonly IClienteRepository _clienteRepository;
         private readonly IClienteProdutoRepository _clienteProdutoRepository;
         private readonly IClienteEnderecoRepository _clienteEnderecoRepository;
+        private readonly IClienteDependenteRepository _clienteDependenteRepository;
         private readonly ILogger<ClienteCommandHandler> _logger;
 
         public ClienteCommandHandler(
@@ -37,6 +38,7 @@ namespace Vileve.Domain.CommandHandlers
             IClienteRepository clienteRepository,
             IClienteProdutoRepository clienteProdutoRepository,
             IClienteEnderecoRepository clienteEnderecoRepository,
+            IClienteDependenteRepository clienteDependenteRepository,
             ILogger<ClienteCommandHandler> logger,
             IUnitOfWork uow,
             IMediatorHandler bus,
@@ -47,6 +49,7 @@ namespace Vileve.Domain.CommandHandlers
             _clienteRepository = clienteRepository;
             _clienteProdutoRepository = clienteProdutoRepository;
             _clienteEnderecoRepository = clienteEnderecoRepository;
+            _clienteDependenteRepository = clienteDependenteRepository;
             _logger = logger;
         }
 
@@ -177,6 +180,23 @@ namespace Vileve.Domain.CommandHandlers
             {
                 NotifyValidationErrors(message);
                 return Task.FromResult(false);
+            }
+
+            var cliente = _clienteRepository.GetById(message.ClienteId);
+            if (cliente == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cliente não cadastrado.", message));
+                return Task.FromResult(false);
+            }
+
+            var clienteDependente = new ClienteDependente(Guid.NewGuid(), message.CodigoParentesco, message.NomeCompleto, message.DataNascimento, message.Cpf,
+                message.Email, message.TelefoneCelular, message.Cep, message.Logradouro, message.Numero,
+                message.Complemento, message.Bairro, message.Cidade, message.Estado, message.ClienteId);
+
+            _clienteDependenteRepository.Add(clienteDependente);
+
+            if (Commit())
+            {
             }
 
             return Task.FromResult(true);

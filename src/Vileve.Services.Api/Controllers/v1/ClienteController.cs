@@ -97,7 +97,9 @@ namespace Vileve.Services.Api.Controllers.v1
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public IActionResult CadastrarDependente(Guid clienteId, [FromBody] CadastrarDependenteViewModel dependente)
         {
-            _clienteAppService.CadastrarDependente(clienteId);
+            _clienteAppService.CadastrarDependente(clienteId, dependente.CodigoParentesco, dependente.NomeCompleto, dependente.DataNascimento, dependente.Cpf,
+                dependente.Email, dependente.TelefoneCelular, dependente.Endereco.Cep, dependente.Endereco.Logradouro, dependente.Endereco.Numero,
+                dependente.Endereco.Complemento, dependente.Endereco.Bairro, dependente.Endereco.Cidade, dependente.Endereco.Estado);
 
             return Response();
         }
