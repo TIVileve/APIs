@@ -71,7 +71,7 @@ namespace Vileve.Infra.Data.Mappings
             builder.ToTable("ClientesDependentes");
 
             builder.HasOne(cd => cd.Cliente)
-                .WithMany()
+                .WithMany(c => c.Dependentes)
                 .HasForeignKey(cd => cd.ClienteId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();

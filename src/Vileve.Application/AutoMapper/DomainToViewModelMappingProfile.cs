@@ -5,6 +5,7 @@ using Vileve.Application.ViewModels.v1.Parametrizacao;
 using Vileve.Domain.Enums;
 using Vileve.Domain.Models;
 using Vileve.Domain.Responses;
+using EnderecoViewModel = Vileve.Application.ViewModels.v1.Consultor.EnderecoViewModel;
 
 namespace Vileve.Application.AutoMapper
 {
@@ -75,6 +76,15 @@ namespace Vileve.Application.AutoMapper
             CreateMap<SeguroProdutoItem, ProdutoItemViewModel>();
 
             CreateMap<Cliente, ClienteViewModel>();
+
+            CreateMap<ClienteDependente, DependenteViewModel>()
+                .ForPath(dest => dest.Endereco.Cep, opt => opt.MapFrom(src => src.Cep))
+                .ForPath(dest => dest.Endereco.Logradouro, opt => opt.MapFrom(src => src.Logradouro))
+                .ForPath(dest => dest.Endereco.Numero, opt => opt.MapFrom(src => src.Numero))
+                .ForPath(dest => dest.Endereco.Complemento, opt => opt.MapFrom(src => src.Complemento))
+                .ForPath(dest => dest.Endereco.Bairro, opt => opt.MapFrom(src => src.Bairro))
+                .ForPath(dest => dest.Endereco.Cidade, opt => opt.MapFrom(src => src.Cidade))
+                .ForPath(dest => dest.Endereco.Estado, opt => opt.MapFrom(src => src.Estado));
         }
     }
 }

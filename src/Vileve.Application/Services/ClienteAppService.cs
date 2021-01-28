@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -67,51 +66,7 @@ namespace Vileve.Application.Services
             var obterDependenteCommand = new ObterDependenteCommand(clienteId);
             var obterDependenteResponse = await _bus.SendCommand(obterDependenteCommand);
 
-            return _notifications.HasNotifications()
-                ? obterDependenteResponse
-                : new List<DependenteViewModel>
-                {
-                    new DependenteViewModel
-                    {
-                        Id = Guid.NewGuid(),
-                        CodigoParentesco = 0,
-                        NomeCompleto = "Marcelo Camargos",
-                        DataNascimento = DateTime.ParseExact("23/06/1987", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                        Cpf = "083.364.506-45",
-                        Email = "marcelocamargosjr@gmail.com",
-                        TelefoneCelular = "5531999238117",
-                        Endereco = new CadastrarEnderecoViewModel
-                        {
-                            Cep = "34006-086",
-                            Logradouro = "Rua da Mata",
-                            Numero = 185,
-                            Complemento = "APT 1502 T2",
-                            Bairro = "Vila da Serra",
-                            Cidade = "Nova Lima",
-                            Estado = "MG"
-                        }
-                    },
-                    new DependenteViewModel
-                    {
-                        Id = Guid.NewGuid(),
-                        CodigoParentesco = 0,
-                        NomeCompleto = "Viviane Santiago",
-                        DataNascimento = DateTime.ParseExact("28/12/1976", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                        Cpf = "083.364.506-45",
-                        Email = "marcelocamargosjr@gmail.com",
-                        TelefoneCelular = "5531999238117",
-                        Endereco = new CadastrarEnderecoViewModel
-                        {
-                            Cep = "34006-086",
-                            Logradouro = "Rua da Mata",
-                            Numero = 185,
-                            Complemento = "APT 1502 T2",
-                            Bairro = "Vila da Serra",
-                            Cidade = "Nova Lima",
-                            Estado = "MG"
-                        }
-                    }
-                };
+            return _notifications.HasNotifications() ? obterDependenteResponse : _mapper.Map<IEnumerable<DependenteViewModel>>((IEnumerable<ClienteDependente>)obterDependenteResponse);
         }
 
         public async Task<object> ObterDependentePorId(Guid clienteId, Guid dependenteId)
@@ -119,28 +74,7 @@ namespace Vileve.Application.Services
             var obterDependentePorIdCommand = new ObterDependentePorIdCommand(clienteId, dependenteId);
             var obterDependentePorIdResponse = await _bus.SendCommand(obterDependentePorIdCommand);
 
-            return _notifications.HasNotifications()
-                ? obterDependentePorIdResponse
-                : new DependenteViewModel
-                {
-                    Id = Guid.NewGuid(),
-                    CodigoParentesco = 0,
-                    NomeCompleto = "Viviane Santiago",
-                    DataNascimento = DateTime.ParseExact("28/12/1976", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                    Cpf = "083.364.506-45",
-                    Email = "marcelocamargosjr@gmail.com",
-                    TelefoneCelular = "5531999238117",
-                    Endereco = new CadastrarEnderecoViewModel
-                    {
-                        Cep = "34006-086",
-                        Logradouro = "Rua da Mata",
-                        Numero = 185,
-                        Complemento = "APT 1502 T2",
-                        Bairro = "Vila da Serra",
-                        Cidade = "Nova Lima",
-                        Estado = "MG"
-                    }
-                };
+            return _notifications.HasNotifications() ? obterDependentePorIdResponse : _mapper.Map<DependenteViewModel>((ClienteDependente)obterDependentePorIdResponse);
         }
 
         public void CadastrarDependente(Guid clienteId, string codigoParentesco, string nomeCompleto, DateTime dataNascimento, string cpf,

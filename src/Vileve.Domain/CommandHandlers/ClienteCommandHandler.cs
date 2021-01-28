@@ -160,7 +160,14 @@ namespace Vileve.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            var cliente = _clienteRepository.GetById(message.ClienteId);
+            if (cliente == null)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cliente não cadastrado.", message));
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(cliente.Dependentes);
         }
 
         public async Task<object> Handle(ObterDependentePorIdCommand message, CancellationToken cancellationToken)
@@ -171,7 +178,19 @@ namespace Vileve.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            var cliente = _clienteRepository.GetById(message.ClienteId);
+            if (cliente == null)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cliente não cadastrado.", message));
+                return await Task.FromResult(false);
+            }
+
+            var clienteDependente = _clienteDependenteRepository.GetById(message.DependenteId);
+            if (clienteDependente != null)
+                return await Task.FromResult(clienteDependente);
+
+            await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Dependente não encontrado.", message));
+            return await Task.FromResult(false);
         }
 
         public Task<bool> Handle(CadastrarDependenteCommand message, CancellationToken cancellationToken)
@@ -210,7 +229,27 @@ namespace Vileve.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            return Task.FromResult(true);
+            var cliente = _clienteRepository.GetById(message.ClienteId);
+            if (cliente == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cliente não cadastrado.", message));
+                return Task.FromResult(false);
+            }
+
+            var clienteDependente = _clienteDependenteRepository.GetById(message.DependenteId);
+            if (clienteDependente != null)
+            {
+                _clienteDependenteRepository.Remove(message.DependenteId);
+
+                if (Commit())
+                {
+                }
+
+                return Task.FromResult(true);
+            }
+
+            _bus.RaiseEvent(new DomainNotification(message.MessageType, "Dependente não encontrado.", message));
+            return Task.FromResult(false);
         }
 
         public Task<bool> Handle(CadastrarPagamentoCommand message, CancellationToken cancellationToken)
