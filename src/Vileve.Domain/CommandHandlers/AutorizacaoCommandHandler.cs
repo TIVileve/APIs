@@ -364,7 +364,7 @@ namespace Vileve.Domain.CommandHandlers
                     nomeSocial = onboarding.Consultor.Representante.NomeCompleto.Substring(0, onboarding.Consultor.Representante.NomeCompleto.IndexOf(" ", StringComparison.Ordinal));
                 }
 
-                var test = await _httpAppService.OnPost<object, object>(client, message.RequestId, $"v1/consultor/cadastrar/pessoajuridica/{message.CodigoConvite}", new
+                var pessoaJuridica = await _httpAppService.OnPost<PessoaJuridica, object>(client, message.RequestId, $"v1/consultor/cadastrar/pessoajuridica/{message.CodigoConvite}", new
                 {
                     razao_social = onboarding.Consultor.RazaoSocial,
                     nome_fantasia = onboarding.Consultor.NomeFantasia,
@@ -431,40 +431,57 @@ namespace Vileve.Domain.CommandHandlers
                     }
                 });
 
-                // await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/selfie", new
-                // {
-                //     codigo_pessoa = 0,
-                //     arquivo_base64 = message.FotoBase64
-                // });
+                if (pessoaJuridica.Sucesso)
+                {
+                    try
+                    {
+                        var selfie = await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/selfie", new
+                        {
+                            codigo_pessoa = pessoaJuridica.CodigoPessoa,
+                            arquivo_base64 = message.FotoBase64
+                        });
 
-                // await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/documento-identificacao", new
-                // {
-                //     codigo_pessoa = 0,
-                //     frente = new
-                //     {
-                //         arquivo_base64 = onboarding.Consultor.Representante.DocumentoFrenteBase64
-                //     },
-                //     verso = new
-                //     {
-                //         arquivo_base64 = onboarding.Consultor.Representante.DocumentoVersoBase64
-                //     }
-                // });
+                        var documentoIdentificacao = await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/documento-identificacao", new
+                        {
+                            codigo_pessoa = pessoaJuridica.CodigoPessoa,
+                            frente = new
+                            {
+                                arquivo_base64 = onboarding.Consultor.Representante.DocumentoFrenteBase64
+                            },
+                            verso = new
+                            {
+                                arquivo_base64 = onboarding.Consultor.Representante.DocumentoVersoBase64
+                            }
+                        });
 
-                // foreach (var item in onboarding.Consultor.Enderecos)
-                // {
-                //     await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/comprovante-endereco", new
-                //     {
-                //         codigo_pessoa = 0,
-                //         arquivo_base64 = item.ComprovanteBase64
-                //     });
-                // }
+                        // foreach (var item in onboarding.Consultor.Enderecos)
+                        // {
+                        //     await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/comprovante-endereco", new
+                        //     {
+                        //         codigo_pessoa = 0,
+                        //         arquivo_base64 = item.ComprovanteBase64
+                        //     });
+                        // }
 
-                // await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
-                // {
-                //     codigo_pessoa = 0,
-                //     tipo_contrato = "contrato",
-                //     arquivo_base64 = onboarding.Consultor.ContratoSocialBase64
-                // });
+                        await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
+                        {
+                            codigo_pessoa = pessoaJuridica.CodigoPessoa,
+                            tipo_contrato = "contrato",
+                            arquivo_base64 = onboarding.Consultor.ContratoSocialBase64
+                        });
+
+                        await _httpAppService.OnPost<string, object>(client, message.RequestId, "v1/pessoa/envio/contrato-social", new
+                        {
+                            codigo_pessoa = pessoaJuridica.CodigoPessoa,
+                            tipo_contrato = "alteracao",
+                            arquivo_base64 = onboarding.Consultor.UltimaAlteracaoBase64
+                        });
+                    }
+                    catch (Exception)
+                    {
+                        // ignored
+                    }
+                }
             }
             catch (Exception e)
             {
