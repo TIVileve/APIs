@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Vileve.Domain.Commands.Endereco;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
@@ -16,10 +17,12 @@ namespace Vileve.Domain.CommandHandlers
     public class EnderecoCommandHandler : CommandHandler,
         IRequestHandler<ObterEnderecoCommand, object>
     {
+        private readonly ServiceManager _serviceManager;
         private readonly IHttpAppService _httpAppService;
         private readonly ILogger<EnderecoCommandHandler> _logger;
 
         public EnderecoCommandHandler(
+            IOptions<ServiceManager> serviceManager,
             IHttpAppService httpAppService,
             ILogger<EnderecoCommandHandler> logger,
             IUnitOfWork uow,
@@ -27,6 +30,7 @@ namespace Vileve.Domain.CommandHandlers
             INotificationHandler<DomainNotification> notifications)
             : base(uow, bus, notifications)
         {
+            _serviceManager = serviceManager.Value;
             _httpAppService = httpAppService;
             _logger = logger;
         }
@@ -41,7 +45,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 var enderecoCep = await _httpAppService.OnGet<EnderecoCep>(client, message.RequestId, $"v1/servico/buscar-endereco-cep/{message.Cep}");
                 if (!enderecoCep.Resultado.Equals(0))
                     return await Task.FromResult(enderecoCep);

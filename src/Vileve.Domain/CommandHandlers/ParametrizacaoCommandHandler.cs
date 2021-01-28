@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Vileve.Domain.Commands.Parametrizacao;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
@@ -28,10 +29,12 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<ObterTipoPagamentoCommand, object>,
         IRequestHandler<ObterTipoConvenioCommand, object>
     {
+        private readonly ServiceManager _serviceManager;
         private readonly IHttpAppService _httpAppService;
         private readonly ILogger<ParametrizacaoCommandHandler> _logger;
 
         public ParametrizacaoCommandHandler(
+            IOptions<ServiceManager> serviceManager,
             IHttpAppService httpAppService,
             ILogger<ParametrizacaoCommandHandler> logger,
             IUnitOfWork uow,
@@ -39,6 +42,7 @@ namespace Vileve.Domain.CommandHandlers
             INotificationHandler<DomainNotification> notifications)
             : base(uow, bus, notifications)
         {
+            _serviceManager = serviceManager.Value;
             _httpAppService = httpAppService;
             _logger = logger;
         }
@@ -53,7 +57,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoEstadoCivil>>(client, message.RequestId, "v1/dados-complementares/estados-civis"));
             }
             catch (Exception e)
@@ -79,7 +83,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoNacionalidade>>(client, message.RequestId, "v1/dados-complementares/nacionalidades"));
             }
             catch (Exception e)
@@ -105,7 +109,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoPerfilUsuario>>(client, message.RequestId, "v1/dados-complementares/perfis-usuario"));
             }
             catch (Exception e)
@@ -131,7 +135,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoTelefone>>(client, message.RequestId, "v1/dados-complementares/tipos-telefone"));
             }
             catch (Exception e)
@@ -157,7 +161,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoEmail>>(client, message.RequestId, "v1/dados-complementares/tipos-email"));
             }
             catch (Exception e)
@@ -183,7 +187,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoTipoEndereco>>(client, message.RequestId, "v1/dados-complementares/tipos-endereco"));
             }
             catch (Exception e)
@@ -209,7 +213,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoBanco>>(client, message.RequestId, "v1/dados-complementares/bancos"));
             }
             catch (Exception e)
@@ -235,7 +239,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoOperacaoBancaria>>(client, message.RequestId, "v1/dados-complementares/operacoes-bancarias"));
             }
             catch (Exception e)
@@ -261,7 +265,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 return await Task.FromResult(await _httpAppService.OnGet<IEnumerable<ParametrizacaoSexo>>(client, message.RequestId, "v1/dados-complementares/sexos"));
             }
             catch (Exception e)

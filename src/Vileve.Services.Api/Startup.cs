@@ -1,4 +1,3 @@
-using System;
 using Elmah.Io.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Vileve.Infra.CrossCutting.Io.Http;
 using Vileve.Services.Api.Configurations;
 
 namespace Vileve.Services.Api
@@ -69,11 +69,11 @@ namespace Vileve.Services.Api
             services.AddDependencyInjectionSetup();
 
             // elmah.io Config
-            services.AddElmahIo(o =>
-            {
-                o.ApiKey = "d84faef876234265bfbed47bd6012bcc";
-                o.LogId = new Guid("cf7129aa-e399-43a6-b732-2ea3f8f7f82b");
-            });
+            services.Configure<ElmahIoOptions>(Configuration.GetSection("ElmahIo"));
+            services.AddElmahIo();
+
+            // Service Manager Config
+            services.Configure<ServiceManager>(Configuration.GetSection("ServiceManager"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

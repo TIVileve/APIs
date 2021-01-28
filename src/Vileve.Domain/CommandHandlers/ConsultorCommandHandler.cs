@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Vileve.Domain.Commands.Consultor;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
@@ -29,6 +30,7 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<ValidarPessoaJuridicaCommand, bool>,
         IRequestHandler<ValidarRepresentanteCommand, bool>
     {
+        private readonly ServiceManager _serviceManager;
         private readonly IHttpAppService _httpAppService;
         private readonly IOnboardingRepository _onboardingRepository;
         private readonly IConsultorRepository _consultorRepository;
@@ -40,6 +42,7 @@ namespace Vileve.Domain.CommandHandlers
         private readonly ILogger<ConsultorCommandHandler> _logger;
 
         public ConsultorCommandHandler(
+            IOptions<ServiceManager> serviceManager,
             IHttpAppService httpAppService,
             IOnboardingRepository onboardingRepository,
             IConsultorRepository consultorRepository,
@@ -54,6 +57,7 @@ namespace Vileve.Domain.CommandHandlers
             INotificationHandler<DomainNotification> notifications)
             : base(uow, bus, notifications)
         {
+            _serviceManager = serviceManager.Value;
             _httpAppService = httpAppService;
             _onboardingRepository = onboardingRepository;
             _consultorRepository = consultorRepository;
@@ -324,12 +328,12 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
 
                 var token = await _httpAppService.OnPost<Token, object>(client, message.RequestId, "v1/auth/login", new
                 {
-                    usuario = "sistemaconsulta.api",
-                    senha = "123456"
+                    usuario = _serviceManager.UserVileve,
+                    senha = _serviceManager.PasswordVileve
                 });
                 if (token == null || string.IsNullOrWhiteSpace(token.AccessToken))
                 {
@@ -374,12 +378,12 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
 
                 var token = await _httpAppService.OnPost<Token, object>(client, message.RequestId, "v1/auth/login", new
                 {
-                    usuario = "sistemaconsulta.api",
-                    senha = "123456"
+                    usuario = _serviceManager.UserVileve,
+                    senha = _serviceManager.PasswordVileve
                 });
                 if (token == null || string.IsNullOrWhiteSpace(token.AccessToken))
                 {
@@ -426,12 +430,12 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
 
                 var token = await _httpAppService.OnPost<Token, object>(client, message.RequestId, "v1/auth/login", new
                 {
-                    usuario = "sistemaconsulta.api",
-                    senha = "123456"
+                    usuario = _serviceManager.UserVileve,
+                    senha = _serviceManager.PasswordVileve
                 });
                 if (token == null || string.IsNullOrWhiteSpace(token.AccessToken))
                 {

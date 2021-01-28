@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Vileve.Domain.Commands.Cliente;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
@@ -26,6 +27,7 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<CadastrarPagamentoCommand, bool>,
         IRequestHandler<ObterCalculoMensalCommand, object>
     {
+        private readonly ServiceManager _serviceManager;
         private readonly IHttpAppService _httpAppService;
         private readonly IClienteRepository _clienteRepository;
         private readonly IClienteProdutoRepository _clienteProdutoRepository;
@@ -34,6 +36,7 @@ namespace Vileve.Domain.CommandHandlers
         private readonly ILogger<ClienteCommandHandler> _logger;
 
         public ClienteCommandHandler(
+            IOptions<ServiceManager> serviceManager,
             IHttpAppService httpAppService,
             IClienteRepository clienteRepository,
             IClienteProdutoRepository clienteProdutoRepository,
@@ -45,6 +48,7 @@ namespace Vileve.Domain.CommandHandlers
             INotificationHandler<DomainNotification> notifications)
             : base(uow, bus, notifications)
         {
+            _serviceManager = serviceManager.Value;
             _httpAppService = httpAppService;
             _clienteRepository = clienteRepository;
             _clienteProdutoRepository = clienteProdutoRepository;
@@ -63,7 +67,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 var enviarTokenSms = await _httpAppService.OnPost<EnviarTokenSms, object>(client, message.RequestId, "v1/validacao-contato/enviar-token-sms", new
                 {
                     numero_telefone = message.TelefoneCelular
@@ -108,7 +112,7 @@ namespace Vileve.Domain.CommandHandlers
 
             try
             {
-                var client = _httpAppService.CreateClient("http://rest.vileve.com.br/api/");
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
                 return await Task.FromResult(await _httpAppService.OnGet<SeguroProduto>(client, message.RequestId, "v1/proposta/seguro/produtos"));
             }
             catch (Exception e)
