@@ -391,7 +391,7 @@ namespace Vileve.Domain.CommandHandlers
                         autenticacao = new
                         {
                             usuario = onboarding.Email,
-                            senha = onboarding.Senha.CreateMd5(),
+                            senha = onboarding.Senha,
                             codigo_perfil = 17
                         },
                         emails = onboarding.Consultor.Representante.Emails.Select(item => new
