@@ -104,6 +104,18 @@ namespace Vileve.Services.Api.Controllers.v1
             return Response();
         }
 
+        [HttpPut("{clienteId}/dependentes/{dependenteId}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult AtualizarDependente(Guid clienteId, Guid dependenteId, [FromBody] AtualizarDependenteViewModel dependente)
+        {
+            _clienteAppService.AtualizarDependente(clienteId, dependenteId, dependente.CodigoParentesco, dependente.NomeCompleto, dependente.DataNascimento, dependente.Cpf,
+                dependente.Email, dependente.TelefoneCelular, dependente.Endereco.Cep, dependente.Endereco.Logradouro, dependente.Endereco.Numero,
+                dependente.Endereco.Complemento, dependente.Endereco.Bairro, dependente.Endereco.Cidade, dependente.Endereco.Estado);
+
+            return Response();
+        }
+
         [HttpDelete("{clienteId}/dependentes/{dependenteId}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]

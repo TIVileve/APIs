@@ -87,6 +87,16 @@ namespace Vileve.Application.Services
             _bus.SendCommand(cadastrarDependenteCommand);
         }
 
+        public void AtualizarDependente(Guid clienteId, Guid dependenteId, string codigoParentesco, string nomeCompleto, DateTime dataNascimento, string cpf,
+            string email, string telefoneCelular, string cep, string logradouro, int numero,
+            string complemento, string bairro, string cidade, string estado)
+        {
+            var atualizarDependenteCommand = new AtualizarDependenteCommand(clienteId, dependenteId, codigoParentesco, nomeCompleto, dataNascimento, cpf,
+                email, telefoneCelular, cep, logradouro, numero,
+                complemento, bairro, cidade, estado);
+            _bus.SendCommand(atualizarDependenteCommand);
+        }
+
         public void DeletarDependente(Guid clienteId, Guid dependenteId)
         {
             var deletarDependenteCommand = new DeletarDependenteCommand(clienteId, dependenteId);

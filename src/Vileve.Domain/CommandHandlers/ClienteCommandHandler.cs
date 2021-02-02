@@ -23,6 +23,7 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<ObterDependenteCommand, object>,
         IRequestHandler<ObterDependentePorIdCommand, object>,
         IRequestHandler<CadastrarDependenteCommand, bool>,
+        IRequestHandler<AtualizarDependenteCommand, bool>,
         IRequestHandler<DeletarDependenteCommand, bool>,
         IRequestHandler<CadastrarPagamentoCommand, bool>,
         IRequestHandler<ObterCalculoMensalCommand, object>
@@ -248,6 +249,41 @@ namespace Vileve.Domain.CommandHandlers
             }
 
             return Task.FromResult(true);
+        }
+
+        public Task<bool> Handle(AtualizarDependenteCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return Task.FromResult(false);
+            }
+
+            var cliente = _clienteRepository.GetById(message.ClienteId);
+            if (cliente == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cliente não cadastrado.", message));
+                return Task.FromResult(false);
+            }
+
+            var clienteDependente = _clienteDependenteRepository.GetById(message.DependenteId);
+            if (clienteDependente != null)
+            {
+                clienteDependente.Update(message.CodigoParentesco, message.NomeCompleto, message.DataNascimento, message.Cpf,
+                    message.Email, message.TelefoneCelular, message.Cep, message.Logradouro, message.Numero,
+                    message.Complemento, message.Bairro, message.Cidade, message.Estado);
+
+                _clienteDependenteRepository.Update(clienteDependente);
+
+                if (Commit())
+                {
+                }
+
+                return Task.FromResult(true);
+            }
+
+            _bus.RaiseEvent(new DomainNotification(message.MessageType, "Dependente não encontrado.", message));
+            return Task.FromResult(false);
         }
 
         public Task<bool> Handle(DeletarDependenteCommand message, CancellationToken cancellationToken)
