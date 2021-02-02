@@ -30,6 +30,16 @@ namespace Vileve.Services.Api.Controllers.v1
             _clienteAppService = clienteAppService;
         }
 
+        [HttpGet("{clienteId}")]
+        [ProducesResponseType(typeof(ClienteViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ObterClientePorId(Guid clienteId)
+        {
+            var response = await _clienteAppService.ObterClientePorId(clienteId);
+
+            return Response(response);
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(ClienteViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]

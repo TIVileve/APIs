@@ -29,6 +29,14 @@ namespace Vileve.Application.Services
             _notifications = (DomainNotificationHandler)notifications;
         }
 
+        public async Task<object> ObterClientePorId(Guid clienteId)
+        {
+            var obterClientePorIdCommand = new ObterClientePorIdCommand(clienteId);
+            var obterClientePorIdResponse = await _bus.SendCommand(obterClientePorIdCommand);
+
+            return _notifications.HasNotifications() ? obterClientePorIdResponse : _mapper.Map<ClienteViewModel>((Cliente)obterClientePorIdResponse);
+        }
+
         public async Task<object> CadastrarCliente(string cpf, string nomeCompleto, DateTime dataNascimento, string email,
             string telefoneFixo, string telefoneCelular, Guid? consultorId)
         {

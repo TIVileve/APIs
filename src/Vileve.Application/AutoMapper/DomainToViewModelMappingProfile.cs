@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using Vileve.Application.ViewModels.v1.Cliente;
 using Vileve.Application.ViewModels.v1.Consultor;
 using Vileve.Application.ViewModels.v1.Parametrizacao;
@@ -79,7 +80,12 @@ namespace Vileve.Application.AutoMapper
 
             CreateMap<SeguroProdutoItem, ProdutoItemViewModel>();
 
-            CreateMap<Cliente, ClienteViewModel>();
+            CreateMap<Cliente, ClienteViewModel>()
+                .ForMember(dest => dest.Endereco, opt => opt.MapFrom(src => src.Enderecos.OrderBy(ce => ce.CreationDate).FirstOrDefault()));
+
+            CreateMap<ClienteProduto, ClienteProdutoViewModel>();
+
+            CreateMap<ClienteEndereco, ViewModels.v1.Cliente.EnderecoViewModel>();
 
             CreateMap<ClienteDependente, DependenteViewModel>()
                 .ForPath(dest => dest.Endereco.Cep, opt => opt.MapFrom(src => src.Cep))

@@ -16,6 +16,7 @@ using Vileve.Infra.CrossCutting.Io.Http;
 namespace Vileve.Domain.CommandHandlers
 {
     public class ClienteCommandHandler : CommandHandler,
+        IRequestHandler<ObterClientePorIdCommand, object>,
         IRequestHandler<CadastrarClienteCommand, object>,
         IRequestHandler<ObterProdutoCommand, object>,
         IRequestHandler<CadastrarProdutoCommand, bool>,
@@ -56,6 +57,24 @@ namespace Vileve.Domain.CommandHandlers
             _clienteEnderecoRepository = clienteEnderecoRepository;
             _clienteDependenteRepository = clienteDependenteRepository;
             _logger = logger;
+        }
+
+        public async Task<object> Handle(ObterClientePorIdCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            var cliente = _clienteRepository.GetById(message.ClienteId);
+            if (cliente == null)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cliente não cadastrado.", message));
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(cliente);
         }
 
         public async Task<object> Handle(CadastrarClienteCommand message, CancellationToken cancellationToken)

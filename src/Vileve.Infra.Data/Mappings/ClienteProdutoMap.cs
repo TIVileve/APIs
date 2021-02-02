@@ -25,7 +25,7 @@ namespace Vileve.Infra.Data.Mappings
             builder.ToTable("ClientesProdutos");
 
             builder.HasOne(cp => cp.Cliente)
-                .WithOne()
+                .WithOne(c => c.Produto)
                 .HasForeignKey<ClienteProduto>(cp => cp.ClienteId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();

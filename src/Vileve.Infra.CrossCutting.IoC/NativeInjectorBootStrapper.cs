@@ -102,6 +102,7 @@ namespace Vileve.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<ValidarRepresentanteCommand, bool>, ConsultorCommandHandler>();
 
             // Cliente
+            services.AddScoped<IRequestHandler<ObterClientePorIdCommand, object>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarClienteCommand, object>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<ObterProdutoCommand, object>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarProdutoCommand, bool>, ClienteCommandHandler>();
