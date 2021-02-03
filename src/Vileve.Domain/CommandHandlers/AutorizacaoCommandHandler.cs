@@ -12,7 +12,6 @@ using Vileve.Domain.Commands.Autorizacao;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
 using Vileve.Domain.Enums;
-using Vileve.Domain.ExtensionMethods;
 using Vileve.Domain.Interfaces;
 using Vileve.Domain.Models;
 using Vileve.Domain.Responses;
@@ -177,7 +176,7 @@ namespace Vileve.Domain.CommandHandlers
                 if (onboarding.StatusOnboarding.Equals(StatusOnboarding.ValidacaoToken) || onboarding.StatusOnboarding.Equals(StatusOnboarding.ValidacaoEmail))
                     return await Task.FromResult(true);
 
-                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Consultor encontrado. Acesse sua conta!", message));
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Este código do convite e número de celular estão vinculados a outro usuário.", message));
                 return await Task.FromResult(false);
             }
 
