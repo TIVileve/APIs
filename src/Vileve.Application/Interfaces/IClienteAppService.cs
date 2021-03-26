@@ -11,7 +11,7 @@ namespace Vileve.Application.Interfaces
             string telefoneFixo, string telefoneCelular, Guid? consultorId);
 
         Task<object> ObterProduto();
-        void CadastrarProduto(Guid clienteId, string codigoProduto);
+        void CadastrarProduto(Guid clienteId, string codigoProdutoItem);
 
         void CadastrarEndereco(Guid clienteId, string cep, string logradouro, int numero, string complemento,
             string bairro, string cidade, string estado, string comprovanteBase64);

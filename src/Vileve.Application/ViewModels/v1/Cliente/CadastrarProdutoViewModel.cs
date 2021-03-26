@@ -2,6 +2,6 @@
 {
     public class CadastrarProdutoViewModel
     {
-        public string CodigoProduto { get; set; }
+        public string CodigoProdutoItem { get; set; }
     }
 }

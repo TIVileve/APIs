@@ -6,10 +6,10 @@ namespace Vileve.Domain.Commands.Cliente
 {
     public class CadastrarProdutoCommand : ClienteCommand, IRequest<bool>
     {
-        public CadastrarProdutoCommand(Guid clienteId, string codigoProduto)
+        public CadastrarProdutoCommand(Guid clienteId, string codigoProdutoItem)
         {
             ClienteId = clienteId;
-            CodigoProduto = codigoProduto;
+            CodigoProdutoItem = codigoProdutoItem;
         }
 
         public override bool IsValid()

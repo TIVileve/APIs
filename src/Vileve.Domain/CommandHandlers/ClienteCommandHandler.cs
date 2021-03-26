@@ -163,7 +163,7 @@ namespace Vileve.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            var clienteProduto = new ClienteProduto(Guid.NewGuid(), message.CodigoProduto, message.ClienteId);
+            var clienteProduto = new ClienteProduto(Guid.NewGuid(), message.CodigoProdutoItem, message.ClienteId);
 
             _clienteProdutoRepository.Add(clienteProduto);
 

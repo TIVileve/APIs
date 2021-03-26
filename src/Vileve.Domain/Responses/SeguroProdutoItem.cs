@@ -10,5 +10,13 @@ namespace Vileve.Domain.Responses
         public int CodigoProduto { get; set; }
         [JsonProperty("nome")]
         public string Nome { get; set; }
+        [JsonProperty("valor")]
+        public double Valor { get; set; }
+        [JsonProperty("descricao")]
+        public string Descricao { get; set; }
+        [JsonProperty("quantidade_maxima_dependente")]
+        public int QuantidadeMaximaDependente { get; set; }
+        [JsonProperty("parentescos")]
+        public string Parentescos { get; set; }
     }
 }
