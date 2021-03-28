@@ -145,15 +145,5 @@ namespace Vileve.Services.Api.Controllers.v1
 
             return Response();
         }
-
-        [HttpGet("{clienteId}/calculos-mensais")]
-        [ProducesResponseType(typeof(CalculoMensalViewModel), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> ObterCalculoMensal(Guid clienteId)
-        {
-            var response = await _clienteAppService.ObterCalculoMensal(clienteId);
-
-            return Response(response);
-        }
     }
 }

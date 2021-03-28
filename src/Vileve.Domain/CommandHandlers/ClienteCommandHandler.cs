@@ -26,8 +26,7 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<CadastrarDependenteCommand, bool>,
         IRequestHandler<AtualizarDependenteCommand, bool>,
         IRequestHandler<DeletarDependenteCommand, bool>,
-        IRequestHandler<CadastrarPagamentoCommand, bool>,
-        IRequestHandler<ObterCalculoMensalCommand, object>
+        IRequestHandler<CadastrarPagamentoCommand, bool>
     {
         private readonly ServiceManager _serviceManager;
         private readonly IHttpAppService _httpAppService;
@@ -345,17 +344,6 @@ namespace Vileve.Domain.CommandHandlers
             }
 
             return Task.FromResult(true);
-        }
-
-        public async Task<object> Handle(ObterCalculoMensalCommand message, CancellationToken cancellationToken)
-        {
-            if (!message.IsValid())
-            {
-                NotifyValidationErrors(message);
-                return await Task.FromResult(false);
-            }
-
-            return await Task.FromResult(true);
         }
     }
 }

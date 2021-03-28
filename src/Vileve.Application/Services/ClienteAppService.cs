@@ -117,19 +117,6 @@ namespace Vileve.Application.Services
             _bus.SendCommand(cadastrarPagamentoCommand);
         }
 
-        public async Task<object> ObterCalculoMensal(Guid clienteId)
-        {
-            var obterCalculoMensalCommand = new ObterCalculoMensalCommand(clienteId);
-            var obterCalculoMensalResponse = await _bus.SendCommand(obterCalculoMensalCommand);
-
-            return _notifications.HasNotifications()
-                ? obterCalculoMensalResponse
-                : new CalculoMensalViewModel
-                {
-                    Valor = new Random().Next(1500, 3000)
-                };
-        }
-
         public void Dispose()
         {
             GC.SuppressFinalize(this);
