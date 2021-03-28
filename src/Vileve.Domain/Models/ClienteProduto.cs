@@ -5,10 +5,10 @@ namespace Vileve.Domain.Models
 {
     public class ClienteProduto : Entity
     {
-        public ClienteProduto(Guid id, string codigoProduto, Guid clienteId)
+        public ClienteProduto(Guid id, string codigoProdutoItem, Guid clienteId)
         {
             Id = id;
-            CodigoProduto = codigoProduto;
+            CodigoProdutoItem = codigoProdutoItem;
             ClienteId = clienteId;
         }
 
@@ -17,14 +17,14 @@ namespace Vileve.Domain.Models
         {
         }
 
-        public string CodigoProduto { get; set; }
+        public string CodigoProdutoItem { get; set; }
 
         public virtual Cliente Cliente { get; set; }
         public Guid ClienteId { get; set; }
 
-        public ClienteProduto Update(string codigoProduto)
+        public ClienteProduto Update(string codigoProdutoItem)
         {
-            CodigoProduto = CodigoProduto;
+            CodigoProdutoItem = codigoProdutoItem;
 
             return this;
         }

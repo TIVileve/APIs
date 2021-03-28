@@ -17,7 +17,7 @@ namespace Vileve.Infra.Data.Mappings
 
             builder.Property(cp => cp.UpdateDate);
 
-            builder.Property(cp => cp.CodigoProduto)
+            builder.Property(cp => cp.CodigoProdutoItem)
                 .HasColumnType("varchar(100)")
                 .HasMaxLength(100);
 
