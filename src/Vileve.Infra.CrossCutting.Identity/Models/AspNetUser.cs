@@ -27,10 +27,17 @@ namespace Vileve.Infra.CrossCutting.Identity.Models
             return _accessor.HttpContext.User.Claims;
         }
 
+        public string Token => GetToken();
+
         private string GetName()
         {
             return _accessor.HttpContext.User.Identity.Name ??
                    _accessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+        }
+
+        private string GetToken()
+        {
+            return _accessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Token")?.Value;
         }
     }
 }

@@ -37,9 +37,9 @@ namespace Vileve.Application.Services
                 ? loginResponse
                 : new TokenViewModel
                 {
-                    AccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-                    TokenType = "bearer",
-                    ExpiresIn = DateTime.UtcNow.AddHours(1),
+                    AccessToken = null,
+                    TokenType = null,
+                    ExpiresIn = null,
                     CodigoConvite = ((Onboarding)loginResponse)?.CodigoConvite,
                     NumeroCelular = ((Onboarding)loginResponse)?.NumeroCelular,
                     StatusOnboardingDescricao = Enumerations.GetEnumDescription(((Onboarding)loginResponse)?.StatusOnboarding),

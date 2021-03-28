@@ -8,5 +8,6 @@ namespace Vileve.Domain.Interfaces
         string Name { get; }
         bool IsAuthenticated();
         IEnumerable<Claim> GetClaimsIdentity();
+        string Token { get; }
     }
 }
