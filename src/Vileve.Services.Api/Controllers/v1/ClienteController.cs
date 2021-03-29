@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Vileve.Application.Interfaces;
@@ -12,7 +13,7 @@ using Vileve.Domain.Core.Notifications;
 
 namespace Vileve.Services.Api.Controllers.v1
 {
-    // [Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/v1/clientes")]
     [Produces("application/json")]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,6 +36,7 @@ namespace Vileve.Domain.CommandHandlers
         private readonly IClienteProdutoRepository _clienteProdutoRepository;
         private readonly IClienteEnderecoRepository _clienteEnderecoRepository;
         private readonly IClienteDependenteRepository _clienteDependenteRepository;
+        private readonly IUser _user;
         private readonly ILogger<ClienteCommandHandler> _logger;
 
         public ClienteCommandHandler(
@@ -44,6 +46,7 @@ namespace Vileve.Domain.CommandHandlers
             IClienteProdutoRepository clienteProdutoRepository,
             IClienteEnderecoRepository clienteEnderecoRepository,
             IClienteDependenteRepository clienteDependenteRepository,
+            IUser user,
             ILogger<ClienteCommandHandler> logger,
             IUnitOfWork uow,
             IMediatorHandler bus,
@@ -56,6 +59,7 @@ namespace Vileve.Domain.CommandHandlers
             _clienteProdutoRepository = clienteProdutoRepository;
             _clienteEnderecoRepository = clienteEnderecoRepository;
             _clienteDependenteRepository = clienteDependenteRepository;
+            _user = user;
             _logger = logger;
         }
 
@@ -133,6 +137,8 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _user.Token);
+
                 return await Task.FromResult(await _httpAppService.OnGet<SeguroProduto>(client, message.RequestId, "v1/proposta/seguro/produtos"));
             }
             catch (Exception e)

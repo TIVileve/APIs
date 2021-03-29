@@ -1,13 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Vileve.Application.Interfaces;
 using Vileve.Application.ViewModels.v1.Autorizacao;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
+using Vileve.Services.Api.Configurations;
 
 namespace Vileve.Services.Api.Controllers.v1
 {
@@ -18,15 +25,18 @@ namespace Vileve.Services.Api.Controllers.v1
     public class AutorizacaoController : ApiController
     {
         private readonly IAutorizacaoAppService _autorizacaoAppService;
+        private readonly AppSettings _appSettings;
 
         public AutorizacaoController(
             IAutorizacaoAppService autorizacaoAppService,
+            IOptions<AppSettings> appSettings,
             ILogger<AutorizacaoController> logger,
             INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator)
             : base(logger, notifications, mediator)
         {
             _autorizacaoAppService = autorizacaoAppService;
+            _appSettings = appSettings.Value;
         }
 
         [HttpGet("login")]
@@ -35,6 +45,13 @@ namespace Vileve.Services.Api.Controllers.v1
         public async Task<IActionResult> Login([FromHeader] string email, [FromHeader] string senha)
         {
             var response = await _autorizacaoAppService.Login(email, senha);
+
+            if (IsValidOperation() && response is TokenViewModel token)
+            {
+                token.AccessToken = GenerateJwt(email, token.AccessToken);
+                token.TokenType = "bearer";
+                token.ExpiresIn = DateTime.UtcNow.AddHours(1);
+            }
 
             return Response(response);
         }
@@ -119,6 +136,31 @@ namespace Vileve.Services.Api.Controllers.v1
             await _autorizacaoAppService.ValidarSelfie(codigoConvite, numeroCelular, selfie.FotoBase64);
 
             return Response();
+        }
+
+        private string GenerateJwt(string email, string token)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Email, email),
+                new Claim("Token", token)
+            };
+
+            var identityClaims = new ClaimsIdentity();
+            identityClaims.AddClaims(claims);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = identityClaims,
+                Issuer = _appSettings.Issuer,
+                Audience = _appSettings.ValidAt,
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
         }
     }
 }
