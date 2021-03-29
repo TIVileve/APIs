@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using AutoMapper;
+using Vileve.Application.ViewModels.v1.Autorizacao;
 using Vileve.Application.ViewModels.v1.Cliente;
 using Vileve.Application.ViewModels.v1.Consultor;
 using Vileve.Application.ViewModels.v1.Parametrizacao;
@@ -14,6 +15,8 @@ namespace Vileve.Application.AutoMapper
     {
         public DomainToViewModelMappingProfile()
         {
+            CreateMap<Token, TokenViewModel>();
+
             CreateMap<Onboarding, StatusOnboardingViewModel>()
                 .ForMember(dest => dest.StatusOnboardingDescricao, opt => opt.MapFrom(src => Enumerations.GetEnumDescription(src.StatusOnboarding)))
                 .ForMember(dest => dest.StatusOnboarding, opt => opt.MapFrom(src => (int)src.StatusOnboarding));

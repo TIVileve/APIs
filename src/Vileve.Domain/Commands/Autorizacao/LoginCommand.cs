@@ -9,6 +9,7 @@ namespace Vileve.Domain.Commands.Autorizacao
         {
             Email = email;
             Senha = senha;
+            SenhaOriginal = senha;
         }
 
         public override bool IsValid()

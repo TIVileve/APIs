@@ -7,8 +7,7 @@ using Vileve.Application.ViewModels.v1.Autorizacao;
 using Vileve.Domain.Commands.Autorizacao;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
-using Vileve.Domain.Enums;
-using Vileve.Domain.Models;
+using Vileve.Domain.Responses;
 
 namespace Vileve.Application.Services
 {
@@ -33,21 +32,7 @@ namespace Vileve.Application.Services
             var loginCommand = new LoginCommand(email, senha);
             var loginResponse = await _bus.SendCommand(loginCommand);
 
-            return _notifications.HasNotifications()
-                ? loginResponse
-                : new TokenViewModel
-                {
-                    AccessToken = null,
-                    TokenType = null,
-                    ExpiresIn = null,
-                    CodigoConvite = ((Onboarding)loginResponse)?.CodigoConvite,
-                    NumeroCelular = ((Onboarding)loginResponse)?.NumeroCelular,
-                    StatusOnboardingDescricao = Enumerations.GetEnumDescription(((Onboarding)loginResponse)?.StatusOnboarding),
-                    StatusOnboarding = (int?)((Onboarding)loginResponse)?.StatusOnboarding,
-                    ConsultorId = ((Onboarding)loginResponse)?.Consultor?.Id,
-                    RepresentanteNomeCompleto = ((Onboarding)loginResponse)?.Consultor?.Representante?.NomeCompleto,
-                    Valido = true
-                };
+            return _notifications.HasNotifications() ? loginResponse : _mapper.Map<TokenViewModel>((Token)loginResponse);
         }
 
         public void CadastrarSenha(string codigoConvite, string numeroCelular, string email, string senha,

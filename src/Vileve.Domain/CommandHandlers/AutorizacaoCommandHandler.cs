@@ -59,14 +59,71 @@ namespace Vileve.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
+            Token token = null;
+
+            try
+            {
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
+
+                token = await _httpAppService.OnPost<Token, object>(client, message.RequestId, "v1/auth/login", new
+                {
+                    usuario = message.Email,
+                    senha = message.SenhaOriginal
+                });
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
             var onboarding = _onboardingRepository.Find(o => o.Email.Equals(message.Email) && o.Senha.Equals(message.Senha)).FirstOrDefault();
-            if (onboarding == null)
+
+            if (onboarding == null && token == null)
             {
                 await _bus.RaiseEvent(new DomainNotification(message.MessageType, "E-mail ou senha inválidos.", message));
                 return await Task.FromResult(false);
             }
 
-            return await Task.FromResult(onboarding);
+            if (onboarding != null && token != null)
+            {
+                return await Task.FromResult(new Token
+                {
+                    AccessToken = token.AccessToken,
+                    TokenType = token.TokenType,
+                    ExpiresIn = null,
+                    CodigoConvite = onboarding.CodigoConvite,
+                    NumeroCelular = onboarding.NumeroCelular,
+                    StatusOnboardingDescricao = Enumerations.GetEnumDescription(onboarding.StatusOnboarding),
+                    StatusOnboarding = (int?)onboarding.StatusOnboarding,
+                    ConsultorId = onboarding.Consultor?.Id,
+                    RepresentanteNomeCompleto = onboarding.Consultor?.Representante?.NomeCompleto,
+                    Valido = true
+                });
+            }
+
+            if (onboarding != null)
+            {
+                return await Task.FromResult(new Token
+                {
+                    CodigoConvite = onboarding.CodigoConvite,
+                    NumeroCelular = onboarding.NumeroCelular,
+                    StatusOnboardingDescricao = Enumerations.GetEnumDescription(onboarding.StatusOnboarding),
+                    StatusOnboarding = (int?)onboarding.StatusOnboarding,
+                    ConsultorId = onboarding.Consultor?.Id,
+                    RepresentanteNomeCompleto = onboarding.Consultor?.Representante?.NomeCompleto,
+                    Valido = true
+                });
+            }
+
+            return await Task.FromResult(new Token
+            {
+                AccessToken = token.AccessToken,
+                TokenType = token.TokenType,
+                ExpiresIn = null,
+                StatusOnboardingDescricao = Enumerations.GetEnumDescription(StatusOnboarding.Finalizado),
+                StatusOnboarding = (int?)StatusOnboarding.Finalizado,
+                Valido = true
+            });
         }
 
         public Task<bool> Handle(CadastrarSenhaCommand message, CancellationToken cancellationToken)

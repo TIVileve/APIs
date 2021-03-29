@@ -32,6 +32,7 @@ namespace Vileve.Domain.Commands.Autorizacao
             protected set => _confirmarSenha = string.IsNullOrWhiteSpace(value) ? null : value.CreateMd5();
         }
 
+        public string SenhaOriginal { get; protected set; }
         public string FotoBase64 { get; protected set; }
     }
 }
