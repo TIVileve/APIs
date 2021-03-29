@@ -138,7 +138,7 @@ namespace Vileve.Services.Api.Controllers.v1
         }
 
         [HttpGet("{clienteId}/contratacoes")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(ContratarProdutoViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ContratarProduto(Guid clienteId)
         {
