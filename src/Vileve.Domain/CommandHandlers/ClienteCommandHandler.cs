@@ -26,6 +26,7 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<CadastrarDependenteCommand, bool>,
         IRequestHandler<AtualizarDependenteCommand, bool>,
         IRequestHandler<DeletarDependenteCommand, bool>,
+        IRequestHandler<ContratarProdutoCommand, object>,
         IRequestHandler<CadastrarPagamentoCommand, bool>
     {
         private readonly ServiceManager _serviceManager;
@@ -333,6 +334,17 @@ namespace Vileve.Domain.CommandHandlers
 
             _bus.RaiseEvent(new DomainNotification(message.MessageType, "Dependente não encontrado.", message));
             return Task.FromResult(false);
+        }
+
+        public async Task<object> Handle(ContratarProdutoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
 
         public Task<bool> Handle(CadastrarPagamentoCommand message, CancellationToken cancellationToken)

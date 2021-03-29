@@ -28,6 +28,7 @@ namespace Vileve.Application.Interfaces
             string complemento, string bairro, string cidade, string estado);
 
         void DeletarDependente(Guid clienteId, Guid dependenteId);
+        Task<object> ContratarProduto(Guid clienteId);
         void CadastrarPagamento(Guid clienteId);
     }
 }

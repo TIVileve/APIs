@@ -112,6 +112,7 @@ namespace Vileve.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<CadastrarDependenteCommand, bool>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<AtualizarDependenteCommand, bool>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<DeletarDependenteCommand, bool>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<ContratarProdutoCommand, object>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarPagamentoCommand, bool>, ClienteCommandHandler>();
 
             // Infra - Data

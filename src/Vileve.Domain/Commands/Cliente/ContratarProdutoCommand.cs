@@ -4,7 +4,7 @@ using Vileve.Domain.Validations.Cliente;
 
 namespace Vileve.Domain.Commands.Cliente
 {
-    public class ContratarProdutoCommand : ClienteCommand, IRequest<bool>
+    public class ContratarProdutoCommand : ClienteCommand, IRequest<object>
     {
         public ContratarProdutoCommand(Guid clienteId)
         {

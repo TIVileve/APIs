@@ -136,6 +136,16 @@ namespace Vileve.Services.Api.Controllers.v1
             return Response();
         }
 
+        [HttpGet("{clienteId}/contratacoes")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ContratarProduto(Guid clienteId)
+        {
+            var response = await _clienteAppService.ContratarProduto(clienteId);
+
+            return Response(response);
+        }
+
         [HttpPost("{clienteId}/pagamentos")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
