@@ -459,8 +459,8 @@ namespace Vileve.Domain.CommandHandlers
                         telefones = onboarding.Consultor.Representante.Telefones.Select(item => new
                         {
                             tipo_telefone = item.TipoTelefone,
-                            ddd = item.Numero.Substring(0, 2),
-                            telefone = item.Numero.Substring(2),
+                            ddd = item.Numero.Replace("+55", "").Substring(0, 2),
+                            telefone = item.Numero.Replace("+55", "").Substring(2),
                             principal = 1
                         }),
                         enderecos = onboarding.Consultor.Enderecos.Select(item => new

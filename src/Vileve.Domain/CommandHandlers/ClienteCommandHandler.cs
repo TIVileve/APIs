@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading;
@@ -137,6 +139,7 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
+
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _user.Token);
 
                 return await Task.FromResult(await _httpAppService.OnGet<SeguroProduto>(client, message.RequestId, "v1/proposta/seguro/produtos"));
@@ -350,7 +353,164 @@ namespace Vileve.Domain.CommandHandlers
                 return await Task.FromResult(false);
             }
 
-            return await Task.FromResult(true);
+            var cliente = _clienteRepository.GetById(message.ClienteId);
+            if (cliente == null)
+            {
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cliente não cadastrado.", message));
+                return await Task.FromResult(false);
+            }
+
+            try
+            {
+                var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _user.Token);
+
+                string apelido;
+                string nomeSocial;
+                var telefones = new List<string>();
+
+                if (cliente.NomeCompleto.IndexOf(" ", StringComparison.Ordinal).Equals(-1))
+                {
+                    apelido = cliente.NomeCompleto;
+                    nomeSocial = cliente.NomeCompleto;
+                }
+                else
+                {
+                    apelido = cliente.NomeCompleto.Substring(0, cliente.NomeCompleto.IndexOf(" ", StringComparison.Ordinal));
+                    nomeSocial = cliente.NomeCompleto.Substring(0, cliente.NomeCompleto.IndexOf(" ", StringComparison.Ordinal));
+                }
+
+                if (!string.IsNullOrWhiteSpace(cliente.TelefoneFixo))
+                    telefones.Add(cliente.TelefoneFixo);
+
+                if (!string.IsNullOrWhiteSpace(cliente.TelefoneCelular))
+                    telefones.Add(cliente.TelefoneCelular);
+
+                var contratarProduto = await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/proposta/nova-contratacao", new
+                {
+                    codigo_produto_item = cliente.Produto.CodigoProdutoItem,
+                    fonte_pagadora = new
+                    {
+                        // inss = new
+                        // {
+                        //     numero_beneficio = 0,
+                        //     salario = 0,
+                        //     especie = 0
+                        // },
+                        outros = new
+                        {
+                            dia_pagamento = 30
+                        }
+                    },
+                    pessoa = new
+                    {
+                        // codigo_consultor = 0,
+                        nome_completo = cliente.NomeCompleto,
+                        apelido,
+                        nome_social = nomeSocial,
+                        codigo_sexo = 1,
+                        codigo_estado_civil = 1,
+                        data_nascimento = cliente.DataNascimento.ToString("yyyy-MM-dd"),
+                        codigo_nacionalidade = 39,
+                        cpf = cliente.Cpf,
+                        emails = new List<object>
+                        {
+                            new
+                            {
+                                tipo_email = 1,
+                                email = cliente.Email,
+                                principal = 1
+                            }
+                        },
+                        telefones = telefones.Select(item => new
+                        {
+                            tipo_telefone = 1,
+                            ddd = item.Replace("+55", "").Substring(0, 2),
+                            telefone = item.Replace("+55", "").Substring(2),
+                            principal = 1
+                        }),
+                        enderecos = cliente.Enderecos.Select(item => new
+                        {
+                            tipo_endereco = 1,
+                            rua = item.Logradouro,
+                            numero = item.Numero,
+                            complemento = item.Complemento,
+                            bairro = item.Bairro,
+                            cidade = item.Cidade,
+                            sigla_estado = item.Estado,
+                            cep = item.Cep.Replace("-", ""),
+                            principal = 1
+                        }),
+                        // documentos = new
+                        // {
+                        //     rg = new
+                        //     {
+                        //         registro_identidade = "string",
+                        //         uf_expedicao = "string",
+                        //         orgao_emissor = "string",
+                        //         data_emissao = "yyyy-mm-dd"
+                        //     },
+                        //     titulo_eleitor = new
+                        //     {
+                        //         numero_inscricao = 0,
+                        //         data_emissao = "yyyy-mm-dd",
+                        //         zona = "string",
+                        //         secao = "string"
+                        //     },
+                        //     carteira_trabalho = new
+                        //     {
+                        //         numero = 0,
+                        //         serie = 0,
+                        //         numero_nit = 0,
+                        //         uf_expedicao = "string",
+                        //         data_emissao = "yyyy-mm-dd"
+                        //     },
+                        //     carteira_habilitacao = new
+                        //     {
+                        //         numero = 0,
+                        //         tipo = "string",
+                        //         data_vencimento = "yyyy-mm-dd"
+                        //     },
+                        //     certidao_servico_militar = new
+                        //     {
+                        //         numero = 0,
+                        //         categoria = "string",
+                        //         numero_beneficio = 0
+                        //     }
+                        // },
+                        dependentes = cliente.Dependentes.Select(item => new
+                        {
+                            codigo_tipo_dependente = 5,
+                            nome_completo = item.NomeCompleto,
+                            data_nascimento = item.DataNascimento.ToString("yyyy-MM-dd"),
+                            cpf = item.Cpf,
+                            email = item.Email,
+                            celular = item.TelefoneCelular,
+                            cep = item.Cep.Replace("-", ""),
+                            rua = item.Logradouro,
+                            numero = item.Numero,
+                            complemento = item.Complemento,
+                            bairro = item.Bairro,
+                            cidade = item.Cidade,
+                            estado = item.Estado
+                        })
+                    }
+                });
+
+                return await Task.FromResult(contratarProduto);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogLevel.Error, e, JsonSerializer.Serialize(new
+                {
+                    message.RequestId,
+                    e.Message
+                }));
+
+                await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
+                return await Task.FromResult(false);
+            }
         }
 
         public Task<bool> Handle(CadastrarPagamentoCommand message, CancellationToken cancellationToken)
