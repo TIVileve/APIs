@@ -368,7 +368,7 @@ namespace Vileve.Domain.CommandHandlers
 
                 string apelido;
                 string nomeSocial;
-                var telefones = new List<string>();
+                var telefones = new List<object>();
 
                 if (cliente.NomeCompleto.IndexOf(" ", StringComparison.Ordinal).Equals(-1))
                 {
@@ -382,10 +382,26 @@ namespace Vileve.Domain.CommandHandlers
                 }
 
                 if (!string.IsNullOrWhiteSpace(cliente.TelefoneFixo))
-                    telefones.Add(cliente.TelefoneFixo);
+                {
+                    telefones.Add(new
+                    {
+                        tipo_telefone = 1,
+                        ddd = cliente.TelefoneFixo.Replace("+55", "").Substring(0, 2),
+                        telefone = cliente.TelefoneFixo.Replace("+55", "").Substring(2),
+                        principal = 1
+                    });
+                }
 
                 if (!string.IsNullOrWhiteSpace(cliente.TelefoneCelular))
-                    telefones.Add(cliente.TelefoneCelular);
+                {
+                    telefones.Add(new
+                    {
+                        tipo_telefone = 2,
+                        ddd = cliente.TelefoneCelular.Replace("+55", "").Substring(0, 2),
+                        telefone = cliente.TelefoneCelular.Replace("+55", "").Substring(2),
+                        principal = 0
+                    });
+                }
 
                 var contratarProduto = await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/proposta/nova-contratacao", new
                 {
@@ -423,13 +439,7 @@ namespace Vileve.Domain.CommandHandlers
                                 principal = 1
                             }
                         },
-                        telefones = telefones.Select(item => new
-                        {
-                            tipo_telefone = 1,
-                            ddd = item.Replace("+55", "").Substring(0, 2),
-                            telefone = item.Replace("+55", "").Substring(2),
-                            principal = 1
-                        }),
+                        telefones,
                         enderecos = cliente.Enderecos.Select(item => new
                         {
                             tipo_endereco = 1,
