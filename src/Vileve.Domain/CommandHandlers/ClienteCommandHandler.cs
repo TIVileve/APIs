@@ -36,6 +36,7 @@ namespace Vileve.Domain.CommandHandlers
         private readonly ServiceManager _serviceManager;
         private readonly IHttpAppService _httpAppService;
         private readonly IClienteRepository _clienteRepository;
+        private readonly IClienteFontePagadoraRepository _clienteFontePagadoraRepository;
         private readonly IClienteProdutoRepository _clienteProdutoRepository;
         private readonly IClienteEnderecoRepository _clienteEnderecoRepository;
         private readonly IClienteDependenteRepository _clienteDependenteRepository;
@@ -46,6 +47,7 @@ namespace Vileve.Domain.CommandHandlers
             IOptions<ServiceManager> serviceManager,
             IHttpAppService httpAppService,
             IClienteRepository clienteRepository,
+            IClienteFontePagadoraRepository clienteFontePagadoraRepository,
             IClienteProdutoRepository clienteProdutoRepository,
             IClienteEnderecoRepository clienteEnderecoRepository,
             IClienteDependenteRepository clienteDependenteRepository,
@@ -59,6 +61,7 @@ namespace Vileve.Domain.CommandHandlers
             _serviceManager = serviceManager.Value;
             _httpAppService = httpAppService;
             _clienteRepository = clienteRepository;
+            _clienteFontePagadoraRepository = clienteFontePagadoraRepository;
             _clienteProdutoRepository = clienteProdutoRepository;
             _clienteEnderecoRepository = clienteEnderecoRepository;
             _clienteDependenteRepository = clienteDependenteRepository;
@@ -121,6 +124,11 @@ namespace Vileve.Domain.CommandHandlers
                 message.TelefoneFixo, message.TelefoneCelular, message.ConsultorId);
 
             _clienteRepository.Add(cliente);
+
+            var clienteFontePagadora = new ClienteFontePagadora(Guid.NewGuid(), message.InssNumeroBeneficio, message.InssSalario, message.InssEspecie, message.OutrosDiaPagamento,
+                cliente.Id);
+
+            _clienteFontePagadoraRepository.Add(clienteFontePagadora);
 
             if (Commit())
             {

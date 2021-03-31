@@ -86,6 +86,10 @@ namespace Vileve.Application.AutoMapper
             CreateMap<SeguroProdutoItem, ProdutoItemViewModel>();
 
             CreateMap<Cliente, ClienteViewModel>()
+                .ForMember(dest => dest.InssNumeroBeneficio, opt => opt.MapFrom(src => src.FontePagadora.InssNumeroBeneficio))
+                .ForMember(dest => dest.InssSalario, opt => opt.MapFrom(src => src.FontePagadora.InssSalario))
+                .ForMember(dest => dest.InssEspecie, opt => opt.MapFrom(src => src.FontePagadora.InssEspecie))
+                .ForMember(dest => dest.OutrosDiaPagamento, opt => opt.MapFrom(src => src.FontePagadora.OutrosDiaPagamento))
                 .ForMember(dest => dest.Endereco, opt => opt.MapFrom(src => src.Enderecos.OrderBy(ce => ce.CreationDate).FirstOrDefault()));
 
             CreateMap<ClienteProduto, ClienteProdutoViewModel>();

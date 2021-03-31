@@ -47,7 +47,8 @@ namespace Vileve.Services.Api.Controllers.v1
         public async Task<IActionResult> CadastrarCliente([FromBody] CadastrarClienteViewModel cliente)
         {
             var response = await _clienteAppService.CadastrarCliente(cliente.Cpf, cliente.NomeCompleto, cliente.DataNascimento, cliente.Email,
-                cliente.TelefoneFixo, cliente.TelefoneCelular, null);
+                cliente.TelefoneFixo, cliente.TelefoneCelular, null,
+                cliente.InssNumeroBeneficio, cliente.InssSalario, cliente.InssEspecie, cliente.OutrosDiaPagamento);
 
             return Response(response);
         }

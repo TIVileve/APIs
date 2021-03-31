@@ -12,6 +12,10 @@ namespace Vileve.Application.ViewModels.v1.Cliente
         public string Email { get; set; }
         public string TelefoneFixo { get; set; }
         public string TelefoneCelular { get; set; }
+        public long? InssNumeroBeneficio { get; set; }
+        public double? InssSalario { get; set; }
+        public int? InssEspecie { get; set; }
+        public int? OutrosDiaPagamento { get; set; }
         public ClienteProdutoViewModel Produto { get; set; }
         public EnderecoViewModel Endereco { get; set; }
         public IEnumerable<DependenteViewModel> Dependentes { get; set; }

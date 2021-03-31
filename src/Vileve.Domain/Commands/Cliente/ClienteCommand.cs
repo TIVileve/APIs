@@ -22,6 +22,12 @@ namespace Vileve.Domain.Commands.Cliente
 
         public Guid? ConsultorId { get; protected set; }
 
+        // Fonte Pagadora
+        public long? InssNumeroBeneficio { get; protected set; }
+        public double? InssSalario { get; protected set; }
+        public int? InssEspecie { get; protected set; }
+        public int? OutrosDiaPagamento { get; protected set; }
+
         // Produto
         public string CodigoProdutoItem { get; protected set; }
 

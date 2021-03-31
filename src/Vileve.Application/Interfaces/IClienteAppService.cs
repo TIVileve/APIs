@@ -8,7 +8,8 @@ namespace Vileve.Application.Interfaces
         Task<object> ObterClientePorId(Guid clienteId);
 
         Task<object> CadastrarCliente(string cpf, string nomeCompleto, DateTime dataNascimento, string email,
-            string telefoneFixo, string telefoneCelular, Guid? consultorId);
+            string telefoneFixo, string telefoneCelular, Guid? consultorId,
+            long? inssNumeroBeneficio, double? inssSalario, int? inssEspecie, int? outrosDiaPagamento);
 
         Task<object> ObterProduto();
         void CadastrarProduto(Guid clienteId, string codigoProdutoItem);

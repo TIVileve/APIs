@@ -7,7 +7,8 @@ namespace Vileve.Domain.Commands.Cliente
     public class CadastrarClienteCommand : ClienteCommand, IRequest<object>
     {
         public CadastrarClienteCommand(string cpf, string nomeCompleto, DateTime dataNascimento, string email,
-            string telefoneFixo, string telefoneCelular, Guid? consultorId)
+            string telefoneFixo, string telefoneCelular, Guid? consultorId,
+            long? inssNumeroBeneficio, double? inssSalario, int? inssEspecie, int? outrosDiaPagamento)
         {
             Cpf = cpf;
             NomeCompleto = nomeCompleto;
@@ -16,6 +17,10 @@ namespace Vileve.Domain.Commands.Cliente
             TelefoneFixo = telefoneFixo;
             TelefoneCelular = telefoneCelular;
             ConsultorId = consultorId;
+            InssNumeroBeneficio = inssNumeroBeneficio;
+            InssSalario = inssSalario;
+            InssEspecie = inssEspecie;
+            OutrosDiaPagamento = outrosDiaPagamento;
         }
 
         public override bool IsValid()

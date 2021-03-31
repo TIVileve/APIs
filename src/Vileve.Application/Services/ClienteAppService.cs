@@ -38,10 +38,12 @@ namespace Vileve.Application.Services
         }
 
         public async Task<object> CadastrarCliente(string cpf, string nomeCompleto, DateTime dataNascimento, string email,
-            string telefoneFixo, string telefoneCelular, Guid? consultorId)
+            string telefoneFixo, string telefoneCelular, Guid? consultorId,
+            long? inssNumeroBeneficio, double? inssSalario, int? inssEspecie, int? outrosDiaPagamento)
         {
             var cadastrarClienteCommand = new CadastrarClienteCommand(cpf, nomeCompleto, dataNascimento, email,
-                telefoneFixo, telefoneCelular, consultorId);
+                telefoneFixo, telefoneCelular, consultorId,
+                inssNumeroBeneficio, inssSalario, inssEspecie, outrosDiaPagamento);
             var cadastrarClienteResponse = await _bus.SendCommand(cadastrarClienteCommand);
 
             return _notifications.HasNotifications() ? cadastrarClienteResponse : _mapper.Map<ClienteViewModel>((Cliente)cadastrarClienteResponse);
