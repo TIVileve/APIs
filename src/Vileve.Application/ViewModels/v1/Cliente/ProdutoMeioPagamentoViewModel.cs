@@ -6,5 +6,6 @@
         public int CodigoBancario { get; set; }
         public string Nome { get; set; }
         public string MeioPagamento { get; set; }
+        public string Prefixo { get; set; }
     }
 }

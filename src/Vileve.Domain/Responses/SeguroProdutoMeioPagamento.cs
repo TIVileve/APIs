@@ -12,5 +12,7 @@ namespace Vileve.Domain.Responses
         public string Nome { get; set; }
         [JsonProperty("meio_pagamento")]
         public string MeioPagamento { get; set; }
+        [JsonProperty("prefixo")]
+        public string Prefixo { get; set; }
     }
 }

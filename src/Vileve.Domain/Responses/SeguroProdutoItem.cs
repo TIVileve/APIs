@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Vileve.Domain.Responses
 {
@@ -16,7 +17,7 @@ namespace Vileve.Domain.Responses
         public string Descricao { get; set; }
         [JsonProperty("quantidade_maxima_dependente")]
         public int QuantidadeMaximaDependente { get; set; }
-        [JsonProperty("parentescos")]
-        public string Parentescos { get; set; }
+        [JsonProperty("parentescos_avulsos")]
+        public IEnumerable<SeguroProdutoParentescos> ParentescosAvulsos { get; set; }
     }
 }
