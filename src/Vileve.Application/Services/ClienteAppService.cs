@@ -116,14 +116,7 @@ namespace Vileve.Application.Services
             var contratarProdutoCommand = new ContratarProdutoCommand(clienteId);
             var contratarProdutoResponse = await _bus.SendCommand(contratarProdutoCommand);
 
-            return _notifications.HasNotifications()
-                ? contratarProdutoResponse
-                : new ContratarProdutoViewModel
-                {
-                    CodigoProposta = 123,
-                    CodigoCliente = 2,
-                    ValorTotal = new Random().Next(1500, 3000)
-                };
+            return _notifications.HasNotifications() ? contratarProdutoResponse : _mapper.Map<ContratarProdutoViewModel>(((ContratarProduto)contratarProdutoResponse).Retorno);
         }
 
         public void CadastrarPagamento(Guid clienteId)

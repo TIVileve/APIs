@@ -100,6 +100,8 @@ namespace Vileve.Application.AutoMapper
                 .ForPath(dest => dest.Endereco.Bairro, opt => opt.MapFrom(src => src.Bairro))
                 .ForPath(dest => dest.Endereco.Cidade, opt => opt.MapFrom(src => src.Cidade))
                 .ForPath(dest => dest.Endereco.Estado, opt => opt.MapFrom(src => src.Estado));
+
+            CreateMap<ContratarProdutoRetorno, ContratarProdutoViewModel>();
         }
     }
 }

@@ -403,7 +403,7 @@ namespace Vileve.Domain.CommandHandlers
                     });
                 }
 
-                var contratarProduto = await _httpAppService.OnPost<object, object>(client, message.RequestId, "v1/proposta/nova-contratacao", new
+                var contratarProduto = await _httpAppService.OnPost<ContratarProduto, object>(client, message.RequestId, "v1/proposta/nova-contratacao", new
                 {
                     codigo_produto_item = cliente.Produto.CodigoProdutoItem,
                     fonte_pagadora = new
@@ -488,24 +488,24 @@ namespace Vileve.Domain.CommandHandlers
                         //         categoria = "string",
                         //         numero_beneficio = 0
                         //     }
-                        // },
-                        dependentes = cliente.Dependentes.Select(item => new
-                        {
-                            codigo_tipo_dependente = 5,
-                            nome_completo = item.NomeCompleto,
-                            data_nascimento = item.DataNascimento.ToString("yyyy-MM-dd"),
-                            cpf = item.Cpf,
-                            email = item.Email,
-                            celular = item.TelefoneCelular,
-                            cep = item.Cep.Replace("-", ""),
-                            rua = item.Logradouro,
-                            numero = item.Numero,
-                            complemento = item.Complemento,
-                            bairro = item.Bairro,
-                            cidade = item.Cidade,
-                            estado = item.Estado
-                        })
-                    }
+                        // }
+                    },
+                    dependentes = cliente.Dependentes.Select(item => new
+                    {
+                        codigo_tipo_dependente = item.CodigoParentesco,
+                        nome_completo = item.NomeCompleto,
+                        data_nascimento = item.DataNascimento.ToString("yyyy-MM-dd"),
+                        cpf = item.Cpf,
+                        email = item.Email,
+                        celular = item.TelefoneCelular,
+                        cep = item.Cep.Replace("-", ""),
+                        rua = item.Logradouro,
+                        numero = item.Numero,
+                        complemento = item.Complemento,
+                        bairro = item.Bairro,
+                        cidade = item.Cidade,
+                        estado = item.Estado
+                    })
                 });
 
                 return await Task.FromResult(contratarProduto);
