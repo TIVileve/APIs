@@ -34,6 +34,7 @@ namespace Vileve.Domain.Models
         public virtual Consultor Consultor { get; set; }
         public Guid? ConsultorId { get; set; }
 
+        public virtual ClienteFontePagadora FontePagadora { get; set; }
         public virtual ClienteProduto Produto { get; set; }
         public virtual ICollection<ClienteEndereco> Enderecos { get; set; }
         public virtual ICollection<ClienteDependente> Dependentes { get; set; }

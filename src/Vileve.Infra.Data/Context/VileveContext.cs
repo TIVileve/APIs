@@ -21,6 +21,7 @@ namespace Vileve.Infra.Data.Context
         public DbSet<RepresentanteEmail> RepresentantesEmails { get; set; }
         public DbSet<RepresentanteTelefone> RepresentantesTelefones { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<ClienteFontePagadora> ClientesFontesPagadoras { get; set; }
         public DbSet<ClienteProduto> ClientesProdutos { get; set; }
         public DbSet<ClienteEndereco> ClientesEnderecos { get; set; }
         public DbSet<ClienteDependente> ClientesDependentes { get; set; }
@@ -37,6 +38,7 @@ namespace Vileve.Infra.Data.Context
             modelBuilder.ApplyConfiguration(new RepresentanteEmailMap());
             modelBuilder.ApplyConfiguration(new RepresentanteTelefoneMap());
             modelBuilder.ApplyConfiguration(new ClienteMap());
+            modelBuilder.ApplyConfiguration(new ClienteFontePagadoraMap());
             modelBuilder.ApplyConfiguration(new ClienteProdutoMap());
             modelBuilder.ApplyConfiguration(new ClienteEnderecoMap());
             modelBuilder.ApplyConfiguration(new ClienteDependenteMap());
