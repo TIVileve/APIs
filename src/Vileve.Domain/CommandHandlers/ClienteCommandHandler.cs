@@ -159,9 +159,10 @@ namespace Vileve.Domain.CommandHandlers
 
             _clienteRepository.Update(cliente);
 
-            var clienteFontePagadora = cliente.FontePagadora.Update(message.InssNumeroBeneficio, message.InssSalario, message.InssEspecie, message.OutrosDiaPagamento);
+            var clienteFontePagadora = cliente.FontePagadora?.Update(message.InssNumeroBeneficio, message.InssSalario, message.InssEspecie, message.OutrosDiaPagamento);
 
-            _clienteFontePagadoraRepository.Update(clienteFontePagadora);
+            if (clienteFontePagadora != null)
+                _clienteFontePagadoraRepository.Update(clienteFontePagadora);
 
             if (Commit())
             {
