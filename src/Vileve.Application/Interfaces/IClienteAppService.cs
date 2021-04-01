@@ -17,6 +17,9 @@ namespace Vileve.Application.Interfaces
         void CadastrarEndereco(Guid clienteId, string cep, string logradouro, int numero, string complemento,
             string bairro, string cidade, string estado, string comprovanteBase64);
 
+        void AtualizarEndereco(Guid clienteId, Guid enderecoId, string cep, string logradouro, int numero, string complemento,
+            string bairro, string cidade, string estado, string comprovanteBase64);
+
         Task<object> ObterDependente(Guid clienteId);
         Task<object> ObterDependentePorId(Guid clienteId, Guid dependenteId);
 

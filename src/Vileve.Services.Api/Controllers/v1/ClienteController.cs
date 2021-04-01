@@ -90,6 +90,17 @@ namespace Vileve.Services.Api.Controllers.v1
             return Response();
         }
 
+        [HttpPut("{clienteId}/enderecos/{enderecoId}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult AtualizarEndereco(Guid clienteId, Guid enderecoId, [FromBody] AtualizarEnderecoViewModel endereco)
+        {
+            _clienteAppService.AtualizarEndereco(clienteId, enderecoId, endereco.Cep, endereco.Logradouro, endereco.Numero, endereco.Complemento,
+                endereco.Bairro, endereco.Cidade, endereco.Estado, null);
+
+            return Response();
+        }
+
         [HttpGet("{clienteId}/dependentes")]
         [ProducesResponseType(typeof(IEnumerable<DependenteViewModel>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]

@@ -71,6 +71,14 @@ namespace Vileve.Application.Services
             _bus.SendCommand(cadastrarEnderecoCommand);
         }
 
+        public void AtualizarEndereco(Guid clienteId, Guid enderecoId, string cep, string logradouro, int numero, string complemento,
+            string bairro, string cidade, string estado, string comprovanteBase64)
+        {
+            var atualizarEnderecoCommand = new AtualizarEnderecoCommand(clienteId, enderecoId, cep, logradouro, numero, complemento,
+                bairro, cidade, estado, comprovanteBase64);
+            _bus.SendCommand(atualizarEnderecoCommand);
+        }
+
         public async Task<object> ObterDependente(Guid clienteId)
         {
             var obterDependenteCommand = new ObterDependenteCommand(clienteId);

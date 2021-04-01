@@ -107,6 +107,7 @@ namespace Vileve.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<ObterProdutoCommand, object>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarProdutoCommand, bool>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<Domain.Commands.Cliente.CadastrarEnderecoCommand, bool>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarEnderecoCommand, bool>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<ObterDependenteCommand, object>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<ObterDependentePorIdCommand, object>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarDependenteCommand, bool>, ClienteCommandHandler>();

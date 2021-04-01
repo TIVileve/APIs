@@ -32,6 +32,7 @@ namespace Vileve.Domain.Commands.Cliente
         public string CodigoProdutoItem { get; protected set; }
 
         // Endereco
+        public Guid EnderecoId { get; protected set; }
         public string Cep { get; protected set; }
         public string Logradouro { get; protected set; }
         public int Numero { get; protected set; }

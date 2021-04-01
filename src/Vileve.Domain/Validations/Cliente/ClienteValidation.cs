@@ -12,6 +12,12 @@ namespace Vileve.Domain.Validations.Cliente
                 .NotEqual(Guid.Empty).WithMessage("O campo cliente id é obrigatório.");
         }
 
+        protected void ValidateEnderecoId()
+        {
+            RuleFor(c => c.EnderecoId)
+                .NotEqual(Guid.Empty).WithMessage("O campo endereço id é obrigatório.");
+        }
+
         protected void ValidateDependenteId()
         {
             RuleFor(c => c.DependenteId)

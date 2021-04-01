@@ -25,6 +25,7 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<ObterProdutoCommand, object>,
         IRequestHandler<CadastrarProdutoCommand, bool>,
         IRequestHandler<CadastrarEnderecoCommand, bool>,
+        IRequestHandler<AtualizarEnderecoCommand, bool>,
         IRequestHandler<ObterDependenteCommand, object>,
         IRequestHandler<ObterDependentePorIdCommand, object>,
         IRequestHandler<CadastrarDependenteCommand, bool>,
@@ -217,6 +218,40 @@ namespace Vileve.Domain.CommandHandlers
             }
 
             return Task.FromResult(true);
+        }
+
+        public Task<bool> Handle(AtualizarEnderecoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return Task.FromResult(false);
+            }
+
+            var cliente = _clienteRepository.GetById(message.ClienteId);
+            if (cliente == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cliente não cadastrado.", message));
+                return Task.FromResult(false);
+            }
+
+            var clienteEndereco = _clienteEnderecoRepository.GetById(message.EnderecoId);
+            if (clienteEndereco != null)
+            {
+                clienteEndereco.Update(message.Cep, message.Logradouro, message.Numero, message.Complemento,
+                    message.Bairro, message.Cidade, message.Estado, message.ComprovanteBase64);
+
+                _clienteEnderecoRepository.Update(clienteEndereco);
+
+                if (Commit())
+                {
+                }
+
+                return Task.FromResult(true);
+            }
+
+            _bus.RaiseEvent(new DomainNotification(message.MessageType, "Endereço não encontrado.", message));
+            return Task.FromResult(false);
         }
 
         public async Task<object> Handle(ObterDependenteCommand message, CancellationToken cancellationToken)
