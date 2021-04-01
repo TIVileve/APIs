@@ -48,7 +48,7 @@ namespace Vileve.Services.Api.Controllers.v1
 
             if (IsValidOperation() && response is TokenViewModel token)
             {
-                token.AccessToken = GenerateJwt(email, token.AccessToken);
+                token.AccessToken = GenerateJwt(email, token.AccessToken, token.ConsultorId);
                 token.TokenType = "bearer";
                 token.ExpiresIn = DateTime.UtcNow.AddHours(1);
             }
@@ -138,13 +138,16 @@ namespace Vileve.Services.Api.Controllers.v1
             return Response();
         }
 
-        private string GenerateJwt(string email, string token)
+        private string GenerateJwt(string email, string token, Guid? consultorId)
         {
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim("Token", token)
             };
+
+            if (consultorId.HasValue)
+                claims.Add(new Claim("ConsultorId", consultorId.Value.ToString()));
 
             var identityClaims = new ClaimsIdentity();
             identityClaims.AddClaims(claims);

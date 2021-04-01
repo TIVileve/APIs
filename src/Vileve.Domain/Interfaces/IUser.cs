@@ -9,5 +9,6 @@ namespace Vileve.Domain.Interfaces
         bool IsAuthenticated();
         IEnumerable<Claim> GetClaimsIdentity();
         string Token { get; }
+        string ConsultorId { get; }
     }
 }

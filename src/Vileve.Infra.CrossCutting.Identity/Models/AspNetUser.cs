@@ -28,6 +28,7 @@ namespace Vileve.Infra.CrossCutting.Identity.Models
         }
 
         public string Token => GetToken();
+        public string ConsultorId => GetConsultorId();
 
         private string GetName()
         {
@@ -38,6 +39,11 @@ namespace Vileve.Infra.CrossCutting.Identity.Models
         private string GetToken()
         {
             return _accessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Token")?.Value;
+        }
+
+        private string GetConsultorId()
+        {
+            return _accessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ConsultorId")?.Value;
         }
     }
 }

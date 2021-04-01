@@ -10,6 +10,7 @@ using Vileve.Application.Interfaces;
 using Vileve.Application.ViewModels.v1.Cliente;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
+using Vileve.Domain.Interfaces;
 
 namespace Vileve.Services.Api.Controllers.v1
 {
@@ -20,15 +21,18 @@ namespace Vileve.Services.Api.Controllers.v1
     public class ClienteController : ApiController
     {
         private readonly IClienteAppService _clienteAppService;
+        private readonly IUser _user;
 
         public ClienteController(
             IClienteAppService clienteAppService,
+            IUser user,
             ILogger<ClienteController> logger,
             INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator)
             : base(logger, notifications, mediator)
         {
             _clienteAppService = clienteAppService;
+            _user = user;
         }
 
         [HttpGet("{clienteId}")]
@@ -46,8 +50,10 @@ namespace Vileve.Services.Api.Controllers.v1
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CadastrarCliente([FromBody] CadastrarClienteViewModel cliente)
         {
+            var consultorId = string.IsNullOrWhiteSpace(_user?.ConsultorId) ? (Guid?)null : Guid.Parse(_user.ConsultorId);
+
             var response = await _clienteAppService.CadastrarCliente(cliente.Cpf, cliente.NomeCompleto, cliente.DataNascimento, cliente.Email,
-                cliente.TelefoneFixo, cliente.TelefoneCelular, null,
+                cliente.TelefoneFixo, cliente.TelefoneCelular, consultorId,
                 cliente.InssNumeroBeneficio, cliente.InssSalario, cliente.InssEspecie, cliente.OutrosDiaPagamento);
 
             return Response(response);
