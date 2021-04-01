@@ -22,6 +22,7 @@ namespace Vileve.Domain.CommandHandlers
     public class ClienteCommandHandler : CommandHandler,
         IRequestHandler<ObterClientePorIdCommand, object>,
         IRequestHandler<CadastrarClienteCommand, object>,
+        IRequestHandler<AtualizarClienteCommand, bool>,
         IRequestHandler<ObterProdutoCommand, object>,
         IRequestHandler<CadastrarProdutoCommand, bool>,
         IRequestHandler<CadastrarEnderecoCommand, bool>,
@@ -136,6 +137,37 @@ namespace Vileve.Domain.CommandHandlers
             }
 
             return await Task.FromResult(cliente);
+        }
+
+        public Task<bool> Handle(AtualizarClienteCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return Task.FromResult(false);
+            }
+
+            var cliente = _clienteRepository.GetById(message.ClienteId);
+            if (cliente == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cliente não cadastrado.", message));
+                return Task.FromResult(false);
+            }
+
+            cliente.Update(message.Cpf, message.NomeCompleto, message.DataNascimento, message.Email,
+                message.TelefoneFixo, message.TelefoneCelular, message.ConsultorId);
+
+            _clienteRepository.Update(cliente);
+
+            var clienteFontePagadora = cliente.FontePagadora.Update(message.InssNumeroBeneficio, message.InssSalario, message.InssEspecie, message.OutrosDiaPagamento);
+
+            _clienteFontePagadoraRepository.Update(clienteFontePagadora);
+
+            if (Commit())
+            {
+            }
+
+            return Task.FromResult(true);
         }
 
         public async Task<object> Handle(ObterProdutoCommand message, CancellationToken cancellationToken)

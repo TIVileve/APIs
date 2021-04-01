@@ -49,6 +49,16 @@ namespace Vileve.Application.Services
             return _notifications.HasNotifications() ? cadastrarClienteResponse : _mapper.Map<ClienteViewModel>((Cliente)cadastrarClienteResponse);
         }
 
+        public void AtualizarCliente(Guid clienteId, string cpf, string nomeCompleto, DateTime dataNascimento, string email,
+            string telefoneFixo, string telefoneCelular, Guid? consultorId,
+            long? inssNumeroBeneficio, double? inssSalario, int? inssEspecie, int? outrosDiaPagamento)
+        {
+            var atualizarClienteCommand = new AtualizarClienteCommand(clienteId, cpf, nomeCompleto, dataNascimento, email,
+                telefoneFixo, telefoneCelular, consultorId,
+                inssNumeroBeneficio, inssSalario, inssEspecie, outrosDiaPagamento);
+            _bus.SendCommand(atualizarClienteCommand);
+        }
+
         public async Task<object> ObterProduto()
         {
             var obterProdutoCommand = new ObterProdutoCommand();

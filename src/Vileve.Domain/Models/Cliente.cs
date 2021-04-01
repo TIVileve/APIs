@@ -40,7 +40,7 @@ namespace Vileve.Domain.Models
         public virtual ICollection<ClienteDependente> Dependentes { get; set; }
 
         public Cliente Update(string cpf, string nomeCompleto, DateTime dataNascimento, string email,
-            string telefoneFixo, string telefoneCelular)
+            string telefoneFixo, string telefoneCelular, Guid? consultorId)
         {
             Cpf = cpf;
             NomeCompleto = nomeCompleto;
@@ -48,6 +48,7 @@ namespace Vileve.Domain.Models
             Email = email;
             TelefoneFixo = telefoneFixo;
             TelefoneCelular = telefoneCelular;
+            ConsultorId = consultorId;
 
             return this;
         }

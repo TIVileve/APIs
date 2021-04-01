@@ -11,6 +11,10 @@ namespace Vileve.Application.Interfaces
             string telefoneFixo, string telefoneCelular, Guid? consultorId,
             long? inssNumeroBeneficio, double? inssSalario, int? inssEspecie, int? outrosDiaPagamento);
 
+        void AtualizarCliente(Guid clienteId, string cpf, string nomeCompleto, DateTime dataNascimento, string email,
+            string telefoneFixo, string telefoneCelular, Guid? consultorId,
+            long? inssNumeroBeneficio, double? inssSalario, int? inssEspecie, int? outrosDiaPagamento);
+
         Task<object> ObterProduto();
         void CadastrarProduto(Guid clienteId, string codigoProdutoItem);
 

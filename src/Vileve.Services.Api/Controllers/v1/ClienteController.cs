@@ -59,6 +59,20 @@ namespace Vileve.Services.Api.Controllers.v1
             return Response(response);
         }
 
+        [HttpPut("{clienteId}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult AtualizarCliente(Guid clienteId, [FromBody] AtualizarClienteViewModel cliente)
+        {
+            var consultorId = string.IsNullOrWhiteSpace(_user?.ConsultorId) ? (Guid?)null : Guid.Parse(_user.ConsultorId);
+
+            _clienteAppService.AtualizarCliente(clienteId, cliente.Cpf, cliente.NomeCompleto, cliente.DataNascimento, cliente.Email,
+                cliente.TelefoneFixo, cliente.TelefoneCelular, consultorId,
+                cliente.InssNumeroBeneficio, cliente.InssSalario, cliente.InssEspecie, cliente.OutrosDiaPagamento);
+
+            return Response();
+        }
+
         [HttpGet("seguros/produtos")]
         [ProducesResponseType(typeof(ProdutoViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
