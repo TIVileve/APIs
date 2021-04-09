@@ -1,7 +1,10 @@
-﻿namespace Vileve.Application.ViewModels.v1.Cliente
+﻿using System;
+
+namespace Vileve.Application.ViewModels.v1.Cliente
 {
     public class EnderecoViewModel
     {
+        public Guid? Id { get; set; }
         public string Cep { get; set; }
         public string Logradouro { get; set; }
         public int Numero { get; set; }
