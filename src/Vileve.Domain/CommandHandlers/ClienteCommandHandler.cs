@@ -100,6 +100,20 @@ namespace Vileve.Domain.CommandHandlers
             try
             {
                 var client = _httpAppService.CreateClient(_serviceManager.UrlVileve);
+
+                var token = await _httpAppService.OnPost<Token, object>(client, message.RequestId, "v1/auth/login", new
+                {
+                    usuario = _serviceManager.UserVileve,
+                    senha = _serviceManager.PasswordVileve
+                });
+                if (token == null || string.IsNullOrWhiteSpace(token.AccessToken))
+                {
+                    await _bus.RaiseEvent(new DomainNotification(message.MessageType, "Usuário de integração não encontrado.", message));
+                    return await Task.FromResult(false);
+                }
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+
                 var enviarTokenSms = await _httpAppService.OnPost<EnviarTokenSms, object>(client, message.RequestId, "v1/validacao-contato/enviar-token-sms", new
                 {
                     numero_telefone = message.TelefoneCelular
