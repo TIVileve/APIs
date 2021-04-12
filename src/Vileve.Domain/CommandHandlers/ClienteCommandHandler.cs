@@ -480,22 +480,35 @@ namespace Vileve.Domain.CommandHandlers
                     });
                 }
 
+                object fontePagadora = null;
+
+                if (cliente.FontePagadora != null && cliente.FontePagadora.OutrosDiaPagamento.HasValue)
+                {
+                    fontePagadora = new
+                    {
+                        outros = new
+                        {
+                            dia_pagamento = cliente.FontePagadora.OutrosDiaPagamento.GetValueOrDefault()
+                        }
+                    };
+                }
+                else if (cliente.FontePagadora != null)
+                {
+                    fontePagadora = new
+                    {
+                        inss = new
+                        {
+                            numero_beneficio = cliente.FontePagadora.InssNumeroBeneficio.GetValueOrDefault(),
+                            salario = cliente.FontePagadora.InssSalario.GetValueOrDefault(),
+                            especie = cliente.FontePagadora.InssEspecie.GetValueOrDefault()
+                        }
+                    };
+                }
+
                 var contratarProduto = await _httpAppService.OnPost<ContratarProduto, object>(client, message.RequestId, "v1/proposta/nova-contratacao", new
                 {
                     codigo_produto_item = cliente.Produto.CodigoProdutoItem,
-                    fonte_pagadora = new
-                    {
-                        // inss = new
-                        // {
-                        //     numero_beneficio = 0,
-                        //     salario = 0,
-                        //     especie = 0
-                        // },
-                        outros = new
-                        {
-                            dia_pagamento = 30
-                        }
-                    },
+                    fonte_pagadora = fontePagadora,
                     pessoa = new
                     {
                         // codigo_consultor = 0,
