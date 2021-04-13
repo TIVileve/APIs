@@ -118,35 +118,5 @@ namespace Vileve.Services.Api.Controllers.v1
 
             return Response(response);
         }
-
-        [HttpGet("tipos-parentesco")]
-        [ProducesResponseType(typeof(IEnumerable<ParentescoViewModel>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> ObterTipoParentesco()
-        {
-            var response = await _parametrizacaoAppService.ObterTipoParentesco();
-
-            return Response(response);
-        }
-
-        [HttpGet("tipos-pagamento")]
-        [ProducesResponseType(typeof(IEnumerable<PagamentoViewModel>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> ObterTipoPagamento()
-        {
-            var response = await _parametrizacaoAppService.ObterTipoPagamento();
-
-            return Response(response);
-        }
-
-        [HttpGet("tipos-convenio")]
-        [ProducesResponseType(typeof(IEnumerable<ConvenioViewModel>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> ObterTipoConvenio()
-        {
-            var response = await _parametrizacaoAppService.ObterTipoConvenio();
-
-            return Response(response);
-        }
     }
 }

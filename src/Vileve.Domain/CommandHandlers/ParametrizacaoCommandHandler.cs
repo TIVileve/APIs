@@ -24,10 +24,7 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<ObterTipoEnderecoCommand, object>,
         IRequestHandler<ObterBancoCommand, object>,
         IRequestHandler<ObterOperacaoBancariaCommand, object>,
-        IRequestHandler<ObterSexoCommand, object>,
-        IRequestHandler<ObterTipoParentescoCommand, object>,
-        IRequestHandler<ObterTipoPagamentoCommand, object>,
-        IRequestHandler<ObterTipoConvenioCommand, object>
+        IRequestHandler<ObterSexoCommand, object>
     {
         private readonly ServiceManager _serviceManager;
         private readonly IHttpAppService _httpAppService;
@@ -279,39 +276,6 @@ namespace Vileve.Domain.CommandHandlers
                 await _bus.RaiseEvent(new DomainNotification(message.MessageType, "O sistema está momentaneamente indisponível, tente novamente mais tarde.", message));
                 return await Task.FromResult(false);
             }
-        }
-
-        public async Task<object> Handle(ObterTipoParentescoCommand message, CancellationToken cancellationToken)
-        {
-            if (!message.IsValid())
-            {
-                NotifyValidationErrors(message);
-                return await Task.FromResult(false);
-            }
-
-            return await Task.FromResult(true);
-        }
-
-        public async Task<object> Handle(ObterTipoPagamentoCommand message, CancellationToken cancellationToken)
-        {
-            if (!message.IsValid())
-            {
-                NotifyValidationErrors(message);
-                return await Task.FromResult(false);
-            }
-
-            return await Task.FromResult(true);
-        }
-
-        public async Task<object> Handle(ObterTipoConvenioCommand message, CancellationToken cancellationToken)
-        {
-            if (!message.IsValid())
-            {
-                NotifyValidationErrors(message);
-                return await Task.FromResult(false);
-            }
-
-            return await Task.FromResult(true);
         }
     }
 }
