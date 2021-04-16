@@ -479,7 +479,7 @@ namespace Vileve.Domain.CommandHandlers
                         tipo_telefone = 1,
                         ddd = cliente.TelefoneFixo.Replace("+55", "").Substring(0, 2),
                         telefone = cliente.TelefoneFixo.Replace("+55", "").Substring(2),
-                        principal = 1
+                        principal = 0
                     });
                 }
 
@@ -490,7 +490,7 @@ namespace Vileve.Domain.CommandHandlers
                         tipo_telefone = 2,
                         ddd = cliente.TelefoneCelular.Replace("+55", "").Substring(0, 2),
                         telefone = cliente.TelefoneCelular.Replace("+55", "").Substring(2),
-                        principal = 0
+                        principal = 1
                     });
                 }
 
