@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Vileve.Infra.Data\Vileve.Infra.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EventSourcedNormalizers\" />
+  </ItemGroup>
+
 </Project>

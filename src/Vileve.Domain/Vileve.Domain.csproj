@@ -13,4 +13,9 @@
     <ProjectReference Include="..\Vileve.Infra.CrossCutting.Io\Vileve.Infra.CrossCutting.Io.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EventHandlers\" />
+    <Folder Include="Events\" />
+  </ItemGroup>
+
 </Project>

@@ -8,12 +8,9 @@ using Vileve.Domain.Commands.Autorizacao;
 using Vileve.Domain.Commands.Cliente;
 using Vileve.Domain.Commands.Consultor;
 using Vileve.Domain.Commands.Parametrizacao;
-using Vileve.Domain.Commands.Property;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Events;
 using Vileve.Domain.Core.Notifications;
-using Vileve.Domain.EventHandlers;
-using Vileve.Domain.Events.Property;
 using Vileve.Domain.Interfaces;
 using Vileve.Infra.CrossCutting.Bus;
 using Vileve.Infra.CrossCutting.Identity.Authorization;
@@ -40,7 +37,6 @@ namespace Vileve.Infra.CrossCutting.IoC
             services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
 
             // Application
-            services.AddScoped<IPropertyAppService, PropertyAppService>();
             services.AddScoped<IAutorizacaoAppService, AutorizacaoAppService>();
             services.AddScoped<IEnderecoAppService, EnderecoAppService>();
             services.AddScoped<IParametrizacaoAppService, ParametrizacaoAppService>();
@@ -50,17 +46,7 @@ namespace Vileve.Infra.CrossCutting.IoC
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
-            // Property
-            services.AddScoped<INotificationHandler<PropertyRegisteredEvent>, PropertyEventHandler>();
-            services.AddScoped<INotificationHandler<PropertyUpdatedEvent>, PropertyEventHandler>();
-            services.AddScoped<INotificationHandler<PropertyRemovedEvent>, PropertyEventHandler>();
-
             // Domain - Commands
-
-            // Property
-            services.AddScoped<IRequestHandler<RegisterNewPropertyCommand, object>, PropertyCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdatePropertyCommand, bool>, PropertyCommandHandler>();
-            services.AddScoped<IRequestHandler<RemovePropertyCommand, bool>, PropertyCommandHandler>();
 
             // Autorizacao
             services.AddScoped<IRequestHandler<LoginCommand, object>, AutorizacaoCommandHandler>();
@@ -129,7 +115,6 @@ namespace Vileve.Infra.CrossCutting.IoC
             services.AddScoped<IClienteEnderecoRepository, ClienteEnderecoRepository>();
             services.AddScoped<IClienteDependenteRepository, ClienteDependenteRepository>();
             services.AddScoped<IClienteDocumentoRepository, ClienteDocumentoRepository>();
-            services.AddScoped<IPropertyRepository, PropertyRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<VileveContext>();
 
