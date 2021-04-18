@@ -38,6 +38,7 @@ namespace Vileve.Domain.Models
         public virtual ClienteProduto Produto { get; set; }
         public virtual ICollection<ClienteEndereco> Enderecos { get; set; }
         public virtual ICollection<ClienteDependente> Dependentes { get; set; }
+        public virtual ICollection<ClienteDocumento> Documentos { get; set; }
 
         public Cliente Update(string cpf, string nomeCompleto, DateTime dataNascimento, string email,
             string telefoneFixo, string telefoneCelular, Guid? consultorId)

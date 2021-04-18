@@ -188,5 +188,15 @@ namespace Vileve.Services.Api.Controllers.v1
 
             return Response();
         }
+
+        [HttpPost("{clienteId}/documentos")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.BadRequest)]
+        public IActionResult CadastrarDocumento(Guid clienteId, [FromBody] CadastrarDocumentoViewModel documento)
+        {
+            _clienteAppService.CadastrarDocumento(clienteId, documento.FrenteBase64, documento.VersoBase64, documento.TipoDocumento);
+
+            return Response();
+        }
     }
 }

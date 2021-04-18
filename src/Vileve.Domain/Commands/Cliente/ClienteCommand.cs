@@ -1,5 +1,6 @@
 ﻿using System;
 using Vileve.Domain.Core.Commands;
+using Vileve.Domain.Enums;
 
 namespace Vileve.Domain.Commands.Cliente
 {
@@ -45,5 +46,10 @@ namespace Vileve.Domain.Commands.Cliente
         // Dependente
         public Guid DependenteId { get; protected set; }
         public string CodigoParentesco { get; protected set; }
+
+        // Cliente Documento
+        public string FrenteBase64 { get; protected set; }
+        public string VersoBase64 { get; protected set; }
+        public TipoDocumento TipoDocumento { get; protected set; }
     }
 }

@@ -38,5 +38,6 @@ namespace Vileve.Application.Interfaces
         void DeletarDependente(Guid clienteId, Guid dependenteId);
         Task<object> ContratarProduto(Guid clienteId);
         void CadastrarPagamento(Guid clienteId);
+        void CadastrarDocumento(Guid clienteId, string frenteBase64, string versoBase64, int tipoDocumento);
     }
 }

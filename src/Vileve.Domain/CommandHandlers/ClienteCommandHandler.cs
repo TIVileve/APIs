@@ -33,7 +33,8 @@ namespace Vileve.Domain.CommandHandlers
         IRequestHandler<AtualizarDependenteCommand, bool>,
         IRequestHandler<DeletarDependenteCommand, bool>,
         IRequestHandler<ContratarProdutoCommand, object>,
-        IRequestHandler<CadastrarPagamentoCommand, bool>
+        IRequestHandler<CadastrarPagamentoCommand, bool>,
+        IRequestHandler<CadastrarDocumentoCommand, bool>
     {
         private readonly ServiceManager _serviceManager;
         private readonly IHttpAppService _httpAppService;
@@ -42,6 +43,7 @@ namespace Vileve.Domain.CommandHandlers
         private readonly IClienteProdutoRepository _clienteProdutoRepository;
         private readonly IClienteEnderecoRepository _clienteEnderecoRepository;
         private readonly IClienteDependenteRepository _clienteDependenteRepository;
+        private readonly IClienteDocumentoRepository _clienteDocumentoRepository;
         private readonly IUser _user;
         private readonly ILogger<ClienteCommandHandler> _logger;
 
@@ -53,6 +55,7 @@ namespace Vileve.Domain.CommandHandlers
             IClienteProdutoRepository clienteProdutoRepository,
             IClienteEnderecoRepository clienteEnderecoRepository,
             IClienteDependenteRepository clienteDependenteRepository,
+            IClienteDocumentoRepository clienteDocumentoRepository,
             IUser user,
             ILogger<ClienteCommandHandler> logger,
             IUnitOfWork uow,
@@ -67,6 +70,7 @@ namespace Vileve.Domain.CommandHandlers
             _clienteProdutoRepository = clienteProdutoRepository;
             _clienteEnderecoRepository = clienteEnderecoRepository;
             _clienteDependenteRepository = clienteDependenteRepository;
+            _clienteDocumentoRepository = clienteDocumentoRepository;
             _user = user;
             _logger = logger;
         }
@@ -656,6 +660,32 @@ namespace Vileve.Domain.CommandHandlers
             {
                 NotifyValidationErrors(message);
                 return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> Handle(CadastrarDocumentoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid())
+            {
+                NotifyValidationErrors(message);
+                return Task.FromResult(false);
+            }
+
+            var cliente = _clienteRepository.GetById(message.ClienteId);
+            if (cliente == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Cliente não cadastrado.", message));
+                return Task.FromResult(false);
+            }
+
+            var clienteDocumento = new ClienteDocumento(Guid.NewGuid(), message.FrenteBase64, message.VersoBase64, message.TipoDocumento, message.ClienteId);
+
+            _clienteDocumentoRepository.Add(clienteDocumento);
+
+            if (Commit())
+            {
             }
 
             return Task.FromResult(true);

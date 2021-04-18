@@ -113,6 +113,7 @@ namespace Vileve.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<DeletarDependenteCommand, bool>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<ContratarProdutoCommand, object>, ClienteCommandHandler>();
             services.AddScoped<IRequestHandler<CadastrarPagamentoCommand, bool>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<CadastrarDocumentoCommand, bool>, ClienteCommandHandler>();
 
             // Infra - Data
             services.AddScoped<IOnboardingRepository, OnboardingRepository>();
@@ -127,6 +128,7 @@ namespace Vileve.Infra.CrossCutting.IoC
             services.AddScoped<IClienteProdutoRepository, ClienteProdutoRepository>();
             services.AddScoped<IClienteEnderecoRepository, ClienteEnderecoRepository>();
             services.AddScoped<IClienteDependenteRepository, ClienteDependenteRepository>();
+            services.AddScoped<IClienteDocumentoRepository, ClienteDocumentoRepository>();
             services.AddScoped<IPropertyRepository, PropertyRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<VileveContext>();

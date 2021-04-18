@@ -8,6 +8,7 @@ using Vileve.Application.ViewModels.v1.Cliente;
 using Vileve.Domain.Commands.Cliente;
 using Vileve.Domain.Core.Bus;
 using Vileve.Domain.Core.Notifications;
+using Vileve.Domain.Enums;
 using Vileve.Domain.Models;
 using Vileve.Domain.Responses;
 
@@ -143,6 +144,12 @@ namespace Vileve.Application.Services
         {
             var cadastrarPagamentoCommand = new CadastrarPagamentoCommand(clienteId);
             _bus.SendCommand(cadastrarPagamentoCommand);
+        }
+
+        public void CadastrarDocumento(Guid clienteId, string frenteBase64, string versoBase64, int tipoDocumento)
+        {
+            var cadastrarDocumentoCommand = new CadastrarDocumentoCommand(clienteId, frenteBase64, versoBase64, (TipoDocumento)tipoDocumento);
+            _bus.SendCommand(cadastrarDocumentoCommand);
         }
 
         public void Dispose()
