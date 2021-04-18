@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\v1\AccountController.cs" />
-    <Compile Remove="Controllers\v1\PropertyController.cs" />
   </ItemGroup>
 
   <ItemGroup>
