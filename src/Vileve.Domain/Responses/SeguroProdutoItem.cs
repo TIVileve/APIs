@@ -18,6 +18,6 @@ namespace Vileve.Domain.Responses
         [JsonProperty("quantidade_maxima_dependente")]
         public int QuantidadeMaximaDependente { get; set; }
         [JsonProperty("parentescos_avulsos")]
-        public IEnumerable<SeguroProdutoParentescos> ParentescosAvulsos { get; set; }
+        public IEnumerable<SeguroProdutoParentesco> ParentescosAvulsos { get; set; }
     }
 }

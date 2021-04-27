@@ -2,7 +2,7 @@
 
 namespace Vileve.Domain.Responses
 {
-    public class SeguroProdutoParentescos
+    public class SeguroProdutoParentesco
     {
         [JsonProperty("codigo_tipo_dependente")]
         public int CodigoTipoDependente { get; set; }

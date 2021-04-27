@@ -6,8 +6,6 @@ namespace Vileve.Domain.Responses
     {
         [JsonProperty("codigo_id_banco")]
         public int CodigoIdBanco { get; set; }
-        [JsonProperty("codigo_bancario")]
-        public int CodigoBancario { get; set; }
         [JsonProperty("nome")]
         public string Nome { get; set; }
         [JsonProperty("meio_pagamento")]
