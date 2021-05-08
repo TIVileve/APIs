@@ -233,9 +233,19 @@ namespace Vileve.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            var clienteProduto = new ClienteProduto(Guid.NewGuid(), message.CodigoProdutoItem, message.ClienteId);
+            var clienteProduto = _clienteProdutoRepository.Find(cp => cp.ClienteId.Equals(message.ClienteId)).FirstOrDefault();
+            if (clienteProduto == null)
+            {
+                clienteProduto = new ClienteProduto(Guid.NewGuid(), message.CodigoProdutoItem, message.ClienteId);
 
-            _clienteProdutoRepository.Add(clienteProduto);
+                _clienteProdutoRepository.Add(clienteProduto);
+            }
+            else
+            {
+                clienteProduto.CodigoProdutoItem = message.CodigoProdutoItem;
+
+                _clienteProdutoRepository.Update(clienteProduto);
+            }
 
             if (Commit())
             {
