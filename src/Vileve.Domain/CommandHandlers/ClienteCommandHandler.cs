@@ -242,7 +242,7 @@ namespace Vileve.Domain.CommandHandlers
             }
             else
             {
-                clienteProduto.CodigoProdutoItem = message.CodigoProdutoItem;
+                clienteProduto.Update(message.CodigoProdutoItem);
 
                 _clienteProdutoRepository.Update(clienteProduto);
             }
